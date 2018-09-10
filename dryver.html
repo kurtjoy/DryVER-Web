@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>DryVER</title>
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+		
+		    #infoDiv {
+      position: absolute;
+      top: 15px;
+      left: 60px;
+    }
+
+    #infoDiv input {
+      border: none;
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px;
+    }
+    </style>
+	
+   <script>
+        var dojoConfig = {
+            has: {
+				"esri-promise-compatibility": 1
+            }
+        };
+    </script>
+    
+    <link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/themes/light/main.css">
+    <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.1/css/calcite-web.min.css">
+    <script src="https://js.arcgis.com/4.7/"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+   
+    <link rel="stylesheet" href="dryver.css">
+    
+   <!-- <link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet">-->
+    
+    <script>
+  var locationPath = location.pathname.replace(/\/[^\/]+$/, "");
+  window.dojoConfig = {
+    packages: [
+      {
+        name: "app",
+        location: locationPath + "/app"
+      }
+    ]
+  };
+  </script>
+    <script>
+        var dojoConfig = {has: {
+			"esri-featurelayer-webgl": 1,
+			"esri-promise-compatibility": 1}
+						 };
+    </script>
+    <script>
+        require([
+            "esri/Map",
+            "esri/views/SceneView",
+            "esri/layers/FeatureLayer",
+			"esri/layers/ImageryLayer",
+			"esri/renderers/smartMapping/creators/size",
+			"esri/widgets/Search",
+            "esri/widgets/Expand",
+            "esri/widgets/LayerList",
+			"esri/widgets/Legend",
+			"esri/widgets/Home",
+			//"esri/widgets/DirectLineMeasurement3D",
+            "dojo/dom",
+            "dojo/on",
+            "dojo/domReady!"
+        ], function(
+				  Map,
+				  SceneView,
+				  FeatureLayer,
+				  ImageryLayer,
+				  sizeRendererCreator,
+				  Search,
+				  Expand,
+				  LayerList,
+				  Legend,
+				  Home,
+				  //DirectLineMeasurement3D,
+				  dom,
+				  on
+				 ){
+	
+			
+// MAP SETUP////////////////////////////////
+			
+      		var map = new Map({
+        		basemap: "satellite",
+        		ground: "world-elevation"
+			});
+
+			
+            var view = new SceneView({
+                container: "viewDiv",
+                map: map,
+				padding: {right: 270},
+				//screenSizePerspectiveEnabled: true,
+				center: [162, -77.5],
+				//heading: 30,
+				zoom: 7,
+				popup: {
+          			dockEnabled: true,
+					collapsed: true,
+					dockOptions: {
+            			buttonEnabled: false,
+            			breakpoint: false,
+						position: "bottom-right",
+					}
+				}
+				
+			});
+			
+		
+		
+// SYMBOLOGIES AND RENDERERS//////////////////
+			
+           	var orange = {
+                type: "simple", // autocasts as new SimpleRenderer()
+        		symbol: {
+          			type: "point-3d", // autocasts as new PointSymbol3D()
+          			symbolLayers: [{
+        				type: "icon",
+        				anchor: "center",
+        				outline: {
+            				size: 1
+        				},
+        				material: {
+            				color: [255, 115, 0, 0.5]
+        				}
+    				}]
+        		}
+			};
+			
+			var blue = {
+                type: "simple", // autocasts as new SimpleRenderer()
+        		symbol: {
+          			type: "point-3d", // autocasts as new PointSymbol3D()
+          			symbolLayers: [{
+        				type: "icon",
+        				anchor: "center",
+        				outline: {
+            				size: 1
+        				},
+        				material: {
+            				color: [0, 0, 255, 0.5]
+        				}
+    				}]
+        		}
+			};
+                
+			var green = {
+                type: "simple", // autocasts as new SimpleRenderer()
+        		symbol: {
+          			type: "point-3d", // autocasts as new PointSymbol3D()
+          			symbolLayers: [{
+        				type: "icon",
+        				anchor: "center",
+        				outline: {
+            				size: 1
+        				},
+        				material: {
+            				color: [0, 255, 0, 0.5]
+        				}
+    				}]
+        		}
+			};
+			
+			var yellow = {
+                type: "simple", // autocasts as new SimpleRenderer()
+        		symbol: {
+          			type: "point-3d", // autocasts as new PointSymbol3D()
+          			symbolLayers: [{
+        				type: "icon",
+        				anchor: "center",
+        				outline: {
+            				size: 1
+        				},
+        				material: {
+            				color: [178, 160, 40, 0.5]
+        				}
+    				}]
+        		}
+			};
+		
+/*			var renderer = {
+        		type: "simple", // autocasts as new SimpleRenderer()
+        		symbol: {
+          			type: "point-3d", // autocasts as new PointSymbol3D()
+          			symbolLayers: [{
+        				type: "icon",
+        				anchor: "center",
+        				outline: {
+            				size: 1
+        				},
+        				material: {
+            				color: [255, 0, 0, 0.5]
+        				}
+    				}]
+        		},
+        			visualVariables: [{
+          				type: "size",
+          				field: "P_31",
+						minDataValue: 151,
+    					maxDataValue: 2000,
+						minSize: "6px",
+						maxSize: "32px"
+        			}]};*/
+			
+			var eventRen = {
+        		type: "simple", // autocasts as new SimpleRenderer()
+        		symbol: {
+          			type: "point-3d",
+          			symbolLayers: [{type: "object",
+					resource: { primitive: "cylinder" },
+      				width: 150,
+					material: {
+            				color: [255, 160, 0, 1]
+        				}
+								   }]
+				},
+        			visualVariables: [{
+          				type: "size",
+          				field: "PersonDays",
+						stops: [{
+      						value: 0,size: 150,
+    					},{
+      						value: 150,size: 600,
+						}],
+						axis: "all"
+        			},{/*{
+						type: "size",
+    					axis: "all",*/
+    					useSymbolValue: true
+					}]};
+				
+													 
+			
+// POPUP TEMPLATES////////////////////////////////
+			
+			var	geochemTemp = {title:"Site ID:{FIELD_ID}", content: [{
+				type: "text",
+				text: "<br>Analysed at the University of Waikato on {ICPMS_DATE}. All measured concentrations in Parts Per Billion"},
+						 {type: "fields",fieldInfos:[ 
+								   {fieldName: "B_10", label: "Boron-10:"},
+								   {fieldName: "Na_23",label: "Sodium-23:"},
+								   {fieldName: "Mg_24",label: "Magnesium-24:"},
+								   {fieldName: "Al_27",label: "Aluminium-27:"},
+								   {fieldName: "P_31",label: "Phosphorus-31:"},
+								   {fieldName: "S_34",label: "Sulfur-34:"},
+								   {fieldName: "K_39",label: "Potassium-39:"},
+								   {fieldName: "Ca_43",label: "Calcium-43:"},
+								   {fieldName: "V_51",label: "Vanadium-51:"},
+								   {fieldName: "Cr_52",label: "Chromium-52:"},
+								   {fieldName: "Fe_54",label: "Iron-54:"},
+								   {fieldName: "Co_59",label: "Cobalt-59:"},
+								   {fieldName: "Ni_60",label: "Nickle-60:"},
+								   {fieldName: "Cu_63",label: "Copper-63:"},
+								   {fieldName: "Zn_66",label: "Zinc-66:"},
+								   {fieldName: "As_75",label: "Arsenic-75:"},
+								   {fieldName: "Se_82",label: "Selenium-82:"},
+								   {fieldName: "Sr_88",label: "Strontium-88:"},
+								   {fieldName: "Ag_109",label: "Silver-109:"},
+								   {fieldName: "Cd_111",label: "Cadmium-111:"},
+								   {fieldName: "Ba_137",label: "Barium-137:"},
+								   {fieldName: "Pb_207",label: "Lead-207:"},
+								   {fieldName: "U_238",label: "Uranium-238:"} 
+										   ]}]};
+
+			var geolTemp = {title: "{MAP_UNIT}" + " ({DRYVER_GROUP})", content: [{
+				type: "fields",
+                    	fieldInfos: [{
+						fieldName: "TERRANE",
+                    	visible: true,
+                    	label: "Terrane Type:"
+					},{
+                    	fieldName: "STRAT_UNIT",
+                    	visible: true,
+                    	label: "Stratigraphic Name:"
+					},{
+						fieldName: "ROCK_GROUP",
+                    	visible: true,
+                    	label: "Rock Group:"
+					},{
+						fieldName: "AGE_INDEX",
+                    	visible: true,
+                    	label: "Relative Age:"
+					},{
+						fieldName: "DESCRIPTIO",
+                    	visible: true,
+                    	label: "Description:"}
+					]}]};
+			
+            var nztabsTemp = {title: "Site: {VALLEY} {FIELD_ID}<br>" + "Predicted Fungal Biodiversity: {FUNGI_S}<br>" + "Predicted Cyanobacterial Biodiversity: {CYANO_S}<br>" + "Predicted Total Biodiversity: {TAXA_S}", content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                    	fieldName: "ELV_MASL",
+                    	visible: true,
+                    	label: "Elevation (masl)"
+                	},{
+                    	fieldName: "SLOPE",
+                    	visible: true,
+                    	label: "Slope (degrees)"
+                	},{
+                    	fieldName: "ASPECT",
+                    	visible: true,
+                    	label: "Aspect (degrees)"
+                	},{
+                    	fieldName: "COAST_M",
+                    	visible: true,
+                    	label: "Distance to Coast (m)"
+                 	},{
+                        fieldName: "SOIL_WATER",
+                        visible: true,
+                        label: "Soil Water)"
+                    },{
+                        fieldName: "PH",
+                        visible: true,
+                        label: "Soil pH"
+                    },{
+                        fieldName: "S_MEAN_TEMP",
+                        visible: true,
+                        label: "Summer Mean Soil Temperature (degrees)"
+                    },{
+                        fieldName: "WETNESS_AL",
+                        visible: true,
+                        label: "Wetness Index (all)"
+                    },{
+                        fieldName: "WETNESS_DJ",
+                        visible: true,
+                        label: "Wetness Index (Dec-Jan)"}
+            ]}
+			]};
+			
+			var aspaTemp = {title: "{NAME}",
+							content: [{
+								type: "media",
+            					mediaInfos: [{type: "image", value: {sourceURL: "{IMAGE}"}}]},
+									  {type: "text",
+  										text: "{DESC}<br><br>" + "Helicopter Pad: {HELO}<br><br>" + "PDF Map:"}	 
+							]};
+			
+			var agarTemp = {title: "{SID}"};
+			
+			var eventTemp = {title: "{EventTitle}", content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                    	fieldName: "EventLeade",
+                    	visible: true,
+                    	label: "Event Leader:"
+                	},{
+						fieldName: "EventNo",
+                    	visible: true,
+                    	label: "Event Number:"
+                	},{
+						fieldName: "DateIn",
+                    	visible: true,
+                    	label: "Date in"
+                	},{
+						fieldName: "DateOut",
+                    	visible: true,
+                    	label: "Date out"
+                	},{
+						fieldName: "Days",
+                    	visible: true,
+                    	label: "Total Days:"
+                	},{
+						fieldName: "MaxPeople",
+                    	visible: true,
+                    	label: "Maximum People:"
+                	},{
+						fieldName: "PersonDays",
+                    	visible: true,
+                    	label: "Person Days:"
+                	}
+								]}]};
+			
+//FEATURE LAYERS/////////////////////
+			
+			var asmaLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/asma_aspa/MapServer/3",
+                                title: "ASMA Boundary"
+			});
+
+            var aspaLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/asma_aspa/MapServer/2",
+                                title: "Managed Zones",
+								popupTemplate: aspaTemp,
+								})
+			
+            var nztabsLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/point_data/MapServer/2",
+                                title: "nzTABS Sites",
+                                id: "nztabsData",
+                                popupTemplate: nztabsTemp,
+								//featureReduction: "selection",
+                                visible: false,
+								renderer: green
+			});
+
+			var agarLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/point_data/MapServer/1",
+                                title: "AGAr Samples",
+                                id: "agarData",
+                                popupTemplate: agarTemp,
+                                visible: false,
+								renderer: yellow
+			});
+			
+            var impactLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/point_data/MapServer/3",
+                                title: "DryVER Impact Sites",
+                                id: "impactData",
+                                visible: false,
+								renderer: blue
+			});
+			      var iirLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/IIR/MapServer/1",
+                                title: "DryVER nfiltration Impact Ratio",
+                                id: "iirData",
+                                visible: false
+			});
+			
+			var riverLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/IIR/MapServer/0",
+                                title: "DryVER River Classification",
+                                id: "riverData",
+                                visible: false
+			});
+			
+            var geochemLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/point_data/MapServer/4",
+                                title: "nzTABS Geochemistry",
+                                id: "geochemData",
+                                popupTemplate: geochemTemp,
+                                visible: false,
+				 				//featureReduction: "selection",
+								//renderer: renderer
+			 });
+
+            var geologyLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/point_data/MapServer/5",
+                                title: "GNS Geology",
+								id: "gns",
+                                visible: false,
+								opacity: 0.4,
+				                popupTemplate: geolTemp,
+								minScale: 400000
+                            });
+			
+        	var layer = new ImageryLayer({
+								url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CYANO_S/ImageServer",
+          						format: "jpgpng",
+								title: "nzTabs Cyano prediction",
+								id: "cyanoData",
+								visible: false
+        					});
+			
+			var locationsLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/point_data/MapServer/0",
+                                title: "locations",
+                                id: "locationsData",								
+				 				featureReduction: {
+									type: "selection"
+								},
+			 					renderer: {
+          							type: "simple",
+          							symbol: {
+            							type: "point-3d",
+            							symbolLayers: [{
+              								type: "icon",
+              								resource: {
+                								primitive: "circle"
+											},
+              								material: {
+                								color: "black"
+              								},
+              								size: 0
+            							}]
+          							}
+        						},
+				 				outFields: ["*"],
+								labelingInfo: [{
+									minScale: 200000,
+			  						labelPlacement: "above-center",
+          							labelExpressionInfo: {
+            							value: "{PLACE_NAME}"
+									},
+          							symbol: {
+            						type: "label-3d",
+            						symbolLayers: [{
+              							type: "text",
+              							material: {
+                							color: "black"
+										},
+              							halo: {
+                							color: [255, 255, 255, 0.7],
+                							size: 2
+										},
+              							size: 10
+									}],
+            						verticalOffset: {
+              							screenLength: 150,
+              							maxWorldLength: 2000,
+              							minWorldLength: 30
+									},
+            						callout: {
+              							type: "line",
+              							size: 0.5,
+              							color: [0, 0, 0],
+              							border: {
+                							color: [255, 255, 255, 0.7]
+										}
+									}
+									},
+									
+								}],
+        		labelsVisible: true				
+			});
+			
+            var eventLayer = new FeatureLayer({
+                                url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/point_data/MapServer/6",
+                                title: "Prior NZ Events",
+								id: "event",
+                                visible: false,
+								renderer: eventRen,
+								popupTemplate: eventTemp
+                            });
+			
+//SYM FUNCTIONS//////////////////////////////
+	
+			
+ view.when(function() {
+
+        isoSelect = document.getElementById("iso-select");
+        isoSelect.addEventListener("change", generateRenderer);
+        generateRenderer();
+      });
+
+      function generateRenderer() {
+        var params = {
+          layer: geochemLayer,
+          field: isoSelect.value,
+			symbol: {
+          			type: "point-3d", // autocasts as new PointSymbol3D()
+          			symbolLayers: [{
+        				type: "icon",
+        				anchor: "center",
+        				outline: {
+            				size: 1
+        				},
+        				material: {
+            				color: [255, 0, 0, 0.5]
+        				}
+					}]}
+        };
+
+		  sizeRendererCreator.createContinuousRenderer(params)
+          .then(function(response) {
+            geochemLayer.renderer = response.renderer;
+
+            if (!map.layers.includes(geochemLayer)) {
+              map.add(geochemLayer);
+            }
+			geochemLayer.refresh();
+          });
+      }		
+
+			
+//ADD LAYERS//////////////////////////////
+			map.add(asmaLayer);
+      map.add(aspaLayer);
+      map.add(eventLayer);
+			map.add(locationsLayer);
+			map.add(layer);
+			map.add(geologyLayer);
+			map.add(riverLayer);
+      map.add(impactLayer);
+      map.add(nztabsLayer);
+			map.add(agarLayer);
+			map.add(iirLayer);
+//SEARCH WIDGET//////////////////////////
+					
+           	var searcher = new Search({
+                view: view,
+                //zoomScale: 500000,
+				//allPlaceholder: "Name or Lat, Long",
+				searchAllEnabled: false,
+			   	locationEnabled: false,
+				popupEnabled: false,
+				container: document.createElement("div"),
+				sources: [{
+					featureLayer: {
+						url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/point_data/MapServer/0"
+					},
+					searchFields: ["PLACE_NAME"],
+  					displayField: "PLACE_NAME",
+					exactMatch: false,
+					outFields: ["*"],
+					//name: "Geographic Names",
+					placeholder: "Geographic Name",
+					maxResults: 8,
+  					maxSuggestions: 8,
+  					suggestionsEnabled: true,
+					minSuggestCharacters: 0,
+					zoomScale: 150000
+				}]});
+			
+            var searchEx = new Expand({
+                view: view,
+				expandTooltip: "Search",
+                content: searcher.container,
+                expandIconClass: "esri-icon-search"
+            });
+
+            view.ui.add(searchEx, {
+                position: "top-left"
+            });
+			
+
+//LAYER LIST + EXPAND WIDGET////////////////
+			
+/*            var lyrList = new LayerList({
+                view: view,
+                container: document.createElement("div")
+            });
+			
+            var layerEx = new Expand({
+                view: view,
+				expandTooltip: "Layers",
+                content: lyrList.container,
+				autoCollapse: true,
+                expandIconClass: "esri-icon-layer-list"
+            });
+            view.ui.add(layerEx,{
+                position: "top-left"
+            });*/
+	
+			
+//MEASURE WIDGET///////////////////			
+/*			var measWidget = new DirectLineMeasurement3D({
+  			view: view,
+			container: document.createElement("div"),
+				});
+			
+			var measurementWidget = new Expand({
+                view: view,
+				expandTooltip: "3D Ruler",
+                content: measWidget.container,
+				autoCollapse: true,
+                expandIconClass: "esri-icon-navigation"
+			});
+			view.ui.add(measurementWidget, "top-left");*/
+			
+//HOME WIDGET///////////////////
+			
+			var homeWidget = new Home({
+  				view: view
+					});
+			view.ui.add(homeWidget, "top-left");
+			
+//LEGEND + EXPAND WIDGET///////////////////
+			
+            var legendList = new Legend ({
+                view: view,
+                container: document.createElement("div"),
+				layerInfos: [
+					{layer: aspaLayer,title: "Managed Zones"},
+					{layer: riverLayer,title: "DryVER River and Streams"},
+					{layer: nztabsLayer,title: "nzTABS Sample Sites"},
+					{layer: geochemLayer,title: "nzTABS Geochemistry"},
+					{layer: impactLayer,title: "DryVER Impact Sites"},
+					{layer: iirLayer,title: "DryVER Infiltration Impact Ratio"},
+					{layer: agarLayer,title: "AGAr Sample Sites"},
+					{layer: eventLayer,title: "Prior NZ events"}
+				]});
+			
+            var legendEx = new Expand({
+                view: view,
+				expandTooltip: "Legend",
+                content: legendList.container,
+				autoCollapse: false,
+                expandIconClass: "esri-icon-collection"
+			});
+			
+            view.ui.add(legendEx,{
+                position: "top-left"
+            
+			});			
+
+//SIDEBAR MENUS/////////////////////////////
+			
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.display === "block") {
+                        panel.style.display = "none";
+                    } else {
+                        panel.style.display = "block";
+                    }
+                })
+            };
+
+// CHECKBOX TOGGLES////////////////////////////////
+			var nztabsGeochemToggle = 	
+				dom.byId("geochemData");
+			var nztabsDataToggle =
+				dom.byId("nztabsData");
+			var impactDataToggle =
+				dom.byId("impactData");
+			var iirDataToggle =
+				dom.byId("iirData");
+			var agarDataToggle =
+				dom.byId("agarData");
+			var cyanoDataToggle =
+				dom.byId("cyanoData");
+			var geologyDataToggle =
+				dom.byId("geologyData");
+			var eventDataToggle =
+				dom.byId("eventData");
+			var riverDataToggle =
+				dom.byId("riverData");
+
+            on(nztabsGeochemToggle, "change", function(){
+                geochemLayer.visible = nztabsGeochemToggle.checked;
+            });
+
+            on(nztabsDataToggle, "change", function(){
+                nztabsLayer.visible = nztabsDataToggle.checked;
+            });
+
+            on(impactDataToggle, "change", function(){
+                impactLayer.visible = impactDataToggle.checked;
+            });	
+
+            on(iirDataToggle, "change", function(){
+                iirLayer.visible = iirDataToggle.checked;
+            });						
+						
+			on(agarDataToggle, "change", function(){
+                agarLayer.visible = agarDataToggle.checked;
+            });
+			
+			on(cyanoDataToggle, "change", function(){
+                layer.visible = cyanoDataToggle.checked;
+            });
+			
+			on(geologyDataToggle, "change", function(){
+                geologyLayer.visible = geologyDataToggle.checked;
+            });
+			
+			on(eventDataToggle, "change", function(){
+                eventLayer.visible = eventDataToggle.checked;
+            });
+			on(riverDataToggle, "change", function(){
+                riverLayer.visible = riverDataToggle.checked;
+            });
+			
+
+//DEFINE LAT/LONG FROM CLICK
+/*            view.on("click", function(event) {event.stopPropagation();
+                var lat_dd = Math.round(event.mapPoint.latitude * 10000) / 10000;
+                document.getElementById("latitude").innerHTML = lat_dd;
+                var lon_dd = Math.round(event.mapPoint.longitude * 10000) / 10000;
+                document.getElementById("longitude").innerHTML = lon_dd;
+				window.alert(lat_dd + " / " + lon_dd);
+            });  */          
+			
+    }); //KEEP
+</script>
+</head>
+<body>
+<div id="viewDiv"><!--VIEWDIV DIV-->
+<!--<div class="loader is-active padding-leader-3 padding-trailer-3">
+  <div class="loader-bars"></div>
+  <div class="loader-text">Loading...</div>
+</div>-->
+
+<div id="sidebar">
+<img src = "/images/dryver.png" width="230" style="width:220px;padding-right: 0px">
+
+    <button class="accordion" ><span><strong>Project Datasets</strong></span></button>
+		<div class="panel" ><!--PD DIV-->
+
+			<button class="accordion">AGAr</button>
+			<div class="panel" ><!--PD DIV-->
+				<p style="padding: 10px">
+				<input type="checkbox" id="agarData">Antarctic Genetic Archive</p> 
+			</div>
+                
+			<button class="accordion">Antarctic Programmes </button>
+			<div class="panel" >
+				<p style="padding: 10px">
+				<input type="checkbox" id="eventData">NZ events 1958-2002<br></p>		  
+			</div>
+		
+			<button class="accordion">DryVER/Aquatic</button>
+			<div class="panel" >
+				<p style="padding: 10px">
+				<input type="checkbox" id="aquaData">Aquatic Habitat Classification<br>
+				<input type="checkbox" id="riverData">Aquatic Connectivity</p>
+			</div>
+			
+			<button class="accordion">DryVER/Impact</button>
+			<div class="panel" >
+				<p style="padding: 10px">
+				<input type="checkbox" id="abioticData">Abiotic Data<br>
+				<input type="checkbox" id="impactData">Impact Point Data<br>
+				<input type="checkbox" id="iirData">Infiltration Impact Ratio<br>
+				<input type="checkbox" id="geologyData">Relative Geological Age
+			</div>
+			
+			<button class="accordion">DryVER/Terrestrial</button>
+			<div class="panel" >
+				<p style="padding: 10px">
+				<input type="checkbox" id="invasData">Invasion Susceptibility Index<br>
+				<input type="checkbox" id="cyanoData">Predicted Cyanobacterial Diversity<br>
+				<input type="checkbox" id="cyanoData">Predicted Fungi Diversity<br>
+				<input type="checkbox" id="cyanoData">Predicted Lichen Diversity<br>
+				<input type="checkbox" id="cyanoData">Predicted Macroinvertebrates Diversity<br>
+			</div>
+			
+			<button class="accordion">nzTABS</button>
+			<div class="panel">
+				<p style="padding-top: 10px">
+				<input type="checkbox" id="geochemData">Miers Valley Geochemistry Data<br>
+				Select Field:<select id="iso-select" class="esri-widget" style="width: 240px">
+				<option value="B_10">Boron-10</option>
+				<option value="Na_23">Sodium-23</option>
+				<option value="Mg_24">Magnesium-24</option>
+				<option value="Al_27">Aluminium-27</option>
+				<option value="P_31">Phosphorus-31</option>
+				<option value="S_34">Sulfur-34</option>
+				<option value="K_39">Pottasium-39</option>
+				<option value="Ca_43">Calcium-43</option>
+				<option value="V_51">Vanadium-51</option>
+				<option value="Cr_52">Chromium-52</option>
+				<option value="Fe_54">Iron-54</option>
+				<option value="Co_59">Cobalt-59</option>
+				<option value="Ni_60">Nickle-60</option>
+				<option value="Cu_63">Copper-63</option>
+				<option value="Zn_66">Zinc-66</option>
+				<option value="As_75">Arsenic-75</option>
+				<option value="Se_82">Selenium-82</option>
+				<option value="Sr_88">Strontium-88</option>
+				<option value="Ag_109">Silver-109</option>
+				<option value="Cd_111">Cadmium-111</option>
+				<option value="Ba_137">Barium-137</option>
+				<option value="Pb_207">Lead-207</option>
+				<option value="U_238">Uranium-238</option>
+				</select>
+				<input type="checkbox" id="nztabsData">Sample Site Data<br>
+				<input type="checkbox" id="wetData">Wetness Index</p>
+			</div>
+			
+			
+  </div><!--KEEP PD END-->
+				
+			
+  <button class="accordion" ><span style"font-size:30px"><b>Management Tools</b></span></button>
+  <div class="panel" ><!--MT DIV-->
+	
+		<button class="accordion">Sensitivity/Aquatic</span></button>
+		<div class="panel">
+			<p style="padding: 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+		</div>
+		
+		<button class="accordion">Sensitivity/Impact</span></button>
+		<div class="panel" >
+			<button class="accordion"><span style="color:red;font-size:16px"><li>Managed Areas</li></span></button>
+			<div class="panel">
+				<p style="padding: 10px">Proposed location is within a managed area. Click <a href="http://www.mcmurdodryvalleys.aq/images/aspa123map1barwickbalham.pdf" target="_blank">here</a> for more information.</p>
+			</div>
+
+			<button class="accordion"><span style="color:red;font-size:16px"><li>Sensitive Surfaces</li></span></button>
+			<div class="panel">
+				<p style="padding: 10px">Proposed location is within a known sensitive surface. Click <a href="url">here</a> for more information.</p>
+			</div>
+
+			<button class="accordion"><span style="font-size:16px;color:green"><li>Proximity To Facility Zones</li></span></button>
+			<div class="panel">
+				<p style="padding: 10px">Proposed location is greater than 1000m from a facilities zone.</p>
+			</div>
+
+			<button class="accordion"><span style="font-size:16px;color:orange"><li>Proximity To Previous Camp Sites</li></span></button>
+			<div class="panel" style="width:92%">
+					<p style="padding: 10px">Proposed location is less than 1500m from a previous camp.</p>
+			</div>
+		</div>
+
+		<button class="accordion">Sensitivity/Terrestrial</span></button>
+		<div class="panel">
+			<p style="padding: 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+		</div>
+
+
+
+    <button class="accordion" >Reporting</button>
+      <div class="panel"><p style="padding: 10px"> 
+      <form>
+			  Event ID: <input type="text" name="event_id" style="width: 240px">
+				Latitude (dd): <input type="text" name="lat" style="width: 240px">
+				Longitude(dd): <input type="text" name="long" style="width: 240px">
+        Season: 
+        <select style="width: 240px"><option value="2018_2019">2018-2019</option><option value="2019_2020">2019-2020</option><option value="2020_2021">2020-2021</option></select>
+        Primary Location: <select style="width: 240px"><option value="taylor">Taylor Valley</option><option value="wright">Wright Valley</option><option value="victoria">Victoria Valley</option><option value="denton">Denton Hills</option><option value="other">Other</option></select>
+         Event Manager: <input type="text" name="manager" style="width: 240px">
+         Event Leader: <input type="text" name="manager" style="width: 240px">
+         Entered by:<select style="width: 240px"><option value="enter1">Kurt Joy</option><option value="enter2">Craig Cary</option><option value="enter3">Charles Lee</option></select><br>
+       </form>	<br>
+				
+				Sensitivity reports will open in a new browser window.<br>
+        <button class="btn btn-fill">  Generate report </button>
+        <br>
+        <a href="/PDFS/Report_345.pdf" target="_blank">Report Style 1 (PDF)</a><br>
+        <a href="/report_345.htm" target="_blank">Report Style 1 (HTML)</a><br></p>
+      </div>
+			
+    </div><!--KEEP MT END-->
+		
+	<button class="accordion" ><span style"font-size:30px"><b>Ecoforecasting</b></span></button>
+  <div class="panel" ><!--EF DIV-->
+	
+		<button class="accordion">Aquatic Ecosystems under IPCC Scenarios</span></button>
+		<div class="panel">
+			<p style="padding: 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+		</div>
+		<button class="accordion">Terrestrial Ecosystems under IPCC Scenarios</span></button>
+		<div class="panel">
+			<p style="padding: 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+		</div>
+				<button class="accordion">Climatic Response under IPCC Scenarios</span></button>
+		<div class="panel">
+			<p style="padding: 10px">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+		</div>
+		
+		
+		
+		</div><!--KEEP EF END-->
+	</div><!--KEEP SIDEBAR END-->
+</div> <!--KEEP VIEWDIV END-->
+
+
+
+<script src="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.1/js/calcite-web.min.js"></script>
+
+</body>
+</html>

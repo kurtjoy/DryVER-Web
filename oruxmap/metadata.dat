@@ -1,0 +1,13 @@
+#The resources included here will be sync with local resources automatically.
+#file name|type [MAP|OVERLAY]|active [yes|no]|last modification date in format yyyy-mm-dd|url to download that file
+#examples:
+#map_one.zip|MAP|yes|2018-03-19|http://url_to_map
+
+#overlay_one.kmz|OVERLAY|yes|2018-03-19|http://url_to_overlay
+
+
+
+LIMA_MDV|MAP|yes|2018-03-19|https://trugis.sci.waikato.ac.nz/oruxmap/LIMA_MDV_201803.zip
+LINZ_MDV|MAP|yes|2018-03-19|https://trugis.sci.waikato.ac.nz/oruxmap/LINZ_MDV_201803.zip 
+MDV_ASPA.kmz|OVERLAY|yes|2018-03-19|https://trugis.sci.waikato.ac.nz/oruxmap/MDV_ASPA.kmz 
+MDV_ASPA_250m.kmz|OVERLAY|yes|2018-03-19|https://trugis.sci.waikato.ac.nz/oruxmap/MDV_ASPA_250m.kmz 
