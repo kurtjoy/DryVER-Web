@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometry theme by MatArt theme</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="css/main.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/whhg.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]> <script src="../../assets/js/html5shiv.js"></script> <script src="../../assets/js/respond.min.js"></script> <![endif]-->
+</head>
+<body onload="initialize()">
+    <!--autorization modal-->
+    <div class="modal fade" id="autorization">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Autorization</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" />
+                                Check me out
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="1.html" class="btn btn-danger btn-sm">Sign in</a>
+                    <a href="1.html" class="btn btn-primary btn-sm">Create account</a>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!--map-->
+    <div id="map_canvas" class="map"></div>
+    <!--/map-->
+    <div class="row site">
+        <div class="col-md-1 general_menu startpage">
+            <ul>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-chef"></i></a>
+                </li>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-football-soccer"></i></a>
+                </li>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-controllerps"></i></a>
+                </li>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-leaf"></i></a>
+                </li>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-shopping"></i></a>
+                </li>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-student-school"></i></a>
+                </li>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-wine"></i></a>
+                </li>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-wallet"></i></a>
+                </li>
+                <li>
+                    <a href="1.html" class="gradientmenu"><i class="icon-bus"></i></a>
+                </li>
+            </ul>
+        </div>
+        <!--Content-->
+        <div class="col-md-11 general_content_styles index_content" id="cont">
+            <!--Header-->
+            <div class="row">
+                <div class="col-md-12 header">
+                    <div class="logo">
+                        <a href="#">
+                            <img src="img/logo.png" alt="..."/></a>
+                    </div>
+                    <div class="autorization_btn"><a data-toggle="modal" href="#autorization" class="btn btn-danger btn-sm">Create account</a></div>
+                </div>
+            </div>
+            <!--/Header-->
+                 <!--Map open (for adaptive)-->
+            <div class="row map_open">
+                <div class="col-md-12">
+                    <a href="#" id="map_open">Open map</a>
+                </div>
+            </div>
+              <!--/Map open (for adaptive)-->
+            <!--search-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row search_block">
+                        <div class="text_in_search">With this form you can find where to spend time</div>
+                        <div class="search">
+                            <input type="text" class="form-control  input-sm" id="exampleInputEmail2" placeholder="Enter email" />
+                        </div>
+                        <a href="4.html" class="btn btn-warning col-md-2 btn-sm">Search</a>
+                    </div>
+                </div>
+            </div>
+            <!--/search-->
+            <!--Features-->
+            <div class="row features">
+                <div class="col-md-6">
+                    <h4><i class="icon-groups-friends"></i>Find out where your friends</h4>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+                </div>
+                <div class="col-md-6">
+                    <h4><i class="icon-thumbs-up"></i>Find out where your friends</h4>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+                </div>
+                <div class="col-md-6">
+                    <h4><i class="icon-automobile-car"></i>Find out where your friends</h4>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+                </div>
+                <div class="col-md-6">
+                    <h4><i class="icon-addfriend"></i>Find out where your friends</h4>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+                </div>
+            </div>
+            <!--/Features-->
+            <!--tooltip-->
+            <div class="jumbotron promo_text_line">
+                <div class="container">
+                    <h2>There are already over 1 000 000 users</h2>
+                    <p><a class="btn btn-danger btn-sm">Learn more</a></p>
+                </div>
+            </div>
+            <!--/tooltip-->
+            <!--places-->
+            <h3>Best of the day places to stay</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <!--place-->
+                        <div class="col-sm-6 col-md-4 places">
+                            <div class="thumbnail">
+                                <img src="img/demo01.png" alt="..." />
+                                <div class="caption">
+                                    <a href="3.html">Thumbnail label</a>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </p>
+                                    <p>
+                                        <img src="img/start.gif" alt="..."/>
+                                        <a href="3.html" class="btn btn-default btn-xs"><i class="icon-user"></i>87</a><a href="#" class="btn btn-default btn-xs"><i class="icon-commentround"></i>12</a><a href="#" class="btn btn-default btn-xs ping"><i class="icon-map-marker"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/place-->
+                        <!--place-->
+                        <div class="col-sm-6 col-md-4 places">
+                            <div class="thumbnail">
+                                <img src="img/demo01.png" alt="..." />
+                                <div class="caption">
+                                    <a href="3.html">Thumbnail label</a>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </p>
+                                    <p>
+                                        <img src="img/start.gif" alt="..."/>
+                                        <a href="3.html" class="btn btn-default btn-xs"><i class="icon-user"></i>87</a><a href="#" class="btn btn-default btn-xs"><i class="icon-commentround"></i>12</a><a href="#" class="btn btn-default btn-xs ping"><i class="icon-map-marker"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/place-->
+                        <!--place-->
+                        <div class="col-sm-6 col-md-4 places">
+                            <div class="thumbnail">
+                                <img src="img/demo01.png" alt="..." />
+                                <div class="caption">
+                                    <a href="3.html">Thumbnail label</a>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </p>
+                                    <p>
+                                        <img src="img/start.gif" alt="..."/>
+                                        <a href="3.html" class="btn btn-default btn-xs"><i class="icon-user"></i>87</a><a href="#" class="btn btn-default btn-xs"><i class="icon-commentround"></i>12</a><a href="#" class="btn btn-default btn-xs ping"><i class="icon-map-marker"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/place-->
+                        <!--place-->
+                        <div class="col-sm-6 col-md-4 places">
+                            <div class="thumbnail">
+                                <img src="img/demo01.png" alt="..." />
+                                <div class="caption">
+                                    <a href="3.html">Thumbnail label</a>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </p>
+                                    <p>
+                                        <img src="img/start.gif" alt="..."/>
+                                        <a href="3.html" class="btn btn-default btn-xs"><i class="icon-user"></i>87</a><a href="#" class="btn btn-default btn-xs"><i class="icon-commentround"></i>12</a><a href="#" class="btn btn-default btn-xs ping"><i class="icon-map-marker"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/place-->
+                        <!--place-->
+                        <div class="col-sm-6 col-md-4 places">
+                            <div class="thumbnail">
+                                <img src="img/demo01.png" alt="..." />
+                                <div class="caption">
+                                    <a href="3.html">Thumbnail label</a>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </p>
+                                    <p>
+                                        <img src="img/start.gif" alt="..."/>
+                                        <a href="3.html" class="btn btn-default btn-xs"><i class="icon-user"></i>87</a><a href="#" class="btn btn-default btn-xs"><i class="icon-commentround"></i>12</a><a href="#" class="btn btn-default btn-xs ping"><i class="icon-map-marker"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/place-->
+                        <!--place-->
+                        <div class="col-sm-6 col-md-4 places">
+                            <div class="thumbnail">
+                                <img src="img/demo01.png" alt="..." />
+                                <div class="caption">
+                                    <a href="3.html">Thumbnail label</a>
+                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </p>
+                                    <p>
+                                        <img src="img/start.gif" alt="..."/>
+                                        <a href="3.html" class="btn btn-default btn-xs"><i class="icon-user"></i>87</a><a href="#" class="btn btn-default btn-xs"><i class="icon-commentround"></i>12</a><a href="#" class="btn btn-default btn-xs ping"><i class="icon-map-marker"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/place-->
+                    </div>
+                </div>
+            </div>
+            <!--/places-->
+        </div>
+        <!--/Content-->
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <!--Google maps API linl-->
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCsbzuJDUEOoq-jS1HO-LUXW4qo0gW9FNs&sensor=false"></script>
+    <!--Your map settings script-->
+    <script type="text/javascript" src="js/map.js"></script>
+        <!--jQuery-->
+        <script type="text/javascript" src="js/jQueryv2.0.3.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/owl.carousel.js"></script>
+    <script type="text/javascript" src="js/pxgradient-1.0.2.jquery.js"></script>
+</body>
+</html>
