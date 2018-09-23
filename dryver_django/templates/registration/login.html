@@ -1,0 +1,54 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dryver - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+        <div class="container">
+  
+            <div class="row" id="pwd-container">
+                <div class="col-md-4"></div>
+                
+                <div class="col-md-4">
+                <section class="login-form">
+                    <form method="post" role="login">
+                        {%csrf_token%}
+                        <center><h2>Dryver</h2></center>
+                        <!-- <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" /> -->
+                        <input type="text" placeholder="username" required class="form-control input-lg" name="Username" />
+                        
+                        <input type="password" class="form-control input-lg" id="password" name="password" placeholder="Password" required="" />
+
+                        {% if form.errors %}
+                            <p class="error-text">username or password not correct</p>
+                        {% endif %}
+                        
+                        <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
+                    
+                    
+                    </form>
+                    
+                    <div class="form-links">
+                        <a href="#">Dryver Web</a>
+                    </div>
+                </section>  
+                </div>
+                
+                <div class="col-md-4"></div>
+                
+            
+            </div>   
+            
+            
+        </div>
+    
+</body>
+</html>>

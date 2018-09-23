@@ -1,0 +1,476 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <!--map-->
+    <div id="map_canvas" class="map"></div>
+    <!--/map-->
+    <div class="row site">
+        <div class="col-md-1 general_menu inner">
+            <a href="#" class="avatar">
+                <img src="{% static 'img/no_ava.png' %}" alt="..."/></a>
+            <ul>
+                <li>
+                    <a href="#" class="gradientmenu active"><i class="icon-chef"></i></a>
+                </li>
+                <li>
+                    <a href="#" class="gradientmenu"><i class="icon-football-soccer"></i></a>
+                </li>
+                <li>
+                    <a href="#" class="gradientmenu"><i class="icon-controllerps"></i></a>
+                </li>
+                <li>
+                    <a href="#" class="gradientmenu"><i class="icon-leaf"></i></a>
+                </li>
+                <li>
+                    <a href="#" class="gradientmenu"><i class="icon-shopping"></i></a>
+                </li>
+                <li>
+                    <a href="#" class="gradientmenu"><i class="icon-student-school"></i></a>
+                </li>
+                <li>
+                    <a href="#" class="gradientmenu"><i class="icon-wine"></i></a>
+                </li>
+                <li>
+                    <a href="#" class="gradientmenu"><i class="icon-wallet"></i></a>
+                </li>
+                <li>
+                    <a href="#" class="gradientmenu"><i class="icon-bus"></i></a>
+                </li>
+            </ul>
+        </div>
+        <!--Profile-->
+        
+        <div class="col-md-12 profile profile_closed" id="profile">
+            <span class="close_span" id="open_span"><a href="#" class="close-profile-link clooses" id="link_open">+</a></span>
+            <!--User info-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="user">
+                        <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                        <div>
+                            <h2>Mattew An</h2>
+                            <ul>
+                                <li>Visited <a href="#">59 places</a></li>
+                                <li>He left <a href="#">59 places</a></li>
+                                <li>Wants to invite a lady to <a href="#">3 places</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <a href="#" class="btn btn-dark btn-sm"><i class="icon-emailalt"></i><span>1</span></a><a href="#" class="btn btn-danger btn-sm">Sign out</a>
+                    </div>
+                </div>
+            </div>
+            <!--/User info-->
+            <div class="row">
+                <!--about-->
+                <div class="col-md-7">
+                    <h2>About me</h2>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </div>
+                <!--/about-->
+                <!--latest tweet-->
+                <div class="col-md-5 tweets">
+                    <h2>Latest tweet</h2>
+                    <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. <i></i></span>
+                    <div class="tweet_link"><a href="#">@mattew An</a>22.12.2013   23:33</div>
+                </div>
+                <!--/latest tweet-->
+            </div>
+            <!--my friends-->
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>My friends</h2>
+                    <div id="owl-demo" class="owl-carousel owl-theme">
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                        <!--friend-->
+                        <div class="item">
+                            <div class="friend">
+                                <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                <a href="#">David mark</a>
+                                <i class="icon-map-marker"></i>Russia
+                            </div>
+                        </div>
+                        <!--/friend-->
+                    </div>
+                </div>
+            </div>
+            <!--/my friends-->
+            <!--my news-->
+            <div class="row">
+                <div class="col-md-12 my_news">
+                    <div class="title_news">
+                        <h2>My news</h2>
+                    </div>
+                    <!--news-->
+                    <div class="row news_container">
+                        <div class="col-md-8 news">
+                            <span class="data">12.11.2013</span> You friend <a href="#">Mattew An</a> visited restaurant "<a href="4.html">Pizza larenzo</a>"
+                             <div id="map2" class="map_in_news"></div>
+                        </div>
+                        <div class="col-md-4 news_user_info">
+                            <img src="{% static 'img/no_ava.png' %}" alt="..."/><a href="#">Mattew An</a>Write a review:
+                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s<i></i></span>
+                        </div>
+                    </div>
+                    <!--/news-->
+                    <!--news-->
+                    <div class="row news_container">
+                        <div class="col-md-12 news">
+                            <span class="data">12.11.2013</span> Some people want to become your friends
+                             <div id="myguest" class="owl-carousel owl-theme">
+                                 <!--friend-->
+                                 <div class="item">
+                                     <div class="friend">
+                                         <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                         <a href="#">David mark</a>
+                                         <i class="icon-map-marker"></i>Russia
+                                     </div>
+                                 </div>
+                                 <!--/friend-->
+                                 <!--friend-->
+                                 <div class="item">
+                                     <div class="friend">
+                                         <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                         <a href="#">David mark</a>
+                                         <i class="icon-map-marker"></i>Russia
+                                     </div>
+                                 </div>
+                                 <!--/friend-->
+                                 <!--friend-->
+                                 <div class="item">
+                                     <div class="friend">
+                                         <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                                         <a href="#">David mark</a>
+                                         <i class="icon-map-marker"></i>Russia
+                                     </div>
+                                 </div>
+                                 <!--/friend-->
+                             </div>
+                        </div>
+                    </div>
+                    <!--/news-->
+                    <!--news-->
+                    <div class="row news_container">
+                        <div class="col-md-8 news">
+                            <span class="data">12.11.2013</span> You friend <a href="#">Mattew An</a> visited restaurant "<a href="4.html">Pizza larenzo</a>"
+                             <div id="map3" class="map_in_news"></div>
+                        </div>
+                        <div class="col-md-4 news_user_info">
+                            <img src="{% static 'img/no_ava.png' %}" alt="..."/><a href="#">Mattew An</a>Write a review:
+                            <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s<i></i></span>
+                        </div>
+                    </div>
+                    <!--/news-->
+                </div>
+            </div>
+            <!--/my news-->
+        </div>
+        <!--/Profile-->
+        <!--Content-->
+        <div class="col-md-11 side-bar profile_closed" id="cont">
+            <!--header-->
+            <div class="row">
+                <div class="col-md-12 header">
+                    <div class="logo">
+                        <a href="start.html">
+                            <img src="{% static 'img/logo.png' %}" alt="..."/></a>
+                    </div>
+                </div>
+            </div>
+            <!--/header-->
+             <!--Map open (for adaptive)-->
+            <div class="row map_open">
+                <div class="col-md-12">
+                    <a href="#" id="map_open">Show map</a>
+                </div>
+            </div>
+              <!--/Map open (for adaptive)-->
+            <!--Category menu-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="tabs">
+                        <div id="tab1" class="active tab">
+                            <h5 class="cat">Places where you can eat</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Cafe<span>22</span></a></li>
+                                <li><a href="#">Bar<span>22</span></a></li>
+                                <li><a href="#">Restaurant<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Fast food<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Canteens<span>22</span></a></li>
+                                <li><a href="#">Pitstop<span>22</span></a></li>
+                                <li><a href="#">Cafe<span>22</span></a></li>
+                                <li><a href="#">Bar<span>22</span></a></li>
+                            </ul>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <h5 class="cat">Sport</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Stadion<span>22</span></a></li>
+                                <li><a href="#">Sport Bar<span>22</span></a></li>
+                                <li><a href="#">Football<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Fitness<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Bowling<span>22</span></a></li>
+
+                            </ul>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <h5 class="cat">Games</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Internet cafe<span>22</span></a></li>
+                                <li><a href="#">Dota<span>22</span></a></li>
+                                <li><a href="#">Chempions<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Video game centre<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Classic game<span>22</span></a></li>
+                            </ul>
+                        </div>
+                        <div id="tab4" class="tab">
+                            <h5 class="cat">Eco, parks</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Cafe<span>22</span></a></li>
+                                <li><a href="#">Bar<span>22</span></a></li>
+                                <li><a href="#">Restaurant<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Fast food<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Canteens<span>22</span></a></li>
+                                <li><a href="#">Pitstop<span>22</span></a></li>
+                                <li><a href="#">Cafe<span>22</span></a></li>
+                                <li><a href="#">Bar<span>22</span></a></li>
+                            </ul>
+                        </div>
+                        <div id="tab5" class="tab">
+                            <h5 class="cat">Shopping</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Internet cafe<span>22</span></a></li>
+                                <li><a href="#">Dota<span>22</span></a></li>
+                                <li><a href="#">Chempions<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Video game centre<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Classic game<span>22</span></a></li>
+                            </ul>
+                        </div>
+                        <div id="tab6" class="tab">
+                            <h5 class="cat">University, School</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Stadion<span>22</span></a></li>
+                                <li><a href="#">Sport Bar<span>22</span></a></li>
+                                <li><a href="#">Football<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Fitness<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Bowling<span>22</span></a></li>
+                            </ul>
+                        </div>
+                        <div id="tab7" class="tab">
+                            <h5 class="cat">Bars</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Cafe<span>22</span></a></li>
+                                <li><a href="#">Bar<span>22</span></a></li>
+                                <li><a href="#">Restaurant<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Fast food<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Canteens<span>22</span></a></li>
+                                <li><a href="#">Pitstop<span>22</span></a></li>
+                                <li><a href="#">Cafe<span>22</span></a></li>
+                                <li><a href="#">Bar<span>22</span></a></li>
+                            </ul>
+                        </div>
+                        <div id="tab8" class="tab">
+                            <h5 class="cat">Banks</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Internet cafe<span>22</span></a></li>
+                                <li><a href="#">Dota<span>22</span></a></li>
+                                <li><a href="#">Chempions<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Video game centre<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Classic game<span>22</span></a></li>
+                            </ul>
+                        </div>
+                        <div id="tab9" class="tab">
+                            <h5 class="cat">Bus</h5>
+                            <ul class="catalog">
+                                <li><a href="#">Stadion<span>22</span></a></li>
+                                <li><a href="#">Sport Bar<span>22</span></a></li>
+                                <li><a href="#">Football<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Fitness<span>22</span><p class="arrow"></p>
+                                </a></li>
+                                <li><a href="#">Bowling<span>22</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/Category menu-->
+            <!--Search-->
+            <div class="row search_inner_box">
+                <div class="col-md-12">
+                    <input type="text" class="form-control input-sm" placeholder="Text input" />
+                    <a href="4.html" class="btn btn-danger btn-sm pd-top">Search</a>
+                    <a href="3.html" class="btn btn-primary btn-sm pd-top">Show places near me</a>
+                </div>
+            </div>
+            <!--/search-->
+        </div>
+        <!--/Content-->
+    </div>
+    {% block scripts %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                require([
+                "esri/Map",
+                "esri/views/SceneView",
+                "dojo/domReady!"
+                ], function(Map, SceneView) {
+                var map = new Map({
+                    basemap: "satellite",
+                    ground: "world-elevation"
+                });
+                var view = new SceneView({
+                    container: "map_canvas",  // Reference to the DOM node that will contain the view
+                    map: map,  // References the map object created in step 3
+                    center: [162, -77.5],
+                    zoom: 7,
+                });
+                });
+            })
+        </script>
+    {% endblock %}
+
+{% endblock %}
