@@ -26,12 +26,31 @@ $(document).ready(function () {
             center: [162, -77.5],
             zoom: 7,
         });
+
+        // Popup templates
+        var aspaTemp = {title: "{NAME}",
+            content: [{
+                type: "media",
+                mediaInfos: [{type: "image", value: {sourceURL: "{IMAGE}"}}]},
+                        {type: "text",
+                        text: "{DESC}<br><br>" + "Helicopter Pad: {HELO}<br><br>" + "PDF Map:"}	 
+            ]
+        };
+                            
         // layers
         var asmaLayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/asma_aspa/MapServer/3",
             title: "ASMA Boundary"
         });
+
+        var aspaLayer = new FeatureLayer({
+            url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/asma_aspa/MapServer/2",
+            title: "Managed Zones",
+            popupTemplate: aspaTemp,
+        });
+
         map.add(asmaLayer);
+        map.add(aspaLayer);
         // widgets
         // compass
         var compass = new Compass({
