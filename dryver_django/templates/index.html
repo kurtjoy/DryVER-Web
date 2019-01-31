@@ -19,10 +19,10 @@
                 <li>
                     <a href="#" class="gradientmenu"><i class="icon-controllerps"></i></a>
                 </li>
-                <!-- <li>
-                    <a href="#" class="gradientmenu"><i class="icon-leaf"></i></a>
-                </li>
                 <li>
+                    <a href="{% url 'Windy' %}" class="gradientmenu"><i class="icon-wind"></i></a>
+                </li>
+                <!-- <li>
                     <a href="#" class="gradientmenu"><i class="icon-shopping"></i></a>
                 </li>
                 <li>
@@ -46,8 +46,12 @@
             <!--User info-->
             <div class="row">
                 <div class="col-md-12">
-                    <!-- <div class="user">
-                        <img src="{% static 'img/ava1.png' %}" alt="..."/>
+                    <div class="user">
+                        <br>
+                        <div class="buttons">
+                            <a href="{% url 'Windy' %}" target="_blank" class="btn btn-info btn-sm">Check Weather</a>
+                        </div>
+                        <!-- <img src="{% static 'img/ava1.png' %}" alt="..."/>
                         <div>
                             <h2>Mattew An</h2>
                             <ul>
@@ -55,8 +59,8 @@
                                 <li>He left <a href="#">59 places</a></li>
                                 <li>Wants to invite a lady to <a href="#">3 places</a></li>
                             </ul>
-                        </div>
-                    </div> -->
+                        </div> -->
+                    </div>
                     <div class="buttons">
                         <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Sign out</a>
                     </div>
