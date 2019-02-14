@@ -191,119 +191,133 @@ $(document).ready(function () {
         var agarTemp = {title: "{SID}"};
                             
         // layers
-        var asmaLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/asma_aspa/MapServer/3",
-            title: "ASMA Boundary"
-        });
+        // var asmaLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/asma_aspa/MapServer/3",
+        //     title: "ASMA Boundary"
+        // });
 
         var landcareLayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/0",
-            title: "LANDCARE Soils"
+            title: "LANDCARE Soils",
+            visible: false,
         });
 
         var linzLakesLayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/1",
-            title: "LINZ Lakes"
+            title: "LINZ Lakes",
+            visible: false,
         });
 
         var GNSiceLayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/2",
-            title: "GNS Ice"
+            title: "GNS Ice",
+            visible: false,
         });
 
         var GNSgeologyLayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/3",
-            title: "GNS Geology"
+            title: "GNS Geology",
+            visible: false,
         });
 
         var AspectLayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/4",
-            title: "Aspect"
+            title: "Aspect",
+            visible: false,
         });
 
         var SlopeLayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/5",
-            title: "Slope"
+            title: "Slope",
+            visible: false,
         });
 
         var MDV_ASMALayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/6",
-            title: "MDV_ASMA"
+            title: "MDV_ASMA",
+            // visible: false,
         });
 
         var hillshadeLayer = new FeatureLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/7",
-            title: "Hillshade"
-        });
-
-        var aspaLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/asma_aspa/MapServer/2",
-            title: "Managed Zones",
-            popupTemplate: aspaTemp,
-        });
-
-        var nztabsLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/2",
-            title: "nzTABS Sites",
-            id: "nztabsData",
-            popupTemplate: nztabsTemp,
-            //featureReduction: "selection",
+            title: "Hillshade",
             visible: false,
-            renderer: green
         });
 
-        var agarLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/1",
-            title: "AGAr Samples",
-            id: "agarData",
-            popupTemplate: agarTemp,
+        var agarSamplePointsLayer = new FeatureLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer/0",
+            title: "AGAR Sample Points",
             visible: false,
-            renderer: yellow
         });
 
-        var impactLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/3",
-            title: "DryVER Impact Sites",
-            id: "impactData",
-            visible: false,
-            renderer: blue
-        });
+        // var aspaLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/asma_aspa/MapServer/2",
+        //     title: "Managed Zones",
+        //     popupTemplate: aspaTemp,
+        // });
 
-        var iirLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IIR/MapServer/1",
-            title: "DryVER nfiltration Impact Ratio",
-            id: "iirData",
-            visible: false
-        });
+        // var nztabsLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/2",
+        //     title: "nzTABS Sites",
+        //     id: "nztabsData",
+        //     popupTemplate: nztabsTemp,
+        //     //featureReduction: "selection",
+        //     visible: false,
+        //     renderer: green
+        // });
 
-        var riverLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IIR/MapServer/0",
-            title: "DryVER River Classification",
-            id: "riverData",
-            visible: false
-        });
+        // var agarLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/1",
+        //     title: "AGAr Samples",
+        //     id: "agarData",
+        //     popupTemplate: agarTemp,
+        //     visible: false,
+        //     renderer: yellow
+        // });
 
-        var geochemLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/4",
-            title: "nzTABS Geochemistry",
-            id: "geochemData",
-            popupTemplate: geochemTemp,
-            visible: false,
-             //featureReduction: "selection",
-            //renderer: renderer
-        });
+        // var impactLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/3",
+        //     title: "DryVER Impact Sites",
+        //     id: "impactData",
+        //     visible: false,
+        //     renderer: blue
+        // });
 
-        var geologyLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/5",
-            title: "GNS Geology",
-            id: "gns",
-            visible: false,
-            opacity: 0.4,
-            popupTemplate: geolTemp,
-            minScale: 400000
-        });
+        // var iirLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IIR/MapServer/1",
+        //     title: "DryVER nfiltration Impact Ratio",
+        //     id: "iirData",
+        //     visible: false
+        // });
 
-        map.add(asmaLayer);
+        // var riverLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IIR/MapServer/0",
+        //     title: "DryVER River Classification",
+        //     id: "riverData",
+        //     visible: false
+        // });
+
+        // var geochemLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/4",
+        //     title: "nzTABS Geochemistry",
+        //     id: "geochemData",
+        //     popupTemplate: geochemTemp,
+        //     visible: false,
+        //      //featureReduction: "selection",
+        //     //renderer: renderer
+        // });
+
+        // var geologyLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/point_data/MapServer/5",
+        //     title: "GNS Geology",
+        //     id: "gns",
+        //     visible: false,
+        //     opacity: 0.4,
+        //     popupTemplate: geolTemp,
+        //     minScale: 400000
+        // });
+
+        // map.add(asmaLayer);
         map.add(landcareLayer);
         map.add(linzLakesLayer);
         map.add(GNSiceLayer);
@@ -312,14 +326,15 @@ $(document).ready(function () {
         map.add(SlopeLayer);
         map.add(MDV_ASMALayer);
         map.add(hillshadeLayer);
-        map.add(aspaLayer);
-        map.add(nztabsLayer);
-        map.add(agarLayer);
-        map.add(impactLayer);
-        map.add(iirLayer);
-        map.add(riverLayer);
-        map.add(geochemLayer);
-        map.add(geologyLayer);
+        map.add(agarSamplePointsLayer);
+        // map.add(aspaLayer);
+        // map.add(nztabsLayer);
+        // map.add(agarLayer);
+        // map.add(impactLayer);
+        // map.add(iirLayer);
+        // map.add(riverLayer);
+        // map.add(geochemLayer);
+        // map.add(geologyLayer);
         // widgets
         // compass
         var compass = new Compass({
@@ -335,7 +350,7 @@ $(document).ready(function () {
             view: view,
             container: document.createElement("div"),
             layerInfos: [
-                {layer: asmaLayer,title: "Boundary"},
+                // {layer: asmaLayer,title: "Boundary"},
                 {layer: landcareLayer, title: "LANDCARE Soils"},
                 {layer: linzLakesLayer, title: "LINZ Lakes"},
                 {layer: GNSiceLayer, title: "GNS Ice"},
@@ -344,14 +359,15 @@ $(document).ready(function () {
                 {layer: SlopeLayer, title: "Slope"},
                 {layer: MDV_ASMALayer, title: "MDV_ASMA"},
                 {layer: hillshadeLayer, title: "Hillshade"},
-                {layer: aspaLayer,title: "Managed Zones"},
-                {layer: riverLayer,title: "DryVER River and Streams"},
-                {layer: nztabsLayer,title: "nzTABS Sample Sites"},
-                {layer: geochemLayer,title: "nzTABS Geochemistry"},
-                {layer: impactLayer,title: "DryVER Impact Sites"},
-                {layer: iirLayer,title: "DryVER Infiltration Impact Ratio"},
-                {layer: agarLayer,title: "AGAr Sample Sites"},
-                {layer: geologyLayer,title: "Dryver Geology Layer"},
+                {layer: agarSamplePointsLayer, title: "AGAR Sample Points"},
+                // {layer: aspaLayer,title: "Managed Zones"},
+                // {layer: riverLayer,title: "DryVER River and Streams"},
+                // {layer: nztabsLayer,title: "nzTABS Sample Sites"},
+                // {layer: geochemLayer,title: "nzTABS Geochemistry"},
+                // {layer: impactLayer,title: "DryVER Impact Sites"},
+                // {layer: iirLayer,title: "DryVER Infiltration Impact Ratio"},
+                // {layer: agarLayer,title: "AGAr Sample Sites"},
+                // {layer: geologyLayer,title: "Dryver Geology Layer"},
                 // {layer: eventLayer,title: "Prior NZ events"}
             ]});
         
