@@ -250,6 +250,17 @@ $(document).ready(function () {
             visible: false,
         });
 
+        var aquaticConnectivityLayer = new FeatureLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer/0",
+            title: "Aquatic Connectivity",
+            visible: false,
+        });
+
+        var mdvAsmaLayer = new FeatureLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
+            title: "MDV_ASPA_MERGE",
+        });
+
         // var aspaLayer = new FeatureLayer({
         //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/asma_aspa/MapServer/2",
         //     title: "Managed Zones",
@@ -327,6 +338,8 @@ $(document).ready(function () {
         map.add(MDV_ASMALayer);
         map.add(hillshadeLayer);
         map.add(agarSamplePointsLayer);
+        map.add(aquaticConnectivityLayer);
+        map.add(mdvAsmaLayer);
         // map.add(aspaLayer);
         // map.add(nztabsLayer);
         // map.add(agarLayer);
@@ -360,6 +373,8 @@ $(document).ready(function () {
                 {layer: MDV_ASMALayer, title: "MDV_ASMA"},
                 {layer: hillshadeLayer, title: "Hillshade"},
                 {layer: agarSamplePointsLayer, title: "AGAR Sample Points"},
+                {layer: aquaticConnectivityLayer, title: "Aquatic Connectivity"},
+                {layer: mdvAsmaLayer, title: "MDV_ASPA_MERGE"},
                 // {layer: aspaLayer,title: "Managed Zones"},
                 // {layer: riverLayer,title: "DryVER River and Streams"},
                 // {layer: nztabsLayer,title: "nzTABS Sample Sites"},
