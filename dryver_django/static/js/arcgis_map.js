@@ -2,7 +2,10 @@ $(document).ready(function () {
     require([
         "esri/Map",
         "esri/views/SceneView",
+        "esri/views/MapView",
         "esri/layers/FeatureLayer",
+        "esri/layers/ImageryLayer",
+        "esri/layers/MapImageLayer",
         "esri/widgets/Legend",
         "esri/widgets/Expand",
         "esri/widgets/LayerList",
@@ -11,16 +14,19 @@ $(document).ready(function () {
         ], function(
             Map,
             SceneView,
+            MapView,
             FeatureLayer,
+            ImageryLayer,
+            MapImageLayer,
             Legend,
             Expand,
             LayerList,
             Compass) {
         var map = new Map({
             basemap: "satellite",
-            ground: "world-elevation"
+            // ground: "world-elevation"
         });
-        var view = new SceneView({
+        var view = new MapView({
             container: "map_canvas",  // Reference to the DOM node that will contain the view
             map: map,  // References the map object created in step 3
             center: [162, -77.5],
@@ -196,70 +202,139 @@ $(document).ready(function () {
         //     title: "ASMA Boundary"
         // });
 
-        var landcareLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/0",
-            title: "LANDCARE Soils",
+        var abioticLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
+            title: "Abiotic",
+        });
+
+        var aquaticLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer",
+            title: "Aquatic",
+        });
+
+        var asmaLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer",
+            title: "ASMA",
+        });
+
+        var agarLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer",
+            title: "AGAR",
+        });
+
+        var impactLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
+            title: "Impact",
+        });
+
+        var napLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NAP/MapServer",
+            title: "NAP",
+        });
+
+        var nztabsLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
+            title: "NZTABS",
+        });
+
+        var sensitivityLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/SENSITIVITY/MapServer",
+            title: "Sensitivity",
+        });
+
+        var terrestrialLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/TERRESTRIAL/MapServer",
+            title: "Terrestrial",
+        });
+
+        // var landcareLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/0",
+        //     title: "LANDCARE Soils",
+        //     visible: false,
+        // });
+
+        // var linzLakesLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/1",
+        //     title: "LINZ Lakes",
+        //     visible: false,
+        // });
+
+        // var GNSiceLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/2",
+        //     title: "GNS Ice",
+        //     visible: false,
+        // });
+
+        // var GNSgeologyLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/3",
+        //     title: "GNS Geology",
+        //     visible: false,
+        // });
+
+        // var AspectLayer = new ImageryLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/4",
+        //     title: "Aspect",
+        //     visible: false,
+        // });
+
+        // var SlopeLayer = new ImageryLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/5",
+        //     title: "Slope",
+        //     visible: false,
+        // });
+
+        // var MDV_ASMALayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/6",
+        //     title: "MDV_ASMA",
+        //     // visible: false,
+        // });
+
+        // var hillshadeLayer = new ImageryLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/7",
+        //     title: "Hillshade",
+        //     visible: false,
+        // });
+
+        // var agarSamplePointsLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer/0",
+        //     title: "AGAR Sample Points",
+        //     visible: false,
+        // });
+
+        // var aquaticConnectivityLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer/0",
+        //     title: "Aquatic Connectivity",
+        //     visible: false,
+        // });
+
+        // var mdvAsmaLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
+        //     title: "MDV_ASPA_MERGE",
+        // });
+
+        var climateLayer = new MapImageLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer",
+            title: "Climate",
             visible: false,
         });
 
-        var linzLakesLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/1",
-            title: "LINZ Lakes",
-            visible: false,
-        });
+        // var summerHighWindHotspotLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer/0",
+        //     title: "Summer high wind hotspots",
+        //     visible: false,
+        // });
 
-        var GNSiceLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/2",
-            title: "GNS Ice",
-            visible: false,
-        });
+        // var yearlyHighWindHotspotLayer = new FeatureLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer/1",
+        //     title: "Yearly high wind hotspots",
+        //     visible: false,
+        // });
 
-        var GNSgeologyLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/3",
-            title: "GNS Geology",
-            visible: false,
-        });
-
-        var AspectLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/4",
-            title: "Aspect",
-            visible: false,
-        });
-
-        var SlopeLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/5",
-            title: "Slope",
-            visible: false,
-        });
-
-        var MDV_ASMALayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/6",
-            title: "MDV_ASMA",
-            // visible: false,
-        });
-
-        var hillshadeLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/7",
-            title: "Hillshade",
-            visible: false,
-        });
-
-        var agarSamplePointsLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer/0",
-            title: "AGAR Sample Points",
-            visible: false,
-        });
-
-        var aquaticConnectivityLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer/0",
-            title: "Aquatic Connectivity",
-            visible: false,
-        });
-
-        var mdvAsmaLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
-            title: "MDV_ASPA_MERGE",
-        });
+        // var yearlyHighWindHotspotLayer = new ImageryLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer/2",
+        //     title: "Yearly high wind hotspots",
+        //     visible: false,
+        // });
 
         // var aspaLayer = new FeatureLayer({
         //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/asma_aspa/MapServer/2",
@@ -329,17 +404,29 @@ $(document).ready(function () {
         // });
 
         // map.add(asmaLayer);
-        map.add(landcareLayer);
-        map.add(linzLakesLayer);
-        map.add(GNSiceLayer);
-        map.add(GNSgeologyLayer);
-        map.add(AspectLayer);
-        map.add(SlopeLayer);
-        map.add(MDV_ASMALayer);
-        map.add(hillshadeLayer);
-        map.add(agarSamplePointsLayer);
-        map.add(aquaticConnectivityLayer);
-        map.add(mdvAsmaLayer);
+        map.add(abioticLayer);
+        map.add(aquaticLayer);
+        map.add(asmaLayer);
+        map.add(agarLayer);
+        map.add(impactLayer);
+        map.add(napLayer);
+        map.add(nztabsLayer);
+        map.add(sensitivityLayer);
+        map.add(terrestrialLayer);
+        // map.add(landcareLayer);
+        // map.add(linzLakesLayer);
+        // map.add(GNSiceLayer);
+        // map.add(GNSgeologyLayer);
+        // map.add(AspectLayer);
+        // map.add(SlopeLayer);
+        // map.add(MDV_ASMALayer);
+        // map.add(hillshadeLayer);
+        // map.add(agarSamplePointsLayer);
+        map.add(climateLayer);
+        // map.add(aquaticConnectivityLayer);
+        // map.add(mdvAsmaLayer);
+        // map.add(summerHighWindHotspotLayer);
+        // map.add(yearlyHighWindHotspotLayer);
         // map.add(aspaLayer);
         // map.add(nztabsLayer);
         // map.add(agarLayer);
@@ -363,18 +450,29 @@ $(document).ready(function () {
             view: view,
             container: document.createElement("div"),
             layerInfos: [
-                // {layer: asmaLayer,title: "Boundary"},
-                {layer: landcareLayer, title: "LANDCARE Soils"},
-                {layer: linzLakesLayer, title: "LINZ Lakes"},
-                {layer: GNSiceLayer, title: "GNS Ice"},
-                {layer: GNSgeologyLayer, title: "GNS Geology"},
-                {layer: AspectLayer, title: "Aspect"},
-                {layer: SlopeLayer, title: "Slope"},
-                {layer: MDV_ASMALayer, title: "MDV_ASMA"},
-                {layer: hillshadeLayer, title: "Hillshade"},
-                {layer: agarSamplePointsLayer, title: "AGAR Sample Points"},
-                {layer: aquaticConnectivityLayer, title: "Aquatic Connectivity"},
-                {layer: mdvAsmaLayer, title: "MDV_ASPA_MERGE"},
+                {layer: abioticLayer,title: "Abiotic"},
+                {layer: climateLayer,title: "Climate"},
+                {layer: aquaticLayer,title: "Aquatic"},
+                {layer: asmaLayer, title:"ASMA"},
+                {layer: agarLayer, title:"AGAR"},
+                {layer: impactLayer, title:"Impact"},
+                {layer: napLayer, title:"NAP"},
+                {layer: nztabsLayer, title:"NzTabs"},
+                {layer: sensitivityLayer, title:"Sensitivity"},
+                {layer: terrestrialLayer, title:"Terrestrial"},
+                // {layer: landcareLayer, title: "LANDCARE Soils"},
+                // {layer: linzLakesLayer, title: "LINZ Lakes"},
+                // {layer: GNSiceLayer, title: "GNS Ice"},
+                // {layer: GNSgeologyLayer, title: "GNS Geology"},
+                // {layer: AspectLayer, title: "Aspect"},
+                // {layer: SlopeLayer, title: "Slope"},
+                // {layer: MDV_ASMALayer, title: "MDV_ASMA"},
+                // {layer: hillshadeLayer, title: "Hillshade"},
+                // {layer: agarSamplePointsLayer, title: "AGAR Sample Points"},
+                // {layer: aquaticConnectivityLayer, title: "Aquatic Connectivity"},
+                // {layer: mdvAsmaLayer, title: "MDV_ASPA_MERGE"},
+                // {layer: summerHighWindHotspotLayer, title: "Summer high wind hotspots"},
+                // {layer: yearlyHighWindHotspotLayer, title: "Yearly high wind hotspots"},
                 // {layer: aspaLayer,title: "Managed Zones"},
                 // {layer: riverLayer,title: "DryVER River and Streams"},
                 // {layer: nztabsLayer,title: "nzTABS Sample Sites"},
