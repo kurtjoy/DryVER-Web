@@ -234,7 +234,7 @@ $(document).ready(function () {
 
         var nztabsLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
-            title: "NZTABS",
+            title: "nzTABS",
         });
 
         var sensitivityLayer = new MapImageLayer({
@@ -245,6 +245,14 @@ $(document).ready(function () {
         var terrestrialLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/TERRESTRIAL/MapServer",
             title: "Terrestrial",
+            sublayers: [
+                {
+                  id: 0,
+                  title: "Cyanobacterial Prediction",
+                  visible: false,
+                //   renderer: rendererToUse
+                },
+            ]
         });
 
         // var landcareLayer = new FeatureLayer({
@@ -457,7 +465,7 @@ $(document).ready(function () {
                 {layer: agarLayer, title:"AGAR"},
                 {layer: impactLayer, title:"Impact"},
                 {layer: napLayer, title:"NAP"},
-                {layer: nztabsLayer, title:"NzTabs"},
+                {layer: nztabsLayer, title:"nzTABS"},
                 {layer: sensitivityLayer, title:"Sensitivity"},
                 {layer: terrestrialLayer, title:"Terrestrial"},
                 // {layer: landcareLayer, title: "LANDCARE Soils"},
