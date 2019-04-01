@@ -235,6 +235,14 @@ $(document).ready(function () {
         var nztabsLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
             title: "nzTABS",
+            sublayers: [
+                {
+                  id: 0,
+                  title: "nzTABS Sample Sites",
+                  visible: true,
+                //   renderer: rendererToUse
+                },
+            ]
         });
 
         var sensitivityLayer = new MapImageLayer({

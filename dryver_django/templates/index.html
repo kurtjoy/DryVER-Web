@@ -331,8 +331,9 @@
         </div>
         <!--/Content-->
     </div>
-    {% block scripts %}
-        <script type="text/javascript" src="{% static 'js/arcgis_map.js' %}"></script>
-    {% endblock %}
 
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'js/arcgis_map.js' %}"></script>
 {% endblock %}
