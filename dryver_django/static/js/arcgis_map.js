@@ -1,3 +1,4 @@
+// https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
     require([
         "esri/Map",
@@ -10,6 +11,7 @@ $(document).ready(function () {
         "esri/widgets/Expand",
         "esri/widgets/LayerList",
         "esri/widgets/Compass",
+        "esri/widgets/ScaleBar",
         "dojo/domReady!"
         ], function(
             Map,
@@ -21,7 +23,8 @@ $(document).ready(function () {
             Legend,
             Expand,
             LayerList,
-            Compass) {
+            Compass,
+            ScaleBar,) {
         var map = new Map({
             basemap: "satellite",
             // ground: "world-elevation"
@@ -459,6 +462,12 @@ $(document).ready(function () {
 
         // adds the compass to the top left corner of the MapView
         view.ui.add(compass, "top-right");
+
+        var scaleBar = new ScaleBar({
+            view: view
+        });
+
+        view.ui.add(scaleBar, "bottom-right");
         
 
         // legend
