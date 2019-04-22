@@ -6,37 +6,22 @@
     <div id="map_canvas" class="map"></div>
     <!--/map-->
     <div class="row site">
-        <div class="col-md-1 general_menu startpage">
+        <div class="col-md-1 general_menu inner">
             <a href="#" class="avatar">
                 <img src="{% static 'img/no_ava.png' %}" alt="..."/></a>
             <ul>
                 <li>
-                    <a href="#" class="gradientmenu active"><i class="icon-chef"></i></a>
+                    <a href="#" data-name="Dryver" class="gradientmenu"><i class="fas fa-icicles"></i></a>
                 </li>
                 <li>
-                    <a href="#" class="gradientmenu"><i class="icon-football-soccer"></i></a>
+                    <a href="#" data-name="Datasets" class="gradientmenu"><i class="fas fa-layer-group"></i></a>
                 </li>
                 <li>
-                    <a href="#" class="gradientmenu"><i class="icon-controllerps"></i></a>
+                    <a href="#" data-name="Tools" class="gradientmenu"><i class="fas fa-tools"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'Windy' %}" class="gradientmenu"><i class="icon-wind"></i></a>
+                    <a href="{% url 'Windy' %}" class="gradientmenu Windy"><i class="icon-wind"></i></a>
                 </li>
-                <!-- <li>
-                    <a href="#" class="gradientmenu"><i class="icon-shopping"></i></a>
-                </li>
-                <li>
-                    <a href="#" class="gradientmenu"><i class="icon-student-school"></i></a>
-                </li>
-                <li>
-                    <a href="#" class="gradientmenu"><i class="icon-wine"></i></a>
-                </li>
-                <li>
-                    <a href="#" class="gradientmenu"><i class="icon-wallet"></i></a>
-                </li>
-                <li>
-                    <a href="#" class="gradientmenu"><i class="icon-bus"></i></a>
-                </li> -->
             </ul>
         </div>
         <!--Profile-->
@@ -206,7 +191,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div id="tabs">
-                        <div id="tab1" class="active tab">
+                        <div id="tab1" class="tab">
                             <h5 class="cat">Places where you can eat</h5>
                             <ul class="catalog">
                                 <li><a href="#">Cafe<span>22</span></a></li>
@@ -243,78 +228,6 @@
                                 <li><a href="#">Classic game<span>22</span></a></li>
                             </ul>
                         </div>
-                        <div id="tab4" class="tab">
-                            <h5 class="cat">Eco, parks</h5>
-                            <ul class="catalog">
-                                <li><a href="#">Cafe<span>22</span></a></li>
-                                <li><a href="#">Bar<span>22</span></a></li>
-                                <li><a href="#">Restaurant<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Fast food<span>22</span><p class="arrow"></p>
-                                </a></li>
-                                <li><a href="#">Canteens<span>22</span></a></li>
-                                <li><a href="#">Pitstop<span>22</span></a></li>
-                                <li><a href="#">Cafe<span>22</span></a></li>
-                                <li><a href="#">Bar<span>22</span></a></li>
-                            </ul>
-                        </div>
-                        <div id="tab5" class="tab">
-                            <h5 class="cat">Shopping</h5>
-                            <ul class="catalog">
-                                <li><a href="#">Internet cafe<span>22</span></a></li>
-                                <li><a href="#">Dota<span>22</span></a></li>
-                                <li><a href="#">Chempions<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Video game centre<span>22</span><p class="arrow"></p>
-                                </a></li>
-                                <li><a href="#">Classic game<span>22</span></a></li>
-                            </ul>
-                        </div>
-                        <div id="tab6" class="tab">
-                            <h5 class="cat">University, School</h5>
-                            <ul class="catalog">
-                                <li><a href="#">Stadion<span>22</span></a></li>
-                                <li><a href="#">Sport Bar<span>22</span></a></li>
-                                <li><a href="#">Football<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Fitness<span>22</span><p class="arrow"></p>
-                                </a></li>
-                                <li><a href="#">Bowling<span>22</span></a></li>
-                            </ul>
-                        </div>
-                        <div id="tab7" class="tab">
-                            <h5 class="cat">Bars</h5>
-                            <ul class="catalog">
-                                <li><a href="#">Cafe<span>22</span></a></li>
-                                <li><a href="#">Bar<span>22</span></a></li>
-                                <li><a href="#">Restaurant<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Fast food<span>22</span><p class="arrow"></p>
-                                </a></li>
-                                <li><a href="#">Canteens<span>22</span></a></li>
-                                <li><a href="#">Pitstop<span>22</span></a></li>
-                                <li><a href="#">Cafe<span>22</span></a></li>
-                                <li><a href="#">Bar<span>22</span></a></li>
-                            </ul>
-                        </div>
-                        <div id="tab8" class="tab">
-                            <h5 class="cat">Banks</h5>
-                            <ul class="catalog">
-                                <li><a href="#">Internet cafe<span>22</span></a></li>
-                                <li><a href="#">Dota<span>22</span></a></li>
-                                <li><a href="#">Chempions<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Video game centre<span>22</span><p class="arrow"></p>
-                                </a></li>
-                                <li><a href="#">Classic game<span>22</span></a></li>
-                            </ul>
-                        </div>
-                        <div id="tab9" class="tab">
-                            <h5 class="cat">Bus</h5>
-                            <ul class="catalog">
-                                <li><a href="#">Stadion<span>22</span></a></li>
-                                <li><a href="#">Sport Bar<span>22</span></a></li>
-                                <li><a href="#">Football<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Fitness<span>22</span><p class="arrow"></p>
-                                </a></li>
-                                <li><a href="#">Bowling<span>22</span></a></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -336,4 +249,31 @@
 
 {% block scripts %}
     <script type="text/javascript" src="{% static 'js/arcgis_map.js' %}"></script>
+    <!-- Using this because the classes in above button don't let it happen -->
+    <script type="text/javascript">
+        var currently_opened = ''
+        $('.Windy').click(function(){
+            window.location = "{% url 'Windy' %}";
+        });
+        // if a tab item is clicked, check if profile_closed is there, remove it and update the currently_opened
+        // otherwise check currently_opened, if it is clicked again, remove active from both the items and add profile_closed and remove currently_opened
+        $('.gradientmenu').click(function(){
+            if (currently_opened == ''){
+                currently_opened = $(this).attr('data-name');
+                $('.side-bar').removeClass('profile_closed');
+            }
+            else {
+                var now_clicked = $(this).attr('data-name');
+                if (now_clicked == currently_opened){
+                    $('.side-bar').addClass('profile_closed');
+                    // Next line isn't working, do something to fix it
+                    $(this).removeClass('active');
+                    currently_opened = ''
+                }
+                else {
+                    currently_opened = now_clicked;
+                }
+            }
+        });
+    </script>
 {% endblock %}
