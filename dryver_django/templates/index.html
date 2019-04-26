@@ -2,6 +2,8 @@
 {% load staticfiles %}
 
 {% block content %}
+<!-- https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Widget.html -->
+<!-- https://developers.arcgis.com/javascript/latest/api-reference/esri-support-actions-ActionToggle.html -->
     <!--map-->
     <div id="map_canvas" class="map"></div>
     <!--/map-->
@@ -63,7 +65,7 @@
                 <!-- <div class="col-md-5 tweets">
                     <h2>Latest tweet</h2>
                     <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. <i></i></span>
-                    <div class="tweet_link"><a href="#">@mattew An</a>22.12.2013   23:33</div>
+                    <div class="tweet_link"><a href="#">@mattew An</a><input type="checkbox" name="vehicle1" value="Bike">.12.2013   23:33</div>
                 </div> -->
                 <!--/latest tweet-->
             </div>
@@ -174,8 +176,8 @@
             <div class="row">
                 <div class="col-md-12 header">
                     <div class="logo">
-                        <a href="start.html">
-                            <img src="{% static 'img/logo.png' %}" alt="..."/></a>
+                        <a href="/">
+                            <img style="max-width: 114px;" src="{% static 'img/Logo.png' %}" alt="..."/></a>
                     </div>
                 </div>
             </div>
@@ -192,55 +194,64 @@
                 <div class="col-md-12">
                     <div id="tabs">
                         <div id="tab1" class="tab">
-                            <h5 class="cat">Places where you can eat</h5>
+                            <h5 class="cat">DryVER</h5>
                             <ul class="catalog">
-                                <li><a href="#">Cafe<span>22</span></a></li>
-                                <li><a href="#">Bar<span>22</span></a></li>
-                                <li><a href="#">Restaurant<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Fast food<span>22</span><p class="arrow"></p>
-                                </a></li>
-                                <li><a href="#">Canteens<span>22</span></a></li>
-                                <li><a href="#">Pitstop<span>22</span></a></li>
-                                <li><a href="#">Cafe<span>22</span></a></li>
-                                <li><a href="#">Bar<span>22</span></a></li>
+                                <li><a href="#" class="activepoint">Abiotic</a></li>
+                                <li><a href="#">Aspect<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Slope<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">GNS geology<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">GNS Ice/snow<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">LINZ lakes and ponds<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Soils<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">LIDAR Hillshade<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">ASMA / ASPAs<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Antarctic Placenames<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#" class="activepoint">Aquatic</a></li>
+                                <li><a href="#">Aquatic habitat Classification<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Aquatic Connectivity<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Lakes and Ponds<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Streams<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Wetness Index<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#" class="activepoint">Climate</a></li>
+                                <li><a href="#">High Summer winds<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">High Annual winds<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Summer mean wind speed<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Annual mean wind speed<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Summer max wind speed<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Annualmax wind speed<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#" class="activepoint">Human Impact</a></li>
+                                <li><a href="#">Impact sample Sites<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Sensitivity Index<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#" class="activepoint">Terrestrial</a></li>
+                                <li><a href="#" class="activepoint">Ecoforecasting</a></li>
                             </ul>
                         </div>
                         <div id="tab2" class="tab">
-                            <h5 class="cat">Sport</h5>
+                            <h5 class="cat">Datasets</h5>
                             <ul class="catalog">
-                                <li><a href="#">Stadion<span>22</span></a></li>
-                                <li><a href="#">Sport Bar<span>22</span></a></li>
-                                <li><a href="#">Football<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Fitness<span>22</span><p class="arrow"></p>
+                                <li><a href="#">Stadion<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Sport Bar<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Football<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#" class="activepoint">Fitness<span><input type="checkbox" name="vehicle1" value="Bike"></span><p class="arrow"></p>
                                 </a></li>
-                                <li><a href="#">Bowling<span>22</span></a></li>
-
+                                <li><a href="#">Bowling<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
                             </ul>
                         </div>
                         <div id="tab3" class="tab">
-                            <h5 class="cat">Games</h5>
+                            <h5 class="cat">Tools</h5>
                             <ul class="catalog">
-                                <li><a href="#">Internet cafe<span>22</span></a></li>
-                                <li><a href="#">Dota<span>22</span></a></li>
-                                <li><a href="#">Chempions<span>22</span></a></li>
-                                <li><a href="#" class="activepoint">Video game centre<span>22</span><p class="arrow"></p>
+                                <li><a href="#">Internet cafe<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Dota<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Chempions<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#" class="activepoint">Video game centre<span><input type="checkbox" name="vehicle1" value="Bike"></span><p class="arrow"></p>
                                 </a></li>
-                                <li><a href="#">Classic game<span>22</span></a></li>
+                                <li><a href="#">Classic game<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <!--/Category menu-->
-            <!--Search-->
-            <div class="row search_inner_box">
-                <div class="col-md-12">
-                    <input type="text" class="form-control input-sm" placeholder="Text input" />
-                    <a href="4.html" class="btn btn-danger btn-sm pd-top">Search</a>
-                    <a href="3.html" class="btn btn-primary btn-sm pd-top">Show places near me</a>
-                </div>
-            </div>
-            <!--/search-->
         </div>
         <!--/Content-->
     </div>
