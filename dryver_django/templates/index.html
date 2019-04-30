@@ -1,6 +1,70 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block sheets %}
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+        
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+        
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+{% endblock %}
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 {% block content %}
 <!-- https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Widget.html -->
 <!-- https://developers.arcgis.com/javascript/latest/api-reference/esri-support-actions-ActionToggle.html -->
@@ -65,7 +129,7 @@
                 <!-- <div class="col-md-5 tweets">
                     <h2>Latest tweet</h2>
                     <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. <i></i></span>
-                    <div class="tweet_link"><a href="#">@mattew An</a><input type="checkbox" name="vehicle1" value="Bike">.12.2013   23:33</div>
+                    <div class="tweet_link"><a href="#">@mattew An</a><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label>.12.2013   23:33</div>
                 </div> -->
                 <!--/latest tweet-->
             </div>
@@ -197,31 +261,31 @@
                             <h5 class="cat">DryVER</h5>
                             <ul class="catalog">
                                 <li><a href="#" class="activepoint">Abiotic</a></li>
-                                <li><a href="#">Aspect<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Slope<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">GNS geology<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">GNS Ice/snow<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">LINZ lakes and ponds<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Soils<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">LIDAR Hillshade<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">ASMA / ASPAs<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Antarctic Placenames<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Aspect<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Slope<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">GNS geology<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">GNS Ice/snow<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">LINZ lakes and ponds<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Soils<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">LIDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">ASMA / ASPAs<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Antarctic Placenames<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                                 <li><a href="#" class="activepoint">Aquatic</a></li>
-                                <li><a href="#">Aquatic habitat Classification<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Aquatic Connectivity<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Lakes and Ponds<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Streams<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Wetness Index<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Aquatic habitat Classification<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Aquatic Connectivity<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Lakes and Ponds<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Streams<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Wetness Index<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                                 <li><a href="#" class="activepoint">Climate</a></li>
-                                <li><a href="#">High Summer winds<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">High Annual winds<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Summer mean wind speed<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Annual mean wind speed<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Summer max wind speed<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Annualmax wind speed<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">High Summer winds<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">High Annual winds<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Summer mean wind speed<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Annual mean wind speed<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Summer max wind speed<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Annual max wind speed<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
                                 <li><a href="#" class="activepoint">Human Impact</a></li>
-                                <li><a href="#">Impact sample Sites<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Sensitivity Index<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Impact sample Sites<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Sensitivity Index<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                                 <li><a href="#" class="activepoint">Terrestrial</a></li>
                                 <li><a href="#" class="activepoint">Ecoforecasting</a></li>
                             </ul>
@@ -229,23 +293,23 @@
                         <div id="tab2" class="tab">
                             <h5 class="cat">Datasets</h5>
                             <ul class="catalog">
-                                <li><a href="#">Stadion<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Sport Bar<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Football<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#" class="activepoint">Fitness<span><input type="checkbox" name="vehicle1" value="Bike"></span><p class="arrow"></p>
+                                <li><a href="#">Stadion<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Sport Bar<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Football<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#" class="activepoint">Fitness<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span><p class="arrow"></p>
                                 </a></li>
-                                <li><a href="#">Bowling<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Bowling<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                             </ul>
                         </div>
                         <div id="tab3" class="tab">
                             <h5 class="cat">Tools</h5>
                             <ul class="catalog">
-                                <li><a href="#">Internet cafe<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Dota<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#">Chempions<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
-                                <li><a href="#" class="activepoint">Video game centre<span><input type="checkbox" name="vehicle1" value="Bike"></span><p class="arrow"></p>
+                                <li><a href="#">Internet cafe<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Dota<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#">Chempions<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li><a href="#" class="activepoint">Video game centre<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span><p class="arrow"></p>
                                 </a></li>
-                                <li><a href="#">Classic game<span><input type="checkbox" name="vehicle1" value="Bike"></span></a></li>
+                                <li><a href="#">Classic game<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -259,6 +323,7 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script type="text/javascript" src="{% static 'js/arcgis_map.js' %}"></script>
     <!-- Using this because the classes in above button don't let it happen -->
     <script type="text/javascript">
