@@ -1,4 +1,4 @@
-var aquaticLayer, climateLayer;
+var aquaticLayer, climateLayer, impactLayer;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
     require([
@@ -305,7 +305,7 @@ $(document).ready(function () {
             ]
         });
 
-        var impactLayer = new MapImageLayer({
+        impactLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
             title: "Impact",
             sublayers: [
@@ -505,9 +505,14 @@ $('.layer-toggle').click(function(){
         var sublayer = aquaticLayer.findSublayerById(parseInt(id));
         sublayer.visible = !sublayer.visible;
         break;
-        
+
         case 'climate':
         var sublayer = climateLayer.findSublayerById(parseInt(id));
+        sublayer.visible = !sublayer.visible;
+        break;
+
+        case 'impact':
+        var sublayer = impactLayer.findSublayerById(parseInt(id));
         sublayer.visible = !sublayer.visible;
         break;
     }
