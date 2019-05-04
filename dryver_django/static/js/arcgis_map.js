@@ -517,4 +517,9 @@ $('.layer-toggle').click(function(){
         break;
     }
     // console.log(id, layer)
-})
+});
+
+$('.drop-down').click(function(){
+    var target = $(this).attr('data-target');
+    $('.'+target).toggleClass('hide');
+});
