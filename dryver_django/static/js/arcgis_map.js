@@ -1,4 +1,4 @@
-var aquaticLayer, climateLayer, impactLayer;
+var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
     require([
@@ -293,7 +293,7 @@ $(document).ready(function () {
             ]
         });
 
-        var agarLayer = new MapImageLayer({
+        agarLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer",
             title: "AGAR",
             sublayers: [
@@ -344,7 +344,7 @@ $(document).ready(function () {
             ]
         });
 
-        var nztabsLayer = new MapImageLayer({
+        nztabsLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
             title: "nzTABS",
             sublayers: [
@@ -515,6 +515,17 @@ $('.layer-toggle').click(function(){
         var sublayer = impactLayer.findSublayerById(parseInt(id));
         sublayer.visible = !sublayer.visible;
         break;
+
+        case 'agar':
+        var sublayer = agarLayer.findSublayerById(parseInt(id));
+        sublayer.visible = !sublayer.visible;
+        break;
+
+        case 'nztabs':
+        var sublayer = nztabsLayer.findSublayerById(parseInt(id));
+        sublayer.visible = !sublayer.visible;
+        break;
+
     }
     // console.log(id, layer)
 });
