@@ -1,4 +1,4 @@
-var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer;
+var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
     require([
@@ -256,7 +256,8 @@ $(document).ready(function () {
             ]
         });
 
-        var asmaLayer = new MapImageLayer({
+        // continue here
+        asmaLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer",
             title: "ASMA",
             sublayers: [
@@ -515,6 +516,12 @@ $('.layer-toggle').click(function(){
         var sublayer = abioticLayer.findSublayerById(parseInt(id));
         sublayer.visible = !sublayer.visible;
         break;
+
+        case 'asma':
+        var sublayer = asmaLayer.findSublayerById(parseInt(id));
+        sublayer.visible = !sublayer.visible;
+        break;
+
     }
     // console.log(id, layer)
 });
