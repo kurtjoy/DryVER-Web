@@ -1,4 +1,4 @@
-var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer;
+var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
     require([
@@ -202,15 +202,10 @@ $(document).ready(function () {
                             
         // layers
 
-        var abioticLayer = new MapImageLayer({
+        abioticLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
             title: "Abiotic",
             sublayers: [
-                {
-                  id: 0,
-                  title: "LANDCARE Soils",
-                  visible: false,
-                },
                 {
                   id: 1,
                   title: "GNS Ice",
@@ -233,17 +228,7 @@ $(document).ready(function () {
                 },
                 {
                   id: 5,
-                  title: "WV3 False Colour",
-                  visible: false,
-                },
-                {
-                  id: 8,
                   title: "Lidar Hillshades",
-                  visible: false,
-                },
-                {
-                  id: 12,
-                  title: "GNS_hillshade_asma",
                   visible: false,
                 },
             ]
@@ -526,6 +511,10 @@ $('.layer-toggle').click(function(){
         sublayer.visible = !sublayer.visible;
         break;
 
+        case 'abiotic':
+        var sublayer = abioticLayer.findSublayerById(parseInt(id));
+        sublayer.visible = !sublayer.visible;
+        break;
     }
     // console.log(id, layer)
 });
