@@ -38,6 +38,62 @@ $(document).ready(function () {
             center: [162, -77.5],
             zoom: 7,
         });
+
+        // symbologies and renderers
+
+        var nzTabsSym = {
+            type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+            color: [0, 0, 0, 0],
+            outline: {
+              // autocasts as new SimpleLineSymbol()
+              color: "#71de6e",
+              width: 1
+            }
+        };
+        var nzTabsRenderer = {
+            type: "simple", // autocasts as new SimpleRenderer()
+            symbol: nzTabsSym,
+            visualVariables: [
+              {
+                type: "size",
+                field: "WET",
+                // normalizationField: "PH",
+                legendOptions: {
+                  title: "nzTABS Sample Sites"
+                },
+                stops: [
+                  {
+                    value: 4,
+                    size: 4,
+                    label: "0-4"
+                  },
+                  {
+                    value: 6,
+                    size: 8,
+                    label: "4-6"
+                  },
+                  {
+                    value: 8,
+                    size: 12,
+                    label: "6-8"
+                  },
+                  {
+                    value: 10,
+                    size: 16,
+                    label: "8-10"
+                  },
+                  {
+                    value: 12,
+                    size: 20,
+                    label: "10-12"
+                  }
+                ]
+              }
+            ],
+            
+            useSymbolValue: true
+          };
+
                             
         // layers
 
@@ -168,17 +224,42 @@ $(document).ready(function () {
             ]
         });
 
-        nztabsLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
-            title: "nzTABS",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "nzTABS Sample Sites",
-                  visible: false,
-                //   renderer: nztabsTemp
-                },
-            ]
+        // nztabsLayer = new MapImageLayer({
+        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
+        //     title: "nzTABS",
+        //     sublayers: [
+        //         {
+        //           id: 0,
+        //           title: "nzTABS Sample Sites",
+        //           visible: false,
+        //           renderer: nzTabsRenderer,
+        //           fieldInfos: [
+        //             {
+        //               fieldName: "WET",
+        //               format: {
+        //                 digitSeparator: true,
+        //                 places: 0
+        //               }
+        //             },
+        //             {
+        //               fieldName: "PH",
+        //               format: {
+        //                 digitSeparator: true,
+        //                 places: 0
+        //               }
+        //             }
+        //           ]
+        //         },
+        //     ]
+        // });
+
+        nztabsLayer = new FeatureLayer({
+            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0",
+            title: "nzTABS Sample Sites",
+            // id: "event",
+            visible: false,
+            renderer: nzTabsRenderer,
+            // popupTemplate: eventTemp
         });
 
         var sensitivityLayer = new MapImageLayer({
@@ -357,8 +438,8 @@ $('.layer-toggle').click(function(){
         break;
 
         case 'nztabs':
-        var sublayer = nztabsLayer.findSublayerById(parseInt(id));
-        sublayer.visible = !sublayer.visible;
+        // var sublayer = nztabsLayer.findSublayerById(parseInt(id));
+        nztabsLayer.visible = !nztabsLayer.visible;
         break;
 
         case 'abiotic':
