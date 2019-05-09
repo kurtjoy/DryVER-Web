@@ -43,10 +43,10 @@ $(document).ready(function () {
 
         var nzTabsSym = {
             type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-            color: [0, 0, 0, 0],
+            color: [0, 0, 0],
             outline: {
               // autocasts as new SimpleLineSymbol()
-              color: "#71de6e",
+              color: "#5d8eae",
               width: 1
             }
         };
