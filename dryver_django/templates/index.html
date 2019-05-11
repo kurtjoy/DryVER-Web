@@ -99,18 +99,20 @@
                 <div class="col-md-12">
                     <div class="user">
                         <br>
-                        <div class="buttons">
+                        <!-- <div class="buttons">
                             <a href="{% url 'Windy' %}" target="_blank" class="btn btn-info btn-sm"><i class="icon-wind"></i> Check Weather</a>
-                        </div>
-                        <!-- <img src="{% static 'img/ava1.png' %}" alt="..."/>
-                        <div>
-                            <h2>Mattew An</h2>
-                            <ul>
-                                <li>Visited <a href="#">59 places</a></li>
-                                <li>He left <a href="#">59 places</a></li>
-                                <li>Wants to invite a lady to <a href="#">3 places</a></li>
-                            </ul>
                         </div> -->
+                        <!-- <img src="{% static 'img/ava1.png' %}" alt="..."/> -->
+                        <div>
+                            <h2>Jump to Location</h2>
+                            <form class="loc_jump">
+                                <label for="lat">Latitude:</label>
+                                <input id="lat_jump" type="number" name="lat" required>
+                                <label for="long">Longitude:</label>
+                                <input id="long_jump" type="number" name="long" required>
+                                <button type="submit">Jump</button>
+                            </form>
+                        </div> 
                     </div>
                     <div class="buttons">
                         <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Sign out</a>

@@ -1,3 +1,4 @@
+var view;
 var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
@@ -8,6 +9,7 @@ $(document).ready(function () {
         "esri/layers/FeatureLayer",
         "esri/layers/ImageryLayer",
         "esri/layers/MapImageLayer",
+        "esri/geometry/Point",
         "esri/widgets/Legend",
         "esri/widgets/Expand",
         "esri/widgets/LayerList",
@@ -22,6 +24,7 @@ $(document).ready(function () {
             FeatureLayer,
             ImageryLayer,
             MapImageLayer,
+            Point,
             Legend,
             Expand,
             LayerList,
@@ -32,7 +35,7 @@ $(document).ready(function () {
             basemap: "satellite",
             // ground: "world-elevation"
         });
-        var view = new MapView({
+        view = new MapView({
             container: "map_canvas",  // Reference to the DOM node that will contain the view
             map: map,  // References the map object created in step 3
             center: [162, -77.5],
@@ -409,6 +412,18 @@ $(document).ready(function () {
         });
 
         view.ui.add(layerListExpand, "top-right");
+
+        $('.loc_jump').submit(function(evt){
+            var lat = $('#lat_jump').val()
+            var long = $('#long_jump').val()
+            console.log('submitted')
+            evt.preventDefault();
+            var new_loc = new Point({
+                latitude: lat,
+                longitude: long
+            });
+            view.goTo(new_loc)
+        });
         
     });
 })
@@ -460,5 +475,6 @@ $('.drop-down').click(function(){
     var target = $(this).attr('data-target');
     $('.'+target).toggleClass('hide');
 });
+
 
 // Accessor#set Invalid property value, value needs to be one of 'esri.renderers.HeatmapRenderer', 'esri.renderers.SimpleRenderer', 'esri.renderers.UniqueValueRenderer', 'esri.renderers.ClassBreaksRenderer', or a plain object that can autocast (having .type = 'heatmap', 'simple', 'unique-value', 'class-breaks')
