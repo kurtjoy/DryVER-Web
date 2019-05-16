@@ -12,6 +12,7 @@ $(document).ready(function () {
         "esri/tasks/IdentifyTask",
         "esri/tasks/support/IdentifyParameters",
         "esri/geometry/Point",
+        "esri/widgets/Zoom",
         "esri/widgets/Legend",
         "esri/widgets/Expand",
         "esri/widgets/LayerList",
@@ -29,6 +30,7 @@ $(document).ready(function () {
             IdentifyTask,
             IdentifyParameters,
             Point,
+            Zoom,
             Legend,
             Expand,
             LayerList,
@@ -354,6 +356,11 @@ $(document).ready(function () {
         map.add(terrestrialLayer);
         map.add(climateLayer);
         // widgets
+        // zoom
+        var zoom = new Zoom({
+          view: view
+        });
+
         // compass
         var compass = new Compass({
             view: view
@@ -411,6 +418,8 @@ $(document).ready(function () {
             view: view,
             label: "Measure Distance",
         });
+
+        view.ui.add(zoom, "top-right");
 
         view.ui.add(distanceMeasurementWidget, "top-right");
 
