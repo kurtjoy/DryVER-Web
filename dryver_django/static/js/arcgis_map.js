@@ -9,6 +9,8 @@ $(document).ready(function () {
         "esri/layers/FeatureLayer",
         "esri/layers/ImageryLayer",
         "esri/layers/MapImageLayer",
+        "esri/tasks/IdentifyTask",
+        "esri/tasks/support/IdentifyParameters",
         "esri/geometry/Point",
         "esri/widgets/Legend",
         "esri/widgets/Expand",
@@ -24,6 +26,8 @@ $(document).ready(function () {
             FeatureLayer,
             ImageryLayer,
             MapImageLayer,
+            IdentifyTask,
+            IdentifyParameters,
             Point,
             Legend,
             Expand,
@@ -31,6 +35,9 @@ $(document).ready(function () {
             Compass,
             ScaleBar,
             DistanceMeasurement2D,) {
+
+        var identifyTask, params;
+        
         var map = new Map({
             basemap: "satellite",
             // ground: "world-elevation"
@@ -132,8 +139,10 @@ $(document).ready(function () {
             ]
         });
 
+        var aquaticLayerUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer"
+
         aquaticLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer",
+            url: aquaticLayerUrl,
             title: "Aquatic",
             sublayers: [
                 {
@@ -256,8 +265,10 @@ $(document).ready(function () {
         //     ]
         // });
 
+        var nztabsUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0"
+
         nztabsLayer = new FeatureLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0",
+            url: nztabsUrl,
             title: "nzTABS Sample Sites",
             // id: "event",
             visible: false,
@@ -424,7 +435,88 @@ $(document).ready(function () {
             });
             view.goTo(new_loc)
         });
-        
+
+        view.when(function() {
+            // executeIdentifyTask() is called each time the view is clicked
+
+            view.on("click", executeIdentifyTask);
+  
+            // Create identify task for the specified map service
+            identifyTask = new IdentifyTask(aquaticLayerUrl);
+  
+            // Set the parameters for the Identify
+            params = new IdentifyParameters();
+            params.tolerance = 3;
+            params.layerIds = [0, 1, 2];
+            params.layerOption = "top";
+            params.width = view.width;
+            params.height = view.height;
+          });
+  
+          // Executes each time the view is clicked
+          function executeIdentifyTask(event) {
+            // Set the geometry to the location of the view click
+            params.geometry = event.mapPoint;
+            params.mapExtent = view.extent;
+            document.getElementById("map_canvas").style.cursor = "wait";
+  
+            // This function returns a promise that resolves to an array of features
+            // A custom popupTemplate is set for each feature based on the layer it
+            // originates from
+            identifyTask
+              .execute(params)
+              .then(function(response) {
+                var results = response.results;
+                console.log(response)
+  
+                return results.map(function(result) {
+                  var feature = result.feature;
+                  var layerName = result.layerName;
+                  console.log(feature, layerName)
+  
+                  feature.attributes.layerName = layerName;
+                  if (layerName === "LINZ Lakes and Ponds") {
+                    feature.popupTemplate = {
+                      // autocasts as new PopupTemplate()
+                      title: "Lake / Pond",
+                      content:
+                        "<b>Name:</b> {name}" +
+                        "<br><b>Land Type:</b> {L_TYPE}" +
+                        "<br><b>Type:</b> {TYPE}"
+                    };
+                  } else if (layerName === "Aquatic Connectivity") {
+                    feature.popupTemplate = {
+                      // autocasts as new PopupTemplate()
+                      title: "Stream",
+                      content:
+                        "<b>Main Rock:</b> {MAIN_ROCK}" +
+                        "<br><b>RVR CLASS:</b> {RVR_CLASS}"
+                    };
+                  } else if (layerName === "Wetness Index Jan-Feb") {
+                    feature.popupTemplate = {
+                      // autocasts as new PopupTemplate()
+                      title: "Wetness Index",
+                      content:
+                        "<b>Dominant order:</b> {Dominant Order}" +
+                        "<br><b>Dominant sub-order:</b> {Dominant Sub-Order}"
+                    };
+                  }
+                  return feature;
+                });
+              })
+              .then(showPopup); // Send the array of features to showPopup()
+  
+            // Shows the results of the Identify in a popup once the promise is resolved
+            function showPopup(response) {
+              if (response.length > 0) {
+                view.popup.open({
+                  features: response,
+                  location: event.mapPoint
+                });
+              }
+              document.getElementById("map_canvas").style.cursor = "auto";
+            }
+        }
     });
 })
 
@@ -477,4 +569,8 @@ $('.drop-down').click(function(){
 });
 
 
-// Accessor#set Invalid property value, value needs to be one of 'esri.renderers.HeatmapRenderer', 'esri.renderers.SimpleRenderer', 'esri.renderers.UniqueValueRenderer', 'esri.renderers.ClassBreaksRenderer', or a plain object that can autocast (having .type = 'heatmap', 'simple', 'unique-value', 'class-breaks')
+// For identify:
+// 1. https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-IdentifyTask.html
+// 2. https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-support-IdentifyResult.html
+// 3. https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-support-IdentifyParameters.html#returnZ
+// https://developers.arcgis.com/rest/services-reference/identify-map-service-.htm (Seems like this needs to be used, seems like it is exporting in HTML/JSON. Might not work)
