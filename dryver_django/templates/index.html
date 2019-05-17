@@ -62,12 +62,60 @@
         .slider.round:before {
             border-radius: 50%;
         }
+        /* #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      } */
+
+      #topbar {
+        background: #fff;
+        padding: 10px;
+      }
+
+      .action-button {
+        font-size: 16px;
+        background-color: transparent;
+        border: 1px solid #d3d3d3;
+        color: #6e6e6e;
+        height: 32px;
+        width: 32px;
+        text-align: center;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+      }
+
+      .action-button:hover,
+      .action-button:focus {
+        background: #0079c1;
+        color: #e4e4e4;
+      }
+
+      .active {
+        background: #0079c1;
+        color: #e4e4e4;
+      }
     </style>
 {% endblock %}
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 {% block content %}
 <!-- https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Widget.html -->
 <!-- https://developers.arcgis.com/javascript/latest/api-reference/esri-support-actions-ActionToggle.html -->
+    <!-- <div id="viewDiv"></div> -->
+    <div id="topbar">
+      <button
+        class="action-button esri-icon-minus"
+        id="distanceButton"
+        type="button"
+        title="Measure distance between two or more points"
+      ></button>
+      <button
+        class="action-button esri-icon-polygon"
+        id="areaButton"
+        type="button"
+        title="Measure area"
+      ></button>
+    </div>
     <!--map-->
     <div id="map_canvas" class="map"></div>
     <!--/map-->

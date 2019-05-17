@@ -1,5 +1,6 @@
 var view;
 var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
+var activeWidget = null;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
     require([
@@ -19,6 +20,7 @@ $(document).ready(function () {
         "esri/widgets/Compass",
         "esri/widgets/ScaleBar",
         "esri/widgets/DistanceMeasurement2D",
+        "esri/widgets/AreaMeasurement2D",
         "dojo/domReady!",
         ], function(
             Map,
@@ -36,7 +38,8 @@ $(document).ready(function () {
             LayerList,
             Compass,
             ScaleBar,
-            DistanceMeasurement2D,) {
+            DistanceMeasurement2D,
+            AreaMeasurement2D,) {
 
         var identifyTask, params;
         
@@ -412,16 +415,7 @@ $(document).ready(function () {
             content: layerList.domNode
         });        
 
-        // https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-DistanceMeasurement2D.html
-        // https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-AreaMeasurement2D.html
-        var distanceMeasurementWidget = new DistanceMeasurement2D({
-            view: view,
-            label: "Measure Distance",
-        });
-
         view.ui.add(zoom, "top-right");
-
-        view.ui.add(distanceMeasurementWidget, "top-right");
 
         view.ui.add(compass, "top-right");
 
@@ -432,6 +426,77 @@ $(document).ready(function () {
         });
 
         view.ui.add(layerListExpand, "top-right");
+
+        // add the toolbar for the measurement widgets
+        view.ui.add("topbar", "top-right");
+
+        document
+          .getElementById("distanceButton")
+          .addEventListener("click", function() {
+            setActiveWidget(null);
+            if (!this.classList.contains("active")) {
+              setActiveWidget("distance");
+            } else {
+              setActiveButton(null);
+            }
+          });
+
+        document
+          .getElementById("areaButton")
+          .addEventListener("click", function() {
+            setActiveWidget(null);
+            if (!this.classList.contains("active")) {
+              setActiveWidget("area");
+            } else {
+              setActiveButton(null);
+            }
+          });
+
+        function setActiveWidget(type) {
+          switch (type) {
+            case "distance":
+              activeWidget = new DistanceMeasurement2D({
+                view: view
+              });
+
+              // skip the initial 'new measurement' button
+              activeWidget.viewModel.newMeasurement();
+
+              view.ui.add(activeWidget, "top-right");
+              setActiveButton(document.getElementById("distanceButton"));
+              break;
+            case "area":
+              activeWidget = new AreaMeasurement2D({
+                view: view
+              });
+
+              // skip the initial 'new measurement' button
+              activeWidget.viewModel.newMeasurement();
+
+              view.ui.add(activeWidget, "top-right");
+              setActiveButton(document.getElementById("areaButton"));
+              break;
+            case null:
+              if (activeWidget) {
+                view.ui.remove(activeWidget);
+                activeWidget.destroy();
+                activeWidget = null;
+              }
+              break;
+          }
+        }
+
+        function setActiveButton(selectedButton) {
+          // focus the view to activate keyboard shortcuts for sketching
+          view.focus();
+          var elements = document.getElementsByClassName("active");
+          for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove("active");
+          }
+          if (selectedButton) {
+            selectedButton.classList.add("active");
+          }
+        }
 
         $('.loc_jump').submit(function(evt){
             var lat = $('#lat_jump').val()
