@@ -19,6 +19,7 @@ $(document).ready(function () {
         "esri/widgets/LayerList",
         "esri/widgets/Compass",
         "esri/widgets/ScaleBar",
+        "esri/widgets/Search",
         "esri/widgets/DistanceMeasurement2D",
         "esri/widgets/AreaMeasurement2D",
         "dojo/domReady!",
@@ -38,6 +39,7 @@ $(document).ready(function () {
             LayerList,
             Compass,
             ScaleBar,
+            Search,
             DistanceMeasurement2D,
             AreaMeasurement2D,) {
 
@@ -285,7 +287,6 @@ $(document).ready(function () {
           url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
           title: "nzTABS Sample Sites",
           visible: true,
-          // minScale: 6,
         });
         placeNamesLayer.minScale = 70000;
 
@@ -422,7 +423,28 @@ $(document).ready(function () {
             // expandTooltip: "Expand LayerList", // optional, defaults to "Expand" for English locale
             view: view,
             content: layerList.domNode
-        });        
+        });
+        
+        var searchWidget = new Search({
+          view: view,
+          allPlaceholder: "Search",
+          includeDefaultSources: false,
+          sources: [
+            {
+              layer: placeNamesLayer,
+              searchFields: ["PLACE_NAME"],
+              displayField: "PLACE_NAME",
+              exactMatch: false,
+              name: "SCAR Place Names",
+              placeholder: "Lake Buddha"
+            },
+          ]
+        });
+
+        // Add the search widget to the top right corner of the view
+        view.ui.add(searchWidget, {
+          position: "top-right"
+        });
 
         view.ui.add(zoom, "top-right");
 
