@@ -281,6 +281,14 @@ $(document).ready(function () {
             // popupTemplate: eventTemp
         });
 
+        placeNamesLayer = new FeatureLayer({
+          url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
+          title: "nzTABS Sample Sites",
+          visible: true,
+          // minScale: 6,
+        });
+        placeNamesLayer.minScale = 70000;
+
         var sensitivityLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/SENSITIVITY/MapServer",
             title: "Sensitivity",
@@ -358,6 +366,7 @@ $(document).ready(function () {
         map.add(sensitivityLayer);
         map.add(terrestrialLayer);
         map.add(climateLayer);
+        map.add(placeNamesLayer);
         // widgets
         // zoom
         var zoom = new Zoom({
@@ -541,7 +550,6 @@ $(document).ready(function () {
               .execute(params)
               .then(function(response) {
                 var results = response.results;
-                console.log(response)
   
                 return results.map(function(result) {
                   var feature = result.feature;
