@@ -15,6 +15,7 @@
         type="button"
         title="Measure distance between two or more points"
       ></button>
+      <br>
       <button
         class="action-button esri-icon-polygon"
         id="areaButton"
@@ -39,6 +40,9 @@
                 <li>
                     <a href="#" data-name="Tools" class="gradientmenu"><i class="fas fa-tools"></i></a>
                 </li>
+                <!-- <li>
+                    <a href="#" class="gradientmenu"><i class="fas fa-file"></i></a>
+                </li> -->
                 <li>
                     <a href="{% url 'Windy' %}" class="gradientmenu Windy"><i class="icon-wind"></i></a>
                 </li>
@@ -66,7 +70,23 @@
                                 <input id="long_jump" type="number" name="long" required>
                                 <button type="submit">Jump</button>
                             </form>
-                        </div> 
+                        </div>
+                        <br>
+                        <div>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label>{{ pdf_report_form.programme.label }}:</label>
+                                    {{ pdf_report_form.programme }}
+                                </div>
+                                <div class="form-group">
+                                        <label>{{ pdf_report_form.event_number.label }}:</label>
+                                        {{ pdf_report_form.event_number }}
+                                    </div>
+                                {{ pdf_report_form}}
+                                <button type="submit">Submit</button>
+                            </form>
+                        </div>
                     </div>
                     <div class="buttons">
                         <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Sign out</a>
@@ -262,6 +282,42 @@
                                 </a></li>
                                 <li><a href="#">Classic game<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                             </ul>
+                        </div>
+                        <div id="tab4" class="tab">
+                            <h5 class="cat">PDF Report Form</h5>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <span class="form-group">
+                                    <label>{{ pdf_report_form.programme.label }}:</label>
+                                    {{ pdf_report_form.programme }}
+                                </span>
+                                <span class="form-group">
+                                    <label>{{ pdf_report_form.event_number.label }}:</label>
+                                    {{ pdf_report_form.event_number }}
+                                </span>
+                                <span class="form-group">
+                                    <label>{{ pdf_report_form.event_field_leader.label }}:</label>
+                                    {{ pdf_report_form.event_field_leader }}
+                                </span>
+                                <span class="form-group">
+                                    <label>{{ pdf_report_form.field_manager.label }}:</label>
+                                    {{ pdf_report_form.field_manager }}
+                                </span>
+                                <span class="form-group">
+                                    <label>{{ pdf_report_form.institution.label }}:</label>
+                                    {{ pdf_report_form.institution }}
+                                </span>
+                                <span class="form-group">
+                                    <label>{{ pdf_report_form.location.label }}:</label>
+                                    {{ pdf_report_form.location }}
+                                </span>
+                                <span class="form-group">
+                                    <label>{{ pdf_report_form.date_of_event.label }}:</label>
+                                    {{ pdf_report_form.date_of_event }}
+                                </span>
+                                <!-- {{ pdf_report_form}} -->
+                                <button type="submit">Submit</button>
+                            </form>
                         </div>
                     </div>
                 </div>
