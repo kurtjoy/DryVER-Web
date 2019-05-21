@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import PdfReport, ReportLocation
 
-# Register your models here.
+admin.site.register(PdfReport)
+admin.site.register(ReportLocation)

@@ -11,10 +11,11 @@ class Windy(TemplateView):
 
 @login_required
 def index(request):
-    pdf_report_form = PdfReportForm()
     if request.method == 'POST':
-        print(pdf_report_form)
-        pdf_report_form.save()
+        pdf_report_form = PdfReportForm(request.POST)
+        if pdf_report_form.is_valid():
+            pdf_report_form.save()
+    pdf_report_form = PdfReportForm()
     context = {
         'pdf_report_form': pdf_report_form
     }
