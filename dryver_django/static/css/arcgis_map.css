@@ -60,7 +60,7 @@ input:checked + .slider:before {
 
 #topbar {
 background: #fff;
-padding: 5px;
+padding: 1px;
 }
 
 .action-button {
