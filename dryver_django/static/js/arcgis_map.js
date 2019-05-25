@@ -199,7 +199,7 @@ $(document).ready(function () {
           url: antarcticManagedAreaUrl,
           title: "Antarctic Managed Area",
           // id: "event",
-          visible: false,
+          visible: true,
           // renderer: nzTabsRenderer,
           // popupTemplate: eventTemp
         });
@@ -210,7 +210,7 @@ $(document).ready(function () {
           url: mcMurdoAsmaUrl,
           title: "McMurdo ASMA",
           // id: "event",
-          visible: false,
+          visible: true,
           // renderer: nzTabsRenderer,
           // popupTemplate: eventTemp
         });
