@@ -1,5 +1,6 @@
 var view;
 var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
+var antarcticManagedAreaLayer, mcMurdoAsmaLayer;
 var activeWidget = null;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
@@ -192,6 +193,28 @@ $(document).ready(function () {
             ]
         });
 
+        var antarcticManagedAreaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/1"
+
+        antarcticManagedAreaLayer = new FeatureLayer({
+          url: antarcticManagedAreaUrl,
+          title: "Antarctic Managed Area",
+          // id: "event",
+          visible: false,
+          // renderer: nzTabsRenderer,
+          // popupTemplate: eventTemp
+        });
+
+        var mcMurdoAsmaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/2"
+
+        mcMurdoAsmaLayer = new FeatureLayer({
+          url: mcMurdoAsmaUrl,
+          title: "McMurdo ASMA",
+          // id: "event",
+          visible: false,
+          // renderer: nzTabsRenderer,
+          // popupTemplate: eventTemp
+        });
+
         agarLayer = new MapImageLayer({
             url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer",
             title: "AGAR",
@@ -360,6 +383,8 @@ $(document).ready(function () {
         map.add(abioticLayer);
         map.add(aquaticLayer);
         map.add(asmaLayer);
+        map.add(antarcticManagedAreaLayer);
+        map.add(mcMurdoAsmaLayer);
         map.add(agarLayer);
         map.add(impactLayer);
         map.add(napLayer);
@@ -395,6 +420,8 @@ $(document).ready(function () {
                 {layer: climateLayer,title: "Climate"},
                 {layer: aquaticLayer,title: "Aquatic"},
                 {layer: asmaLayer, title:"ASMA"},
+                {layer: mcMurdoAsmaLayer, title:"McMurdo ASMA"},
+                {layer: antarcticManagedAreaLayer, title:"Antarctic Managed Area"},
                 {layer: agarLayer, title:"AGAR"},
                 {layer: impactLayer, title:"Impact"},
                 {layer: napLayer, title:"NAP"},
@@ -649,8 +676,15 @@ $('.layer-toggle').click(function(){
         break;
 
         case 'nztabs':
-        // var sublayer = nztabsLayer.findSublayerById(parseInt(id));
         nztabsLayer.visible = !nztabsLayer.visible;
+        break;
+
+        case 'antarctic managed area':
+        antarcticManagedAreaLayer.visible = !antarcticManagedAreaLayer.visible;
+        break;
+
+        case 'mcmurdo asma':
+        mcMurdoAsmaLayer.visible = !mcMurdoAsmaLayer.visible;
         break;
 
         case 'abiotic':
