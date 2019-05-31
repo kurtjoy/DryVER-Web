@@ -683,9 +683,9 @@ $('.layer-toggle').click(function(){
         antarcticManagedAreaLayer.visible = !antarcticManagedAreaLayer.visible;
         break;
 
-        case 'mcmurdo asma':
-        mcMurdoAsmaLayer.visible = !mcMurdoAsmaLayer.visible;
-        break;
+        // case 'mcmurdo asma':
+        // mcMurdoAsmaLayer.visible = !mcMurdoAsmaLayer.visible;
+        // break;
 
         case 'abiotic':
         var sublayer = abioticLayer.findSublayerById(parseInt(id));
