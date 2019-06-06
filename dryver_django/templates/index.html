@@ -66,9 +66,9 @@
                             <h2>Jump to Location</h2>
                             <form class="loc_jump">
                                 <label for="lat">Latitude:</label>
-                                <input id="lat_jump" class="form-control" type="number" name="lat" required>
+                                <input id="lat_jump" class="form-control" type="number" step="any" name="lat" required>
                                 <label for="long">Longitude:</label>
-                                <input id="long_jump" class="form-control" type="number" name="long" required>
+                                <input id="long_jump" class="form-control" type="number" step="any" name="long" required>
                                 <button type="submit" class="btn btn-primary">Jump</button>
                             </form>
                         </div>
@@ -103,7 +103,8 @@
                 <div class="col-md-12 header">
                     <div class="logo">
                         <a href="/">
-                            <img style="max-width: 114px;" src="{% static 'img/Logo.png' %}" alt="..."/></a>
+                            <img style="max-width: 114px;" src="{% static 'img/Logo.png' %}" alt="..."/>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -130,7 +131,7 @@
                                 <li class="abiotic-layer hide"><a href="#">LIDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                                 <!-- <li class="abiotic-layer hide"><a href="#">McMurdo ASMA<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="mcmurdo asma" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
                                 <li class="abiotic-layer hide"><a href="#">Antarctic Managed Area<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li>
-                                <!-- <li class="abiotic-layer hide"><a href="#">Antarctic Placenames<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="asma" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
+                                <!-- <li class="abiotic-layer hide"><a href="#">SCAR Placenames<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="asma" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
                                 <li class="drop-down" data-target="aquatic-layer"><a href="#" class="activepoint">Aquatic<span><i class="fas fa-angle-down"></i></span></a></li>
                                 <li class="aquatic-layer hide"><a href="#">Aquatic habitat Classification<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                                 <li class="aquatic-layer hide"><a href="#">Aquatic Connectivity<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
