@@ -29,9 +29,12 @@
     <!--/map-->
     <div class="row site">
         <div class="col-md-1 general_menu inner">
-            <a href="#" class="avatar">
-                <img src="{% static 'img/no_ava.png' %}" alt="..."/></a>
+            <!-- <a href="#" class="avatar">
+                <img src="{% static 'img/no_ava.png' %}" alt="..."/></a> -->
             <ul>
+                <li>
+                    <a href="#" data-name="jump-to-loc" class="gradientmenu"><i class="fas fa-search-location"></i></a>
+                </li>
                 <li>
                     <a href="#" data-name="Dryver" class="gradientmenu"><i class="fas fa-icicles"></i></a>
                 </li>
@@ -47,53 +50,10 @@
                 <li>
                     <a href="{% url 'Windy' %}" class="gradientmenu Windy"><i class="icon-wind"></i></a>
                 </li>
+                <li>
+                    <a href="{% url 'logout' %}" class="gradientmenu logout"><i class="fas fa-sign-out-alt"></i></a>
+                </li>
             </ul>
-        </div>
-        <!--Profile-->
-        
-        <div class="col-md-12 profile profile_closed" id="profile">
-            <span class="close_span" id="open_span"><a href="#" class="close-profile-link clooses" id="link_open">+</a></span>
-            <!--User info-->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="user">
-                        <br>
-                        <!-- <div class="buttons">
-                            <a href="{% url 'Windy' %}" target="_blank" class="btn btn-info btn-sm"><i class="icon-wind"></i> Check Weather</a>
-                        </div> -->
-                        <!-- <img src="{% static 'img/ava1.png' %}" alt="..."/> -->
-                        <div>
-                            <h2>Jump to Location</h2>
-                            <form class="loc_jump">
-                                <label for="lat">Latitude:</label>
-                                <input id="lat_jump" class="form-control" type="number" step="any" name="lat" required>
-                                <label for="long">Longitude:</label>
-                                <input id="long_jump" class="form-control" type="number" step="any" name="long" required>
-                                <button type="submit" class="btn btn-primary">Jump</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="buttons">
-                        <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Sign out</a>
-                    </div>
-                </div>
-            </div>
-            <!--/User info-->
-            <div class="row">
-                <!--about-->
-                <!-- <div class="col-md-7">
-                    <h2>About me</h2>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </div> -->
-                <!--/about-->
-                <!--latest tweet-->
-                <!-- <div class="col-md-5 tweets">
-                    <h2>Latest tweet</h2>
-                    <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. <i></i></span>
-                    <div class="tweet_link"><a href="#">@mattew An</a><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label>.12.2013   23:33</div>
-                </div> -->
-                <!--/latest tweet-->
-            </div>
         </div>
         <!--/Profile-->
         <!--Content-->
@@ -121,6 +81,16 @@
                 <div class="col-md-12">
                     <div id="tabs">
                         <div id="tab1" class="tab">
+                            <h5 class="cat">Jump To Location</h5>
+                            <form class="loc_jump">
+                                <label for="lat">Latitude:</label>
+                                <input id="lat_jump" class="form-control" type="number" step="any" name="lat" required>
+                                <label for="long">Longitude:</label>
+                                <input id="long_jump" class="form-control" type="number" step="any" name="long" required>
+                                <button type="submit" class="btn btn-primary">Jump</button>
+                            </form>
+                        </div>
+                        <div id="tab2" class="tab">
                             <h5 class="cat">DryVER</h5>
                             <ul class="catalog">
                                 <li class="drop-down" data-target="abiotic-layer"><a href="#" class="activepoint">Abiotic<span><i class="fas fa-angle-down"></i></span></a></li>
@@ -152,7 +122,7 @@
                                 <li class="drop-down" data-target="ecoforcasting-layer"><a href="#" class="activepoint">Ecoforecasting<span><i class="fas fa-angle-down"></i></span></a></li>
                             </ul>
                         </div>
-                        <div id="tab2" class="tab">
+                        <div id="tab3" class="tab">
                             <h5 class="cat">Datasets</h5>
                             <ul class="catalog">
                                 <li class="agar-layer"><a href="#">AGAR<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="agar" type="checkbox"><span class="slider round"></span></label></span></a></li>
@@ -160,7 +130,7 @@
                                 <li class="agar-layer"><a href="#">Antarctic Events<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="layer-to-add" type="checkbox"><span class="slider round"></span></label></span></a></li>
                             </ul>
                         </div>
-                        <div id="tab3" class="tab">
+                        <div id="tab4" class="tab">
                             <h5 class="cat">Tools</h5>
                             <ul class="catalog">
                                 <li><a href="#">Internet cafe<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
@@ -171,7 +141,7 @@
                                 <li><a href="#">Classic game<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                             </ul>
                         </div>
-                        <div id="tab4" class="tab">
+                        <div id="tab5" class="tab">
                             <h5 class="cat">PDF Report Form</h5>
                             <form method="POST">
                                 {% csrf_token %}
@@ -223,8 +193,13 @@
     <!-- Using this because the classes in above button don't let it happen -->
     <script type="text/javascript">
         var currently_opened = ''
-        $('.Windy').click(function(){
+        $('.Windy').click(function(evt){
+            evt.stopImmediatePropagation();
             window.location = "{% url 'Windy' %}";
+        });
+        $('.logout').click(function(evt){
+            evt.stopImmediatePropagation();
+            window.location = "{% url 'logout' %}";
         });
         // if a tab item is clicked, check if profile_closed is there, remove it and update the currently_opened
         // otherwise check currently_opened, if it is clicked again, remove active from both the items and add profile_closed and remove currently_opened
@@ -248,3 +223,6 @@
         });
     </script>
 {% endblock %}
+
+
+<!-- Continue from shifting the profile block content to side bar, make signout button and use prevent default or something to stop opening the window and just redirect the user from there -->
