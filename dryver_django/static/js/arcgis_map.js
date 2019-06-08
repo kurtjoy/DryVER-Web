@@ -556,10 +556,26 @@ $(document).ready(function () {
           }
         }
 
-        $('.loc_jump').submit(function(evt){
-            var lat = $('#lat_jump').val()
-            var long = $('#long_jump').val()
-            console.log('submitted')
+        $('.jump_deg').click(function(){
+          console.log('deg');
+          $('.loc_jump_dd').removeClass('hidden')
+          $('.loc_jump_dm').addClass('hidden')
+        }); 
+        
+        $('.jump_deg_min').click(function(){
+          $('.loc_jump_dd').addClass('hidden')
+          $('.loc_jump_dm').removeClass('hidden')
+        }); 
+
+        $('.loc_jump_dm').submit(function(evt){
+            var lat = parseFloat($('#lat_deg_jump').val())
+            var lat_min = parseFloat($('#lat_min_jump').val())
+            lat_min /= 60;
+            lat += lat_min;
+            var long = parseFloat($('#long_deg_jump').val())
+            var long_min = parseFloat($('#long_min_jump').val())
+            long_min /= 60;
+            long += long_min;
             evt.preventDefault();
             var new_loc = new Point({
                 latitude: lat,
@@ -567,6 +583,17 @@ $(document).ready(function () {
             });
             view.goTo(new_loc)
         });
+
+        $('.loc_jump_dd').submit(function(evt){
+          var lat = parseFloat($('#lat_jump').val());
+          var long = parseFloat($('#long_jump').val());
+          evt.preventDefault();
+          var new_loc = new Point({
+              latitude: lat,
+              longitude: long
+          });
+          view.goTo(new_loc)
+      });
 
         view.when(function() {
             // executeIdentifyTask() is called each time the view is clicked

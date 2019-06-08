@@ -82,11 +82,32 @@
                     <div id="tabs">
                         <div id="tab1" class="tab">
                             <h5 class="cat">Jump To Location</h5>
-                            <form class="loc_jump">
+                            <span class="btn-group btn-group-toggle col-md-12" data-toggle="buttons">
+                                <label class="btn btn-primary col-md-6 jump_deg">
+                                    <input type="radio" name="jump_option" value="1" id="option1"> Decimal<br>Degrees
+                                </label>
+                                <label class="btn btn-primary col-md-6 jump_deg_min">
+                                    <input type="radio" name="jump_option" value="2" id="option2"> Decimal<br>Minutes
+                                </label>
+                            </span>
+                            <form class="loc_jump_dd">
                                 <label for="lat">Latitude:</label>
-                                <input id="lat_jump" class="form-control" type="number" step="any" name="lat" required>
+                                <input id="lat_jump" class="form-control" type="number" step="any" name="lat" min="-90" max="90" required>
                                 <label for="long">Longitude:</label>
-                                <input id="long_jump" class="form-control" type="number" step="any" name="long" required>
+                                <input id="long_jump" class="form-control" type="number" step="any" name="long" min="-180" max="180" required>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Jump</button>
+                            </form>
+                            <form class="loc_jump_dm hidden">
+                                <label for="lat">Latitude Degrees:</label>
+                                <input id="lat_deg_jump" class="form-control" type="number" name="lat_deg" min="-90" max="90" required>
+                                <label for="lat">Latitude Minutes:</label>
+                                <input id="lat_min_jump" class="form-control" type="number" step="any" name="lat_min" value="0" min="0" max="60" required>
+                                <label for="long">Longitude Degrees:</label>
+                                <input id="long_deg_jump" class="form-control" type="number" name="long_deg" min="-180" max="180" required>
+                                <label for="lat">Longitude Minutes:</label>
+                                <input id="long_min_jump" class="form-control" type="number" step="any" name="long_min" value="0" min="0" max="60" required>
+                                <br>
                                 <button type="submit" class="btn btn-primary">Jump</button>
                             </form>
                         </div>
