@@ -556,8 +556,17 @@ $(document).ready(function () {
           }
         }
 
+        $('.distance-measurement-button').click(function(){
+          $(this).toggleClass('esri-icon-minus');
+          $(this).toggleClass('fas fa-angle-double-right');
+        }); 
+
+        $('.area-measurement-button').click(function(){
+          $(this).toggleClass('esri-icon-polygon');
+          $(this).toggleClass('fas fa-angle-double-right');
+        }); 
+
         $('.jump_deg').click(function(){
-          console.log('deg');
           $('.loc_jump_dd').removeClass('hidden')
           $('.loc_jump_dm').addClass('hidden')
         }); 
