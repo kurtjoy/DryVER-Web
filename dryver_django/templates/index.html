@@ -33,7 +33,7 @@
                 <img src="{% static 'img/no_ava.png' %}" alt="..."/></a> -->
             <ul>
                 <li>
-                    <a href="#" data-name="jump-to-loc" class="gradientmenu"><i class="fas fa-search-location"></i></a>
+                    <a href="#" data-name="jump-to-loc" id="jump-to-loc-icon" class="gradientmenu"><i class="fas fa-search-location"></i></a>
                 </li>
                 <li>
                     <a href="#" data-name="Dryver" class="gradientmenu"><i class="fas fa-icicles"></i></a>
@@ -45,13 +45,13 @@
                     <a href="#" data-name="Tools" class="gradientmenu"><i class="fas fa-tools"></i></a>
                 </li>
                 <li>
-                    <a href="#" class="gradientmenu"><i class="fas fa-file"></i></a>
+                    <a href="#" class="gradientmenu" id="pdf-report-form"><i class="fas fa-file"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'Windy' %}" class="gradientmenu Windy"><i class="icon-wind"></i></a>
+                    <a href="{% url 'Windy' %}" id="windy-button" class="gradientmenu Windy"><i class="icon-wind"></i></a>
                 </li>
                 <li>
-                    <a href="{% url 'logout' %}" class="gradientmenu logout"><i class="fas fa-sign-out-alt"></i></a>
+                    <a href="{% url 'logout' %}" id="logout" class="gradientmenu logout"><i class="fas fa-sign-out-alt"></i></a>
                 </li>
             </ul>
         </div>
@@ -242,5 +242,27 @@
                 }
             }
         });
+        tippy('#jump-to-loc-icon', {
+            content: 'Jump to any location (Latitude/Longitude) on the map',
+            size: 'large'
+        });
+
+        tippy('#pdf-report-form', {
+            content: 'Generate PDF Reports',
+            size: 'large'
+        });
+
+        tippy('#windy-button', {
+            content: 'Check Windy Weather',
+            size: 'large'
+        });
+
+        tippy('#logout', {
+            content: 'Signout',
+            size: 'large'
+        });
     </script>
 {% endblock %}
+
+
+<!-- Continue from adding tipy hints -->

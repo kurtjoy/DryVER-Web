@@ -58,7 +58,9 @@
     {% block content %}
 
     {% endblock %}
-
+    
+    <script src="https://unpkg.com/popper.js@1"></script>
+    <script src="https://unpkg.com/tippy.js@4"></script>
     <!--jQuery-->
     <script type="text/javascript" src="{% static 'js/jQueryv2.0.3.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/pxgradient-1.0.2.jquery.js' %}"></script>
@@ -66,8 +68,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static 'js/bootstrap.js' %}"></script>
     <script src="{% static 'date_picker/js/bootstrap-datepicker.min.js' %}"></script>
-    <!-- ArcGIS API import -->
-    <script src="https://js.arcgis.com/4.11/"></script>
     
     <!--Google maps API linl-->
     <!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCsbzuJDUEOoq-jS1HO-LUXW4qo0gW9FNs&sensor=false"></script> -->
@@ -108,6 +108,7 @@
     </script>
     <!--/Script for worked left smile categoryes menu-->
     <!--Script for worked profile page-->
+    
     <script type="text/javascript" src="{% static 'js/owl.carousel.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -151,6 +152,9 @@
 
         });
     </script>
+    <!-- should always be in the end because: https://gis.stackexchange.com/questions/199118/error-multiple-define-when-loading-base-script -->
+    <!-- ArcGIS API import -->
+    <script src="https://js.arcgis.com/4.11/"></script>
     {% block scripts %}
     {% endblock %}
     <!--/Script for worked profile page-->
