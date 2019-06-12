@@ -15,6 +15,7 @@
         id="distanceButton"
         type="button"
         title="Measure distance between two or more points"
+        data-hint="Measure distance between two or more points"
       ></button>
       <br>
       <button
@@ -22,6 +23,7 @@
         id="areaButton"
         type="button"
         title="Measure area"
+        data-hint="Measure area"
       ></button>
     </div>
     <!--map-->
@@ -222,6 +224,7 @@
             evt.stopImmediatePropagation();
             window.location = "{% url 'logout' %}";
         });
+        
         // if a tab item is clicked, check if profile_closed is there, remove it and update the currently_opened
         // otherwise check currently_opened, if it is clicked again, remove active from both the items and add profile_closed and remove currently_opened
         $('.gradientmenu').click(function(){
@@ -261,6 +264,9 @@
             content: 'Signout',
             size: 'large'
         });
+        
+        // the hints won't change location after topbar has been added to the map, need to fix this
+        // introJs().addHints();
     </script>
 {% endblock %}
 
