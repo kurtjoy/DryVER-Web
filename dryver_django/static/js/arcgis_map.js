@@ -463,7 +463,7 @@ $(document).ready(function () {
               displayField: "PLACE_NAME",
               exactMatch: false,
               name: "SCAR Place Names",
-              placeholder: "Lake Buddha"
+              placeholder: "Place Name"
             },
           ]
         });
