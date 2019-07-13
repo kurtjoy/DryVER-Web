@@ -308,7 +308,7 @@ $(document).ready(function () {
 
         placeNamesLayer = new FeatureLayer({
           url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
-          title: "nzTABS Sample Sites",
+          title: "SCAR Placenames",
           visible: true,
         });
         placeNamesLayer.minScale = 70000;
@@ -455,6 +455,7 @@ $(document).ready(function () {
         var searchWidget = new Search({
           view: view,
           allPlaceholder: "Search",
+          // autoSelect: true,
           includeDefaultSources: false,
           sources: [
             {
@@ -463,7 +464,8 @@ $(document).ready(function () {
               displayField: "PLACE_NAME",
               exactMatch: false,
               name: "SCAR Place Names",
-              placeholder: "Place Name"
+              placeholder: "Place Name",
+              zoomScale: 50000,
             },
           ]
         });
