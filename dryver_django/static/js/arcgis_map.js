@@ -420,7 +420,7 @@ $(document).ready(function () {
                 {layer: climateLayer,title: "Climate"},
                 {layer: aquaticLayer,title: "Aquatic"},
                 {layer: asmaLayer, title:"ASMA"},
-                {layer: mcMurdoAsmaLayer, title:"McMurdo ASMA"},
+                // {layer: mcMurdoAsmaLayer, title:"McMurdo ASMA"},
                 {layer: antarcticManagedAreaLayer, title:"Antarctic Managed Area"},
                 {layer: agarLayer, title:"AGAR"},
                 {layer: impactLayer, title:"Impact"},
