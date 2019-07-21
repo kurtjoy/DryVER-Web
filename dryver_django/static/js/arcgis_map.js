@@ -1,6 +1,6 @@
 var view;
 var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
-var antarcticManagedAreaLayer, mcMurdoAsmaLayer;
+var antarcticManagedAreaLayer, mcMurdoAsmaLayer, particleDensityContourLayer, particleDensityLayer;
 var activeWidget = null;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
@@ -377,8 +377,35 @@ $(document).ready(function () {
                   title: "5 Yr Annual max wind speed",
                   visible: false,
                 },
+                {
+                  id: 7,
+                  title: "Particle density",
+                  visible: false,
+                },
             ]
         });
+
+        var ParticleDensityContoururl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CLIMATE/MapServer/6"
+        // var ParticleDensityurl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CLIMATE/MapServer/7"
+
+        particleDensityContourLayer = new FeatureLayer({
+          url: ParticleDensityContoururl,
+          title: "Particle density contours",
+          visible: false,
+        });
+
+        // particleDensityLayer = new FeatureLayer({
+        //   url: ParticleDensityurl,
+        //   title: "Particle density",
+        //   visible: false,
+        // });
+
+        placeNamesLayer = new FeatureLayer({
+          url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
+          title: "SCAR Placenames",
+          visible: true,
+        });
+        placeNamesLayer.minScale = 70000;
 
         map.add(abioticLayer);
         map.add(aquaticLayer);
@@ -392,6 +419,8 @@ $(document).ready(function () {
         map.add(sensitivityLayer);
         map.add(terrestrialLayer);
         map.add(climateLayer);
+        map.add(particleDensityContourLayer);
+        map.add(particleDensityLayer);
         map.add(placeNamesLayer);
         // widgets
         // zoom
@@ -418,6 +447,7 @@ $(document).ready(function () {
             layerInfos: [
                 {layer: abioticLayer,title: "Abiotic"},
                 {layer: climateLayer,title: "Climate"},
+                {layer: particleDensityContourLayer,title: "Particle Density Contour"},
                 {layer: aquaticLayer,title: "Aquatic"},
                 {layer: asmaLayer, title:"ASMA"},
                 // {layer: mcMurdoAsmaLayer, title:"McMurdo ASMA"},
@@ -720,6 +750,14 @@ $('.layer-toggle').click(function(){
         case 'antarctic managed area':
         antarcticManagedAreaLayer.visible = !antarcticManagedAreaLayer.visible;
         break;
+
+        case 'particle density contour':
+        particleDensityContourLayer.visible = !particleDensityContourLayer.visible;
+        break;
+
+        // case 'particle density':
+        // particleDensityLayer.visible = !particleDensityLayer.visible;
+        // break;
 
         // case 'mcmurdo asma':
         // mcMurdoAsmaLayer.visible = !mcMurdoAsmaLayer.visible;
