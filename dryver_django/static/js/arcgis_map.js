@@ -168,6 +168,26 @@ $(document).ready(function () {
                   title: "Wetness Index",
                   visible: false,
                 },
+                {
+                  id: 3,
+                  title: "Distance to Water",
+                  visible: false,
+                },
+                {
+                  id: 4,
+                  title: "Distance to Streams",
+                  visible: false,
+                },
+                {
+                  id: 5,
+                  title: "Distance to Water Bodies",
+                  visible: false,
+                },
+                {
+                  id: 6,
+                  title: "Distance to Coast",
+                  visible: false,
+                },
             ]
         });
 
