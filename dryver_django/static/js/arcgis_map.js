@@ -4,775 +4,822 @@ var antarcticManagedAreaLayer, mcMurdoAsmaLayer, particleDensityContourLayer, pa
 var activeWidget = null;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
-    require([
-        "esri/Map",
-        "esri/views/SceneView",
-        "esri/views/MapView",
-        "esri/layers/FeatureLayer",
-        "esri/layers/ImageryLayer",
-        "esri/layers/MapImageLayer",
-        "esri/tasks/IdentifyTask",
-        "esri/tasks/support/IdentifyParameters",
-        "esri/geometry/Point",
-        "esri/widgets/Zoom",
-        "esri/widgets/Legend",
-        "esri/widgets/Expand",
-        "esri/widgets/LayerList",
-        "esri/widgets/Compass",
-        "esri/widgets/ScaleBar",
-        "esri/widgets/Search",
-        "esri/widgets/DistanceMeasurement2D",
-        "esri/widgets/AreaMeasurement2D",
-        "dojo/domReady!",
-        ], function(
-            Map,
-            SceneView,
-            MapView,
-            FeatureLayer,
-            ImageryLayer,
-            MapImageLayer,
-            IdentifyTask,
-            IdentifyParameters,
-            Point,
-            Zoom,
-            Legend,
-            Expand,
-            LayerList,
-            Compass,
-            ScaleBar,
-            Search,
-            DistanceMeasurement2D,
-            AreaMeasurement2D,) {
+  require([
+    "esri/Map",
+    "esri/views/SceneView",
+    "esri/views/MapView",
+    "esri/layers/FeatureLayer",
+    "esri/layers/ImageryLayer",
+    "esri/layers/MapImageLayer",
+    "esri/tasks/IdentifyTask",
+    "esri/tasks/support/IdentifyParameters",
+    "esri/geometry/Point",
+    "esri/widgets/Zoom",
+    "esri/widgets/Legend",
+    "esri/widgets/Expand",
+    "esri/widgets/LayerList",
+    "esri/widgets/Compass",
+    "esri/widgets/ScaleBar",
+    "esri/widgets/Search",
+    "esri/widgets/DistanceMeasurement2D",
+    "esri/widgets/AreaMeasurement2D",
+    "dojo/domReady!",
+  ], function (
+    Map,
+    SceneView,
+    MapView,
+    FeatureLayer,
+    ImageryLayer,
+    MapImageLayer,
+    IdentifyTask,
+    IdentifyParameters,
+    Point,
+    Zoom,
+    Legend,
+    Expand,
+    LayerList,
+    Compass,
+    ScaleBar,
+    Search,
+    DistanceMeasurement2D,
+    AreaMeasurement2D, ) {
 
-        var identifyTask, params;
-        
-        var map = new Map({
-            basemap: "satellite",
-            // ground: "world-elevation"
-        });
-        view = new MapView({
-            container: "map_canvas",  // Reference to the DOM node that will contain the view
-            map: map,  // References the map object created in step 3
-            center: [162, -77.5],
-            zoom: 7,
-        });
+    var identifyTask, params;
 
-        // symbologies and renderers
+    var map = new Map({
+      basemap: "satellite",
+      // ground: "world-elevation"
+    });
+    view = new MapView({
+      container: "map_canvas", // Reference to the DOM node that will contain the view
+      map: map, // References the map object created in step 3
+      center: [162, -77.5],
+      zoom: 7,
+    });
 
-        var nzTabsSym = {
-            type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-            color: [0, 0, 0],
-            outline: {
-              // autocasts as new SimpleLineSymbol()
-              color: "#5d8eae",
-              width: 1
-            }
-        };
-        var nzTabsRenderer = {
-            type: "simple", // autocasts as new SimpleRenderer()
-            symbol: nzTabsSym,
-            visualVariables: [
-              {
-                type: "size",
-                field: "WET",
-                // normalizationField: "PH",
-                legendOptions: {
-                  title: "nzTABS Sample Sites"
-                },
-                stops: [
-                  {
-                    value: 4,
-                    size: 4,
-                    label: "0-4"
-                  },
-                  {
-                    value: 6,
-                    size: 8,
-                    label: "4-6"
-                  },
-                  {
-                    value: 8,
-                    size: 12,
-                    label: "6-8"
-                  },
-                  {
-                    value: 10,
-                    size: 16,
-                    label: "8-10"
-                  },
-                  {
-                    value: 12,
-                    size: 20,
-                    label: "10-12"
-                  }
-                ]
-              }
-            ],
-            
-            useSymbolValue: true
-          };
+    // symbologies and renderers
 
-                            
-        // layers
+    var nzTabsSym = {
+      type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+      color: [0, 0, 0],
+      outline: {
+        // autocasts as new SimpleLineSymbol()
+        color: "#5d8eae",
+        width: 1
+      }
+    };
+    var nzTabsRenderer = {
+      type: "simple", // autocasts as new SimpleRenderer()
+      symbol: nzTabsSym,
+      visualVariables: [{
+        type: "size",
+        field: "WET",
+        // normalizationField: "PH",
+        legendOptions: {
+          title: "nzTABS Sample Sites"
+        },
+        stops: [{
+            value: 4,
+            size: 4,
+            label: "0-4"
+          },
+          {
+            value: 6,
+            size: 8,
+            label: "4-6"
+          },
+          {
+            value: 8,
+            size: 12,
+            label: "6-8"
+          },
+          {
+            value: 10,
+            size: 16,
+            label: "8-10"
+          },
+          {
+            value: 12,
+            size: 20,
+            label: "10-12"
+          }
+        ]
+      }],
 
-        abioticLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
-            title: "Abiotic",
-            sublayers: [
-                {
-                  id: 1,
-                  title: "GNS Ice",
-                  visible: false,
-                },
-                {
-                  id: 2,
-                  title: "GNS Geology",
-                  visible: false,
-                },
-                {
-                  id: 3,
-                  title: "Aspect",
-                  visible: false,
-                },
-                {
-                  id: 4,
-                  title: "Slope",
-                  visible: false,
-                },
-                {
-                  id: 5,
-                  title: "Lidar Hillshades",
-                  visible: false,
-                },
-            ]
-        });
+      useSymbolValue: true
+    };
 
-        var aquaticLayerUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer"
 
-        aquaticLayer = new MapImageLayer({
-            url: aquaticLayerUrl,
-            title: "Aquatic",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "LANDCARE Soils",
-                  visible: false,
-                },
-                {
-                  id: 1,
-                  title: "Streams",
-                  visible: false,
-                },
-                {
-                  id: 2,
-                  title: "Wetness Index",
-                  visible: false,
-                },
-                {
-                  id: 3,
-                  title: "Distance to Water",
-                  visible: false,
-                },
-                {
-                  id: 4,
-                  title: "Distance to Streams",
-                  visible: false,
-                },
-                {
-                  id: 5,
-                  title: "Distance to Water Bodies",
-                  visible: false,
-                },
-                {
-                  id: 6,
-                  title: "Distance to Coast",
-                  visible: false,
-                },
-            ]
-        });
+    // layers
 
-        asmaLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer",
-            title: "ASMA",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "SCAR Place Names",
-                  visible: false,
-                },
-                {
-                  id: 1,
-                  title: "Antarctic Managed Area",
-                  visible: false,
-                },
-                {
-                  id: 2,
-                  title: "McMurdo ASMA",
-                  visible: false,
-                },
-            ]
-        });
-
-        var antarcticManagedAreaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/1"
-
-        antarcticManagedAreaLayer = new FeatureLayer({
-          url: antarcticManagedAreaUrl,
-          title: "Antarctic Managed Area",
-          // id: "event",
-          visible: true,
-          // renderer: nzTabsRenderer,
-          // popupTemplate: eventTemp
-        });
-
-        var mcMurdoAsmaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/2"
-
-        mcMurdoAsmaLayer = new FeatureLayer({
-          url: mcMurdoAsmaUrl,
-          title: "McMurdo ASMA",
-          // id: "event",
-          visible: true,
-          // renderer: nzTabsRenderer,
-          // popupTemplate: eventTemp
-        });
-
-        agarLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer",
-            title: "AGAR",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "AGAR Sample Points",
-                  visible: false,
-                },
-            ]
-        });
-
-        impactLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
-            title: "Impact",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "Disturbance sample sites",
-                  visible: false,
-                },
-                {
-                  id: 1,
-                  title: "Human Impact Sensitivity",
-                  visible: false,
-                },
-            ]
-        });
-
-        var napLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NAP/MapServer",
-            title: "NAP",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "NZ Events 1968-2002",
-                  visible: false,
-                },
-                {
-                  id: 1,
-                  title: "MDV_ASMA",
-                  visible: false,
-                },
-                {
-                  id: 2,
-                  title: "Hillshade",
-                  visible: false,
-                },
-            ]
-        });
-
-        // nztabsLayer = new MapImageLayer({
-        //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
-        //     title: "nzTABS",
-        //     sublayers: [
-        //         {
-        //           id: 0,
-        //           title: "nzTABS Sample Sites",
-        //           visible: false,
-        //           renderer: nzTabsRenderer,
-        //           fieldInfos: [
-        //             {
-        //               fieldName: "WET",
-        //               format: {
-        //                 digitSeparator: true,
-        //                 places: 0
-        //               }
-        //             },
-        //             {
-        //               fieldName: "PH",
-        //               format: {
-        //                 digitSeparator: true,
-        //                 places: 0
-        //               }
-        //             }
-        //           ]
-        //         },
-        //     ]
-        // });
-
-        var nztabsUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0"
-
-        nztabsLayer = new FeatureLayer({
-            url: nztabsUrl,
-            title: "nzTABS Sample Sites",
-            // id: "event",
-            visible: false,
-            renderer: nzTabsRenderer,
-            // popupTemplate: eventTemp
-        });
-
-        placeNamesLayer = new FeatureLayer({
-          url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
-          title: "SCAR Placenames",
-          visible: true,
-        });
-        placeNamesLayer.minScale = 70000;
-
-        var sensitivityLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/SENSITIVITY/MapServer",
-            title: "Sensitivity",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "MDV_ASMA",
-                  visible: false,
-                },
-                {
-                  id: 1,
-                  title: "Hillshade",
-                  visible: false,
-                },
-            ]
-        });
-
-        var terrestrialLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/TERRESTRIAL/MapServer",
-            title: "Terrestrial",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "Cyanobacterial Prediction",
-                  visible: false,
-                //   renderer: rendererToUse
-                },
-            ]
-        });
-
-        climateLayer = new MapImageLayer({
-            url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer",
-            title: "Climate",
-            sublayers: [
-                {
-                  id: 0,
-                  title: "Summer high wind hotspots (>10ms)",
-                  visible: false,
-                },
-                {
-                  id: 1,
-                  title: "Yearly high wind hotspots (>10ms)",
-                  visible: false,
-                },
-                {
-                  id: 2,
-                  title: "5 Yr Summer mean wind speed",
-                  visible: false,
-                },
-                {
-                  id: 3,
-                  title: "5 Yr Annual mean wind speed",
-                  visible: false,
-                },
-                {
-                  id: 4,
-                  title: "5 Yr Summer max wind speed",
-                  visible: false,
-                },
-                {
-                  id: 5,
-                  title: "5 Yr Annual max wind speed",
-                  visible: false,
-                },
-                {
-                  id: 7,
-                  title: "Particle density",
-                  visible: false,
-                },
-            ]
-        });
-
-        var ParticleDensityContoururl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CLIMATE/MapServer/6"
-        // var ParticleDensityurl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CLIMATE/MapServer/7"
-
-        particleDensityContourLayer = new FeatureLayer({
-          url: ParticleDensityContoururl,
-          title: "Particle density contours",
+    abioticLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
+      title: "Abiotic",
+      sublayers: [{
+          id: 1,
+          title: "GNS Ice",
           visible: false,
-        });
+        },
+        {
+          id: 2,
+          title: "GNS Geology",
+          visible: false,
+        },
+        {
+          id: 3,
+          title: "Aspect",
+          visible: false,
+        },
+        {
+          id: 4,
+          title: "Slope",
+          visible: false,
+        },
+        {
+          id: 5,
+          title: "Lidar Hillshades",
+          visible: false,
+        },
+      ]
+    });
 
-        // particleDensityLayer = new FeatureLayer({
-        //   url: ParticleDensityurl,
-        //   title: "Particle density",
-        //   visible: false,
-        // });
+    var aquaticLayerUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer"
 
-        placeNamesLayer = new FeatureLayer({
-          url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
-          title: "SCAR Placenames",
-          visible: true,
-        });
-        placeNamesLayer.minScale = 70000;
+    aquaticLayer = new MapImageLayer({
+      url: aquaticLayerUrl,
+      title: "Aquatic",
+      sublayers: [{
+          id: 0,
+          title: "LANDCARE Soils",
+          visible: false,
+        },
+        {
+          id: 1,
+          title: "Streams",
+          visible: false,
+        },
+        {
+          id: 2,
+          title: "Wetness Index",
+          visible: false,
+        },
+        {
+          id: 3,
+          title: "Distance to Water",
+          visible: false,
+        },
+        {
+          id: 4,
+          title: "Distance to Streams",
+          visible: false,
+        },
+        {
+          id: 5,
+          title: "Distance to Water Bodies",
+          visible: false,
+        },
+        {
+          id: 6,
+          title: "Distance to Coast",
+          visible: false,
+        },
+      ]
+    });
 
-        map.add(abioticLayer);
-        map.add(aquaticLayer);
-        map.add(asmaLayer);
-        map.add(antarcticManagedAreaLayer);
-        map.add(mcMurdoAsmaLayer);
-        map.add(agarLayer);
-        map.add(impactLayer);
-        map.add(napLayer);
-        map.add(nztabsLayer);
-        map.add(sensitivityLayer);
-        map.add(terrestrialLayer);
-        map.add(climateLayer);
-        map.add(particleDensityContourLayer);
-        map.add(particleDensityLayer);
-        map.add(placeNamesLayer);
-        // widgets
-        // zoom
-        var zoom = new Zoom({
-          view: view
-        });
+    asmaLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer",
+      title: "ASMA",
+      sublayers: [{
+          id: 0,
+          title: "SCAR Place Names",
+          visible: false,
+        },
+        {
+          id: 1,
+          title: "Antarctic Managed Area",
+          visible: false,
+        },
+        {
+          id: 2,
+          title: "McMurdo ASMA",
+          visible: false,
+        },
+      ]
+    });
 
-        // compass
-        var compass = new Compass({
-            view: view
-        });
+    var antarcticManagedAreaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/1"
 
-        var scaleBar = new ScaleBar({
-            view: view
-        });
+    antarcticManagedAreaLayer = new FeatureLayer({
+      url: antarcticManagedAreaUrl,
+      title: "Antarctic Managed Area",
+      // id: "event",
+      visible: true,
+      // renderer: nzTabsRenderer,
+      // popupTemplate: eventTemp
+    });
 
-        
-        
+    var mcMurdoAsmaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/2"
 
-        // legend
-        var legendList = new Legend ({
-            view: view,
-            container: document.createElement("div"),
-            layerInfos: [
-                {layer: abioticLayer,title: "Abiotic"},
-                {layer: climateLayer,title: "Climate"},
-                {layer: particleDensityContourLayer,title: "Particle Density Contour"},
-                {layer: aquaticLayer,title: "Aquatic"},
-                {layer: asmaLayer, title:"ASMA"},
-                // {layer: mcMurdoAsmaLayer, title:"McMurdo ASMA"},
-                {layer: antarcticManagedAreaLayer, title:"Antarctic Managed Area"},
-                {layer: agarLayer, title:"AGAR"},
-                {layer: impactLayer, title:"Impact"},
-                {layer: napLayer, title:"NAP"},
-                {layer: nztabsLayer, title:"nzTABS"},
-                {layer: sensitivityLayer, title:"Sensitivity"},
-                {layer: terrestrialLayer, title:"Terrestrial"},
-            ]});
-        
-        var legendEx = new Expand({
-            view: view,
-            expandTooltip: "Legend",
-            content: legendList.container,
-            autoCollapse: false,
-            expandIconClass: "esri-icon-collection"
-        });
-        
-        
+    mcMurdoAsmaLayer = new FeatureLayer({
+      url: mcMurdoAsmaUrl,
+      title: "McMurdo ASMA",
+      // id: "event",
+      visible: true,
+      // renderer: nzTabsRenderer,
+      // popupTemplate: eventTemp
+    });
 
-        var layerList = new LayerList({
-            container: document.createElement("div"),
-            view: view
-        });
+    agarLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer",
+      title: "AGAR",
+      sublayers: [{
+        id: 0,
+        title: "AGAR Sample Points",
+        visible: false,
+      }, ]
+    });
 
-        layerListExpand = new Expand({
-            expandIconClass: "esri-icon-layer-list",  // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
-            // expandTooltip: "Expand LayerList", // optional, defaults to "Expand" for English locale
-            view: view,
-            content: layerList.domNode
-        });
-        
-        var searchWidget = new Search({
-          view: view,
-          allPlaceholder: "Search",
-          // autoSelect: true,
-          includeDefaultSources: false,
-          sources: [
-            {
-              layer: placeNamesLayer,
-              searchFields: ["PLACE_NAME"],
-              displayField: "PLACE_NAME",
-              exactMatch: false,
-              name: "SCAR Place Names",
-              placeholder: "Place Name",
-              zoomScale: 50000,
-            },
-          ]
-        });
+    impactLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
+      title: "Impact",
+      sublayers: [{
+          id: 0,
+          title: "Disturbance sample sites",
+          visible: false,
+        },
+        {
+          id: 1,
+          title: "Human Impact Sensitivity",
+          visible: false,
+        },
+      ]
+    });
 
-        // Add the search widget to the top right corner of the view
-        view.ui.add(searchWidget, {
-          position: "top-right"
-        });
+    var napLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NAP/MapServer",
+      title: "NAP",
+      sublayers: [{
+          id: 0,
+          title: "NZ Events 1968-2002",
+          visible: false,
+        },
+        {
+          id: 1,
+          title: "MDV_ASMA",
+          visible: false,
+        },
+        {
+          id: 2,
+          title: "Hillshade",
+          visible: false,
+        },
+      ]
+    });
 
-        view.ui.add(zoom, "top-right");
+    // nztabsLayer = new MapImageLayer({
+    //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
+    //     title: "nzTABS",
+    //     sublayers: [
+    //         {
+    //           id: 0,
+    //           title: "nzTABS Sample Sites",
+    //           visible: false,
+    //           renderer: nzTabsRenderer,
+    //           fieldInfos: [
+    //             {
+    //               fieldName: "WET",
+    //               format: {
+    //                 digitSeparator: true,
+    //                 places: 0
+    //               }
+    //             },
+    //             {
+    //               fieldName: "PH",
+    //               format: {
+    //                 digitSeparator: true,
+    //                 places: 0
+    //               }
+    //             }
+    //           ]
+    //         },
+    //     ]
+    // });
 
-        view.ui.add(compass, "top-right");
+    var nztabsUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0"
 
-        view.ui.add(scaleBar, "bottom-right");
+    nztabsLayer = new FeatureLayer({
+      url: nztabsUrl,
+      title: "nzTABS Sample Sites",
+      // id: "event",
+      visible: false,
+      renderer: nzTabsRenderer,
+      // popupTemplate: eventTemp
+    });
 
-        view.ui.add(legendEx,{
-            position: "top-right"
-        });
+    placeNamesLayer = new FeatureLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
+      title: "SCAR Placenames",
+      visible: true,
+    });
+    placeNamesLayer.minScale = 70000;
 
-        view.ui.add(layerListExpand, "top-right");
+    var sensitivityLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/SENSITIVITY/MapServer",
+      title: "Sensitivity",
+      sublayers: [{
+          id: 0,
+          title: "MDV_ASMA",
+          visible: false,
+        },
+        {
+          id: 1,
+          title: "Hillshade",
+          visible: false,
+        },
+      ]
+    });
 
-        // add the toolbar for the measurement widgets
-        view.ui.add("topbar", "top-right");
+    var terrestrialLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/TERRESTRIAL/MapServer",
+      title: "Terrestrial",
+      sublayers: [{
+        id: 0,
+        title: "Cyanobacterial Prediction",
+        visible: false,
+        //   renderer: rendererToUse
+      }, ]
+    });
 
-        document
-          .getElementById("distanceButton")
-          .addEventListener("click", function() {
-            setActiveWidget(null);
-            if (!this.classList.contains("active")) {
-              setActiveWidget("distance");
-            } else {
-              setActiveButton(null);
-            }
-          });
+    climateLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer",
+      title: "Climate",
+      sublayers: [{
+          id: 0,
+          title: "Summer high wind hotspots (>10ms)",
+          visible: false,
+        },
+        {
+          id: 1,
+          title: "Yearly high wind hotspots (>10ms)",
+          visible: false,
+        },
+        {
+          id: 2,
+          title: "5 Yr Summer mean wind speed",
+          visible: false,
+        },
+        {
+          id: 3,
+          title: "5 Yr Annual mean wind speed",
+          visible: false,
+        },
+        {
+          id: 4,
+          title: "5 Yr Summer max wind speed",
+          visible: false,
+        },
+        {
+          id: 5,
+          title: "5 Yr Annual max wind speed",
+          visible: false,
+        },
+        {
+          id: 7,
+          title: "Particle density",
+          visible: false,
+        },
+      ]
+    });
 
-        document
-          .getElementById("areaButton")
-          .addEventListener("click", function() {
-            setActiveWidget(null);
-            if (!this.classList.contains("active")) {
-              setActiveWidget("area");
-            } else {
-              setActiveButton(null);
-            }
-          });
+    var ParticleDensityContoururl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CLIMATE/MapServer/6"
+    // var ParticleDensityurl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CLIMATE/MapServer/7"
 
-        function setActiveWidget(type) {
-          switch (type) {
-            case "distance":
-              activeWidget = new DistanceMeasurement2D({
-                view: view
-              });
+    particleDensityContourLayer = new FeatureLayer({
+      url: ParticleDensityContoururl,
+      title: "Particle density contours",
+      visible: false,
+    });
 
-              // skip the initial 'new measurement' button
-              activeWidget.viewModel.newMeasurement();
+    // particleDensityLayer = new FeatureLayer({
+    //   url: ParticleDensityurl,
+    //   title: "Particle density",
+    //   visible: false,
+    // });
 
-              view.ui.add(activeWidget, "top-right");
-              setActiveButton(document.getElementById("distanceButton"));
-              break;
-            case "area":
-              activeWidget = new AreaMeasurement2D({
-                view: view
-              });
+    placeNamesLayer = new FeatureLayer({
+      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
+      title: "SCAR Placenames",
+      visible: true,
+    });
+    placeNamesLayer.minScale = 70000;
 
-              // skip the initial 'new measurement' button
-              activeWidget.viewModel.newMeasurement();
+    map.add(abioticLayer);
+    map.add(aquaticLayer);
+    map.add(asmaLayer);
+    map.add(antarcticManagedAreaLayer);
+    map.add(mcMurdoAsmaLayer);
+    map.add(agarLayer);
+    map.add(impactLayer);
+    map.add(napLayer);
+    map.add(nztabsLayer);
+    map.add(sensitivityLayer);
+    map.add(terrestrialLayer);
+    map.add(climateLayer);
+    map.add(particleDensityContourLayer);
+    map.add(particleDensityLayer);
+    map.add(placeNamesLayer);
+    // widgets
+    // zoom
+    var zoom = new Zoom({
+      view: view
+    });
 
-              view.ui.add(activeWidget, "top-right");
-              setActiveButton(document.getElementById("areaButton"));
-              break;
-            case null:
-              if (activeWidget) {
-                view.ui.remove(activeWidget);
-                activeWidget.destroy();
-                activeWidget = null;
-              }
-              break;
-          }
+    // compass
+    var compass = new Compass({
+      view: view
+    });
+
+    var scaleBar = new ScaleBar({
+      view: view
+    });
+
+
+
+
+    // legend
+    var legendList = new Legend({
+      view: view,
+      container: document.createElement("div"),
+      layerInfos: [{
+          layer: abioticLayer,
+          title: "Abiotic"
+        },
+        {
+          layer: climateLayer,
+          title: "Climate"
+        },
+        {
+          layer: particleDensityContourLayer,
+          title: "Particle Density Contour"
+        },
+        {
+          layer: aquaticLayer,
+          title: "Aquatic"
+        },
+        {
+          layer: asmaLayer,
+          title: "ASMA"
+        },
+        // {layer: mcMurdoAsmaLayer, title:"McMurdo ASMA"},
+        {
+          layer: antarcticManagedAreaLayer,
+          title: "Antarctic Managed Area"
+        },
+        {
+          layer: agarLayer,
+          title: "AGAR"
+        },
+        {
+          layer: impactLayer,
+          title: "Impact"
+        },
+        {
+          layer: napLayer,
+          title: "NAP"
+        },
+        {
+          layer: nztabsLayer,
+          title: "nzTABS"
+        },
+        {
+          layer: sensitivityLayer,
+          title: "Sensitivity"
+        },
+        {
+          layer: terrestrialLayer,
+          title: "Terrestrial"
+        },
+      ]
+    });
+
+    var legendEx = new Expand({
+      view: view,
+      expandTooltip: "Legend",
+      content: legendList.container,
+      autoCollapse: false,
+      expandIconClass: "esri-icon-collection"
+    });
+
+
+
+    var layerList = new LayerList({
+      container: document.createElement("div"),
+      view: view
+    });
+
+    layerListExpand = new Expand({
+      expandIconClass: "esri-icon-layer-list", // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
+      // expandTooltip: "Expand LayerList", // optional, defaults to "Expand" for English locale
+      view: view,
+      content: layerList.domNode
+    });
+
+    var searchWidget = new Search({
+      view: view,
+      allPlaceholder: "Search",
+      // autoSelect: true,
+      includeDefaultSources: false,
+      sources: [{
+        layer: placeNamesLayer,
+        searchFields: ["PLACE_NAME"],
+        displayField: "PLACE_NAME",
+        exactMatch: false,
+        name: "SCAR Place Names",
+        placeholder: "Place Name",
+        zoomScale: 50000,
+      }, ]
+    });
+
+    // Add the search widget to the top right corner of the view
+    view.ui.add(searchWidget, {
+      position: "top-right"
+    });
+
+    view.ui.add(zoom, "top-right");
+
+    view.ui.add(compass, "top-right");
+
+    view.ui.add(scaleBar, "bottom-right");
+
+    view.ui.add(legendEx, {
+      position: "top-right"
+    });
+
+    view.ui.add(layerListExpand, "top-right");
+
+    // add the toolbar for the measurement widgets
+    view.ui.add("topbar", "top-right");
+
+    document
+      .getElementById("distanceButton")
+      .addEventListener("click", function () {
+        setActiveWidget(null);
+        if (!this.classList.contains("active")) {
+          setActiveWidget("distance");
+        } else {
+          setActiveButton(null);
         }
-
-        function setActiveButton(selectedButton) {
-          // focus the view to activate keyboard shortcuts for sketching
-          view.focus();
-          var elements = document.getElementsByClassName("active");
-          for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove("active");
-          }
-          if (selectedButton) {
-            selectedButton.classList.add("active");
-          }
-        }
-
-        $('.distance-measurement-button').click(function(){
-          $(this).toggleClass('esri-icon-minus');
-          $(this).toggleClass('fas fa-angle-double-right');
-        }); 
-
-        $('.area-measurement-button').click(function(){
-          $(this).toggleClass('esri-icon-polygon');
-          $(this).toggleClass('fas fa-angle-double-right');
-        }); 
-
-        $('.jump_deg').click(function(){
-          $('.loc_jump_dd').removeClass('hidden')
-          $('.loc_jump_dm').addClass('hidden')
-        }); 
-        
-        $('.jump_deg_min').click(function(){
-          $('.loc_jump_dd').addClass('hidden')
-          $('.loc_jump_dm').removeClass('hidden')
-        }); 
-
-        $('.loc_jump_dm').submit(function(evt){
-            var lat = parseFloat($('#lat_deg_jump').val())
-            var lat_min = parseFloat($('#lat_min_jump').val())
-            lat_min /= 60;
-            lat += lat_min;
-            var long = parseFloat($('#long_deg_jump').val())
-            var long_min = parseFloat($('#long_min_jump').val())
-            long_min /= 60;
-            long += long_min;
-            evt.preventDefault();
-            var new_loc = new Point({
-                latitude: lat,
-                longitude: long
-            });
-            view.goTo(new_loc)
-        });
-
-        $('.loc_jump_dd').submit(function(evt){
-          var lat = parseFloat($('#lat_jump').val());
-          var long = parseFloat($('#long_jump').val());
-          evt.preventDefault();
-          var new_loc = new Point({
-              latitude: lat,
-              longitude: long
-          });
-          view.goTo(new_loc)
       });
 
-        view.when(function() {
-            // executeIdentifyTask() is called each time the view is clicked
-
-            view.on("click", executeIdentifyTask);
-  
-            // Create identify task for the specified map service
-            identifyTask = new IdentifyTask(aquaticLayerUrl);
-  
-            // Set the parameters for the Identify
-            params = new IdentifyParameters();
-            params.tolerance = 3;
-            params.layerIds = [0, 1, 2];
-            params.layerOption = "top";
-            params.width = view.width;
-            params.height = view.height;
-          });
-  
-          // Executes each time the view is clicked
-          function executeIdentifyTask(event) {
-            // Set the geometry to the location of the view click
-            params.geometry = event.mapPoint;
-            params.mapExtent = view.extent;
-            document.getElementById("map_canvas").style.cursor = "wait";
-  
-            // This function returns a promise that resolves to an array of features
-            // A custom popupTemplate is set for each feature based on the layer it
-            // originates from
-            identifyTask
-              .execute(params)
-              .then(function(response) {
-                var results = response.results;
-  
-                return results.map(function(result) {
-                  var feature = result.feature;
-                  var layerName = result.layerName;
-                  console.log(feature, layerName)
-  
-                  feature.attributes.layerName = layerName;
-                  if (layerName === "LINZ Lakes and Ponds") {
-                    feature.popupTemplate = {
-                      // autocasts as new PopupTemplate()
-                      title: "Lake / Pond",
-                      content:
-                        "<b>Name:</b> {name}" +
-                        "<br><b>Land Type:</b> {L_TYPE}" +
-                        "<br><b>Type:</b> {TYPE}"
-                    };
-                  } else if (layerName === "Aquatic Connectivity") {
-                    feature.popupTemplate = {
-                      // autocasts as new PopupTemplate()
-                      title: "Stream",
-                      content:
-                        "<b>Main Rock:</b> {MAIN_ROCK}" +
-                        "<br><b>RVR CLASS:</b> {RVR_CLASS}"
-                    };
-                  } else if (layerName === "Wetness Index Jan-Feb") {
-                    feature.popupTemplate = {
-                      // autocasts as new PopupTemplate()
-                      title: "Wetness Index",
-                      content:
-                        "<b>Dominant order:</b> {Dominant Order}" +
-                        "<br><b>Dominant sub-order:</b> {Dominant Sub-Order}"
-                    };
-                  }
-                  return feature;
-                });
-              })
-              .then(showPopup); // Send the array of features to showPopup()
-  
-            // Shows the results of the Identify in a popup once the promise is resolved
-            function showPopup(response) {
-              if (response.length > 0) {
-                view.popup.open({
-                  features: response,
-                  location: event.mapPoint
-                });
-              }
-              document.getElementById("map_canvas").style.cursor = "auto";
-            }
+    document
+      .getElementById("areaButton")
+      .addEventListener("click", function () {
+        setActiveWidget(null);
+        if (!this.classList.contains("active")) {
+          setActiveWidget("area");
+        } else {
+          setActiveButton(null);
         }
+      });
+
+    function setActiveWidget(type) {
+      switch (type) {
+        case "distance":
+          activeWidget = new DistanceMeasurement2D({
+            view: view
+          });
+
+          // skip the initial 'new measurement' button
+          activeWidget.viewModel.newMeasurement();
+
+          view.ui.add(activeWidget, "top-right");
+          setActiveButton(document.getElementById("distanceButton"));
+          break;
+        case "area":
+          activeWidget = new AreaMeasurement2D({
+            view: view
+          });
+
+          // skip the initial 'new measurement' button
+          activeWidget.viewModel.newMeasurement();
+
+          view.ui.add(activeWidget, "top-right");
+          setActiveButton(document.getElementById("areaButton"));
+          break;
+        case null:
+          if (activeWidget) {
+            view.ui.remove(activeWidget);
+            activeWidget.destroy();
+            activeWidget = null;
+          }
+          break;
+      }
+    }
+
+    function setActiveButton(selectedButton) {
+      // focus the view to activate keyboard shortcuts for sketching
+      view.focus();
+      var elements = document.getElementsByClassName("active");
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].classList.remove("active");
+      }
+      if (selectedButton) {
+        selectedButton.classList.add("active");
+      }
+    }
+
+    $('.distance-measurement-button').click(function () {
+      $(this).toggleClass('esri-icon-minus');
+      $(this).toggleClass('fas fa-angle-double-right');
     });
+
+    $('.area-measurement-button').click(function () {
+      $(this).toggleClass('esri-icon-polygon');
+      $(this).toggleClass('fas fa-angle-double-right');
+    });
+
+    $('.jump_deg').click(function () {
+      $('.loc_jump_dd').removeClass('hidden')
+      $('.loc_jump_dm').addClass('hidden')
+    });
+
+    $('.jump_deg_min').click(function () {
+      $('.loc_jump_dd').addClass('hidden')
+      $('.loc_jump_dm').removeClass('hidden')
+    });
+
+    $('.loc_jump_dm').submit(function (evt) {
+      var lat = parseFloat($('#lat_deg_jump').val())
+      var lat_min = parseFloat($('#lat_min_jump').val())
+      lat_min /= 60;
+      lat += lat_min;
+      var long = parseFloat($('#long_deg_jump').val())
+      var long_min = parseFloat($('#long_min_jump').val())
+      long_min /= 60;
+      long += long_min;
+      evt.preventDefault();
+      var new_loc = new Point({
+        latitude: lat,
+        longitude: long
+      });
+      view.goTo(new_loc)
+    });
+
+    $('.loc_jump_dd').submit(function (evt) {
+      var lat = parseFloat($('#lat_jump').val());
+      var long = parseFloat($('#long_jump').val());
+      evt.preventDefault();
+      var new_loc = new Point({
+        latitude: lat,
+        longitude: long
+      });
+      view.goTo(new_loc)
+    });
+
+    view.when(function () {
+      // executeIdentifyTask() is called each time the view is clicked
+
+      view.on("click", executeIdentifyTask);
+
+      // Create identify task for the specified map service
+      identifyTask = new IdentifyTask(aquaticLayerUrl);
+
+      // Set the parameters for the Identify
+      params = new IdentifyParameters();
+      params.tolerance = 3;
+      params.layerIds = [0, 1, 2];
+      params.layerOption = "top";
+      params.width = view.width;
+      params.height = view.height;
+    });
+
+    // Executes each time the view is clicked
+    function executeIdentifyTask(event) {
+      // Set the geometry to the location of the view click
+      params.geometry = event.mapPoint;
+      params.mapExtent = view.extent;
+      document.getElementById("map_canvas").style.cursor = "wait";
+
+      // This function returns a promise that resolves to an array of features
+      // A custom popupTemplate is set for each feature based on the layer it
+      // originates from
+      identifyTask
+        .execute(params)
+        .then(function (response) {
+          var results = response.results;
+
+          return results.map(function (result) {
+            var feature = result.feature;
+            var layerName = result.layerName;
+            console.log(feature, layerName)
+
+            feature.attributes.layerName = layerName;
+            if (layerName === "LINZ Lakes and Ponds") {
+              feature.popupTemplate = {
+                // autocasts as new PopupTemplate()
+                title: "Lake / Pond",
+                content: "<b>Name:</b> {name}" +
+                  "<br><b>Land Type:</b> {L_TYPE}" +
+                  "<br><b>Type:</b> {TYPE}"
+              };
+            } else if (layerName === "Aquatic Connectivity") {
+              feature.popupTemplate = {
+                // autocasts as new PopupTemplate()
+                title: "Stream",
+                content: "<b>Main Rock:</b> {MAIN_ROCK}" +
+                  "<br><b>RVR CLASS:</b> {RVR_CLASS}"
+              };
+            } else if (layerName === "Wetness Index Jan-Feb") {
+              feature.popupTemplate = {
+                // autocasts as new PopupTemplate()
+                title: "Wetness Index",
+                content: "<b>Dominant order:</b> {Dominant Order}" +
+                  "<br><b>Dominant sub-order:</b> {Dominant Sub-Order}"
+              };
+            }
+            return feature;
+          });
+        })
+        .then(showPopup); // Send the array of features to showPopup()
+
+      // Shows the results of the Identify in a popup once the promise is resolved
+      function showPopup(response) {
+        if (response.length > 0) {
+          view.popup.open({
+            features: response,
+            location: event.mapPoint
+          });
+        }
+        document.getElementById("map_canvas").style.cursor = "auto";
+      }
+    }
+  });
 })
 
-$('.layer-toggle').click(function(){
-    var id = $(this).attr('data-id');
-    var layer = $(this).attr('data-layer');
-    switch(layer){
-        case 'aquatic':
-        var sublayer = aquaticLayer.findSublayerById(parseInt(id));
-        sublayer.visible = !sublayer.visible;
+$('.layer-toggle').click(function () {
+  var id = $(this).attr('data-id');
+  var layer = $(this).attr('data-layer');
+  // Checking via Abiotic because it is the first layer to load
+  if (abioticLayer.loaded) {
+    switch (layer) {
+      case 'aquatic':
+        if (aquaticLayer.loaded) {
+          var sublayer = aquaticLayer.findSublayerById(parseInt(id));
+          sublayer.visible = !sublayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
-        case 'climate':
-        var sublayer = climateLayer.findSublayerById(parseInt(id));
-        sublayer.visible = !sublayer.visible;
+      case 'climate':
+        if (climateLayer.loaded) {
+          var sublayer = climateLayer.findSublayerById(parseInt(id));
+          sublayer.visible = !sublayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
-        case 'impact':
-        var sublayer = impactLayer.findSublayerById(parseInt(id));
-        sublayer.visible = !sublayer.visible;
+      case 'impact':
+        if (impactLayer.loaded) {
+          var sublayer = impactLayer.findSublayerById(parseInt(id));
+          sublayer.visible = !sublayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
-        case 'agar':
-        var sublayer = agarLayer.findSublayerById(parseInt(id));
-        sublayer.visible = !sublayer.visible;
+      case 'agar':
+        if (agarLayer.loaded) {
+          var sublayer = agarLayer.findSublayerById(parseInt(id));
+          sublayer.visible = !sublayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
-        case 'nztabs':
-        nztabsLayer.visible = !nztabsLayer.visible;
+      case 'nztabs':
+        if (nztabsLayer.loaded) {
+          nztabsLayer.visible = !nztabsLayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
-        case 'antarctic managed area':
-        antarcticManagedAreaLayer.visible = !antarcticManagedAreaLayer.visible;
+      case 'antarctic managed area':
+        if (antarcticManagedAreaLayer.loaded) {
+          antarcticManagedAreaLayer.visible = !antarcticManagedAreaLayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
-        case 'particle density contour':
-        particleDensityContourLayer.visible = !particleDensityContourLayer.visible;
+      case 'particle density contour':
+        if (particleDensityContourLayer.loaded) {
+          particleDensityContourLayer.visible = !particleDensityContourLayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
         // case 'particle density':
@@ -783,23 +830,35 @@ $('.layer-toggle').click(function(){
         // mcMurdoAsmaLayer.visible = !mcMurdoAsmaLayer.visible;
         // break;
 
-        case 'abiotic':
-        var sublayer = abioticLayer.findSublayerById(parseInt(id));
-        sublayer.visible = !sublayer.visible;
+      case 'abiotic':
+        if (abioticLayer.loaded) {
+          var sublayer = abioticLayer.findSublayerById(parseInt(id));
+          sublayer.visible = !sublayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
-        case 'asma':
-        var sublayer = asmaLayer.findSublayerById(parseInt(id));
-        sublayer.visible = !sublayer.visible;
+      case 'asma':
+        if (asmaLayer.loaded) {
+          var sublayer = asmaLayer.findSublayerById(parseInt(id));
+          sublayer.visible = !sublayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
         break;
 
     }
-    // console.log(id, layer)
+  }
+  else {
+    $(this).prop('checked', !$(this).prop('checked'));
+  }
+  // console.log(id, layer)
 });
 
-$('.drop-down').click(function(){
-    var target = $(this).attr('data-target');
-    $('.'+target).toggleClass('hide');
+$('.drop-down').click(function () {
+  var target = $(this).attr('data-target');
+  $('.' + target).toggleClass('hide');
 });
 
 
