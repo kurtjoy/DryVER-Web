@@ -321,7 +321,7 @@ $(document).ready(function () {
       title: "SCAR Placenames",
       visible: true,
     });
-    placeNamesLayer.minScale = 70000;
+    placeNamesLayer.minScale = 95000;
 
     var sensitivityLayer = new MapImageLayer({
       url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/SENSITIVITY/MapServer",
