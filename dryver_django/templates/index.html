@@ -83,7 +83,7 @@
                 <div class="col-md-12">
                     <div id="tabs">
                         <div id="tab1" class="tab">
-                            <h5 class="cat">Jump To Location</h5>
+                            <h5 class="cat">Jump to Location</h5>
                             <span class="btn-group btn-group-toggle col-md-12" data-toggle="buttons">
                                 <label class="btn btn-primary col-md-6 jump_deg">
                                     <input type="radio" name="jump_option" value="1" id="option1"> Decimal<br>Degrees
@@ -114,16 +114,30 @@
                             </form>
                         </div>
                         <div id="tab2" class="tab">
+                            <h5 class="cat">Datasets</h5>
+                            <ul class="catalog">
+                                <li class="agar-layer"><a href="#">AGAr<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="agar" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="agar-layer"><a href="#">nzTABS<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="nztabs" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="agar-layer"><a href="#">Events<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="layer-to-add" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer"><a href="#">Aspect<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer"><a href="#">Slope<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer"><a href="#">GNS Geology<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer"><a href="#">GNS Ice/Snow<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer"><a href="#">LiDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer"><a href="#">ASPA/Management Zones<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li>
+                            </ul>
+                        </div>
+                        <div id="tab3" class="tab">
                             <h5 class="cat">DryVER</h5>
                             <ul class="catalog">
-                                <li class="drop-down" data-target="abiotic-layer"><a href="#" class="activepoint">Abiotic<span><i class="fas fa-angle-down"></i></span></a></li>
-                                <li class="abiotic-layer hide"><a href="#">Aspect<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <!-- <li class="drop-down" data-target="abiotic-layer"><a href="#" class="activepoint">Abiotic<span><i class="fas fa-angle-down"></i></span></a></li> -->
+                                <!-- <li class="abiotic-layer hide"><a href="#">Aspect<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                                 <li class="abiotic-layer hide"><a href="#">Slope<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer hide"><a href="#">GNS geology<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer hide"><a href="#">GNS Ice/snow<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer hide"><a href="#">LIDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer hide"><a href="#">GNS Geology<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer hide"><a href="#">GNS Ice/Snow<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+                                <li class="abiotic-layer hide"><a href="#">LiDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
                                 <!-- <li class="abiotic-layer hide"><a href="#">McMurdo ASMA<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="mcmurdo asma" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
-                                <li class="abiotic-layer hide"><a href="#">Antarctic Managed Area<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li>
+                                <!-- <li class="abiotic-layer hide"><a href="#">ASPA/Management Zones<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
                                 <!-- <li class="abiotic-layer hide"><a href="#">SCAR Placenames<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="asma" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
                                 <li class="drop-down" data-target="aquatic-layer"><a href="#" class="activepoint">Aquatic<span><i class="fas fa-angle-down"></i></span></a></li>
                                 <li class="aquatic-layer hide"><a href="#">Aquatic habitat Classification<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
@@ -149,14 +163,6 @@
                                 <li class="impact-layer hide"><a href="#">Sensitivity Index<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="impact" type="checkbox"><span class="slider round"></span></label></span></a></li>
                                 <li class="drop-down" data-target="terrestrial-layer"><a href="#" class="activepoint">Terrestrial<span><i class="fas fa-angle-down"></i></span></a></li>
                                 <li class="drop-down" data-target="ecoforcasting-layer"><a href="#" class="activepoint">Ecoforecasting<span><i class="fas fa-angle-down"></i></span></a></li>
-                            </ul>
-                        </div>
-                        <div id="tab3" class="tab">
-                            <h5 class="cat">Datasets</h5>
-                            <ul class="catalog">
-                                <li class="agar-layer"><a href="#">AGAR<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="agar" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="agar-layer"><a href="#">nzTABS<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="nztabs" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="agar-layer"><a href="#">Antarctic Events<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="layer-to-add" type="checkbox"><span class="slider round"></span></label></span></a></li>
                             </ul>
                         </div>
                         <!-- <div id="tab4" class="tab">
@@ -251,6 +257,7 @@
                 }
             }
         });
+        // Open 'jump to location' on load
         $( document ).ready(function(){
             $('.jump-to-loc').click();
         });

@@ -694,6 +694,7 @@ $(document).ready(function () {
     });
 
     // Executes each time the view is clicked
+    // This should actually become the tool to identify a point
     function executeIdentifyTask(event) {
       // Set the geometry to the location of the view click
       params.geometry = event.mapPoint;
@@ -711,7 +712,7 @@ $(document).ready(function () {
           return results.map(function (result) {
             var feature = result.feature;
             var layerName = result.layerName;
-            console.log(feature, layerName)
+            console.log(result)
 
             feature.attributes.layerName = layerName;
             if (layerName === "LINZ Lakes and Ponds") {
@@ -737,6 +738,22 @@ $(document).ready(function () {
                   "<br><b>Dominant sub-order:</b> {Dominant Sub-Order}"
               };
             }
+            // else if (layerName === "NZTABS Sample Sites") {
+            //   feature.popupTemplate = {
+            //     // autocasts as new PopupTemplate()
+            //     title: "NZTABS",
+            //     content: "<b>Wetness:</b> {Wetness}" +
+            //       "<br><b>Cyanobacteria:</b> {Cyanobacteria}"
+            //       "<br><b>Moss:</b> {Moss}"
+            //       "<br><b>Lichen:</b> {Lichen}"
+            //       "<br><b>Springtails:</b> {Springtails}"
+            //       "<br><b>Mites:</b> {Mites}"
+            //       "<br><b>ATP:</b> {ATP}"
+            //       "<br><b>Nematodes:</b> {Nematodes}"
+            //       "<br><b>Rotifers:</b> {Rotifers}"
+            //       "<br><b>Tadigrades:</b> {Tadigrades}"
+            //   };
+            // }
             return feature;
           });
         })
