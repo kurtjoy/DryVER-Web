@@ -35,10 +35,10 @@
                 <img src="{% static 'img/no_ava.png' %}" alt="..."/></a> -->
             <ul>
                 <li>
-                    <a href="#" data-name="jump-to-loc" id="jump-to-loc-icon" class="gradientmenu"><i class="fas fa-search-location"></i></a>
+                    <a href="#" data-name="jump-to-loc" id="jump-to-loc-icon" class="gradientmenu jump-to-loc"><i class="fas fa-search-location"></i></a>
                 </li>
                 <li>
-                    <a href="#" data-name="Dryver" class="gradientmenu"><i class="fas fa-icicles"></i></a>
+                    <a href="#" data-nasme="Dryver" class="gradientmenu"><i class="fas fa-icicles"></i></a>
                 </li>
                 <li>
                     <a href="#" data-name="Datasets" class="gradientmenu"><i class="fas fa-layer-group"></i></a>
@@ -250,6 +250,9 @@
                     currently_opened = now_clicked;
                 }
             }
+        });
+        $( document ).ready(function(){
+            $('.jump-to-loc').click();
         });
         tippy('#jump-to-loc-icon', {
             content: 'Jump to any location (Latitude/Longitude) on the map',
