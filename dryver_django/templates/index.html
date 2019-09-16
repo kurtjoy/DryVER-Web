@@ -38,17 +38,18 @@
                     <a href="#" data-name="jump-to-loc" id="jump-to-loc-icon" class="gradientmenu jump-to-loc"><i class="fas fa-search-location"></i></a>
                 </li>
                 <li>
-                    <a href="#" data-nasme="Dryver" class="gradientmenu"><i class="fas fa-icicles"></i></a>
+                    <a href="#" data-name="Datasets" class="gradientmenu"><i class="fas fa-layer-group"></i></a>
                 </li>
                 <li>
-                    <a href="#" data-name="Datasets" class="gradientmenu"><i class="fas fa-layer-group"></i></a>
+                    <a href="#" data-nasme="Dryver" class="gradientmenu"><i class="fas fa-icicles"></i></a>
                 </li>
                 <!-- <li>
                     <a href="#" data-name="Tools" class="gradientmenu"><i class="fas fa-tools"></i></a>
                 </li> -->
-                <li>
+                <!-- Removing because this will move inside popup -->
+                <!-- <li>
                     <a href="#" class="gradientmenu" id="pdf-report-form"><i class="fas fa-file"></i></a>
-                </li>
+                </li> -->
                 <li>
                     <a href="{% url 'Windy' %}" id="windy-button" class="gradientmenu Windy"><i class="icon-wind"></i></a>
                 </li>
@@ -176,7 +177,8 @@
                                 <li><a href="#">Classic game<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
                             </ul>
                         </div> -->
-                        <div id="tab4" class="tab">
+                        <!-- Removing from here because the export tool will go inside popup -->
+                        <!-- <div id="tab4" class="tab">
                             <h5 class="cat">PDF Report Form</h5>
                             <form method="POST">
                                 {% csrf_token %}
@@ -211,7 +213,7 @@
                                 <br>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

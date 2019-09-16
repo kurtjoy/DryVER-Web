@@ -307,13 +307,26 @@ $(document).ready(function () {
 
     var nztabsUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0"
 
+    var nztabsPopup = {
+      "title": "NZTABS",
+      "content": "<b>Wetness:</b> {Wetness}" +
+        "<br><b>Cyanobacteria:</b> {Cyanobacteria}" +
+        "<br><b>Moss:</b> {Moss}" +
+        "<br><b>Lichen:</b> {Lichen}" +
+        "<br><b>Springtails:</b> {Springtails}" +
+        "<br><b>Mites:</b> {Mites}" +
+        "<br><b>ATP:</b> {ATP}" +
+        "<br><b>Nematodes:</b> {Nematodes}" +
+        "<br><b>Rotifers:</b> {Rotifers}" +
+        "<br><b>Tadigrades:</b> {Tadigrades}"
+    };
     nztabsLayer = new FeatureLayer({
       url: nztabsUrl,
       title: "nzTABS Sample Sites",
       // id: "event",
       visible: false,
       renderer: nzTabsRenderer,
-      // popupTemplate: eventTemp
+      popupTemplate: nztabsPopup
     });
 
     placeNamesLayer = new FeatureLayer({
@@ -679,7 +692,8 @@ $(document).ready(function () {
     view.when(function () {
       // executeIdentifyTask() is called each time the view is clicked
 
-      view.on("click", executeIdentifyTask);
+      // commented for now, but it should be used for that tool to find report of any point
+      // view.on("click", executeIdentifyTask);
 
       // Create identify task for the specified map service
       identifyTask = new IdentifyTask(aquaticLayerUrl);
@@ -738,22 +752,22 @@ $(document).ready(function () {
                   "<br><b>Dominant sub-order:</b> {Dominant Sub-Order}"
               };
             }
-            // else if (layerName === "NZTABS Sample Sites") {
-            //   feature.popupTemplate = {
-            //     // autocasts as new PopupTemplate()
-            //     title: "NZTABS",
-            //     content: "<b>Wetness:</b> {Wetness}" +
-            //       "<br><b>Cyanobacteria:</b> {Cyanobacteria}"
-            //       "<br><b>Moss:</b> {Moss}"
-            //       "<br><b>Lichen:</b> {Lichen}"
-            //       "<br><b>Springtails:</b> {Springtails}"
-            //       "<br><b>Mites:</b> {Mites}"
-            //       "<br><b>ATP:</b> {ATP}"
-            //       "<br><b>Nematodes:</b> {Nematodes}"
-            //       "<br><b>Rotifers:</b> {Rotifers}"
-            //       "<br><b>Tadigrades:</b> {Tadigrades}"
-            //   };
-            // }
+            else if (layerName === "NZTABS Sample Sites") {
+              feature.popupTemplate = {
+                // autocasts as new PopupTemplate()
+                title: "NZTABS",
+                content: "<b>Wetness:</b> {Wetness}" +
+                  "<br><b>Cyanobacteria:</b> {Cyanobacteria}" +
+                  "<br><b>Moss:</b> {Moss}" +
+                  "<br><b>Lichen:</b> {Lichen}" +
+                  "<br><b>Springtails:</b> {Springtails}" +
+                  "<br><b>Mites:</b> {Mites}" +
+                  "<br><b>ATP:</b> {ATP}" +
+                  "<br><b>Nematodes:</b> {Nematodes}" +
+                  "<br><b>Rotifers:</b> {Rotifers}" +
+                  "<br><b>Tadigrades:</b> {Tadigrades}"
+              };
+            }
             return feature;
           });
         })
