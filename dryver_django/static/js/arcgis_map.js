@@ -112,6 +112,25 @@ $(document).ready(function () {
 
     // layers
 
+    var GnsGeologyPopup = {
+      "title": "GNS Geology",
+      "content": "<b>Dryver Group:</b> {DRYVER_GROUP}" +
+        "<br><b>Map Unit:</b> {MAP_UNIT}" +
+        "<br><b>Main rock:</b> {MAIN_ROCK}" +
+        "<br><b>sub rock:</b> {SUB_ROCKS}" +
+        "<br><b>Terrane:</b> {TERRANE}"
+    };
+
+    // Need more info on this
+    var GnsIcePopup = {
+      "title": "GNS Ice/Snow",
+      "content": "<b>Dryver Group:</b> {DRYVER_GROUP}" +
+        "<br><b>Map Unit:</b> {MAP_UNIT}" +
+        "<br><b>Main rock:</b> {MAIN_ROCK}" +
+        "<br><b>sub rock:</b> {SUB_ROCKS}" +
+        "<br><b>Terrane:</b> {TERRANE}"
+    };
+
     abioticLayer = new MapImageLayer({
       url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
       title: "Abiotic",
@@ -119,11 +138,13 @@ $(document).ready(function () {
           id: 1,
           title: "GNS Ice",
           visible: false,
+          // popupTemplate: GnsIcePopup
         },
         {
           id: 2,
           title: "GNS Geology",
           visible: false,
+          popupTemplate: GnsGeologyPopup
         },
         {
           id: 3,
@@ -145,13 +166,23 @@ $(document).ready(function () {
 
     var aquaticLayerUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer"
 
+    var LakesPopup = {
+      "title": "Linz Lakes and ponds",
+      "content": "<b>Name:</b> {name_ascii}" +
+        "<br><b>Elevation:</b> {ELE_MASL}" +
+        "<br><b>Ice Cover:</b> {ICE_COVER}" +
+        "<br><b>Inflow:</b> {INFLOW}" +
+        "<br><b>Outflow:</b> {OUTFLOW}"
+    };
+
     aquaticLayer = new MapImageLayer({
       url: aquaticLayerUrl,
       title: "Aquatic",
       sublayers: [{
           id: 0,
-          title: "LANDCARE Soils",
+          title: "LINZ Lakes and Ponds",
           visible: false,
+          popupTemplate: LakesPopup
         },
         {
           id: 1,
@@ -209,13 +240,22 @@ $(document).ready(function () {
 
     var antarcticManagedAreaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/1"
 
+    var AntarcticManagedAreaPopup = {
+      "title": "Antarctic Managed Area",
+      "content": "<b>Name:</b> {NAME}" +
+        "<br><b>Type:</b> {Type}" +
+        "<br><b>Helo:</b> {HELO}" +
+        "<br><b>PDF:</b> {PDF}" +
+        "<br><b>Desc:</b> {DESC}"
+    };
+
     antarcticManagedAreaLayer = new FeatureLayer({
       url: antarcticManagedAreaUrl,
       title: "Antarctic Managed Area",
       // id: "event",
       visible: true,
       // renderer: nzTabsRenderer,
-      // popupTemplate: eventTemp
+      popupTemplate: AntarcticManagedAreaPopup
     });
 
     var mcMurdoAsmaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/2"
@@ -239,6 +279,16 @@ $(document).ready(function () {
       }, ]
     });
 
+    var DisturbanceSampleSitesPopup = {
+      "title": "Sample Sites",
+      "content": "<b>New ID:</b> {NEW_ID}" +
+        "<br><b>location:</b> {LOCATION}" +
+        "<br><b>elevation:</b> {ELEV}" +
+        "<br><b>distance to coast:</b> {DIST}" +
+        "<br><b>slope:</b> {SLOPE}" +
+        "<br><b>Aspect:</b> {ASPECT}"
+    };
+
     impactLayer = new MapImageLayer({
       url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
       title: "Impact",
@@ -246,6 +296,7 @@ $(document).ready(function () {
           id: 0,
           title: "Disturbance sample sites",
           visible: false,
+          popupTemplate: DisturbanceSampleSitesPopup
         },
         {
           id: 1,
