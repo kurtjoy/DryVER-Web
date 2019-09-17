@@ -303,6 +303,11 @@ $(document).ready(function () {
           title: "Human Impact Sensitivity",
           visible: false,
         },
+        {
+          id: 2,
+          title: "Colluvium and Bedrock",
+          visible: false,
+        },
       ]
     });
 
