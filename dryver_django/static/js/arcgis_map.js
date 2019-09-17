@@ -1,6 +1,7 @@
 var view;
 var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
 var antarcticManagedAreaLayer, mcMurdoAsmaLayer, particleDensityContourLayer, particleDensityLayer;
+var visitationLayer;
 var activeWidget = null;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
@@ -289,6 +290,21 @@ $(document).ready(function () {
         "<br><b>Aspect:</b> {ASPECT}"
     };
 
+    // Needs to be fixed
+    // var SensitivityPopup = {
+    //   "title": "surface sensitivity",
+    //   "content": "<b>Dryver unit:</b> {DRYVER_GROUP}" +
+    //     "<br><b>Map unit:</b> {MAP_UNIT}" +
+    //     "<br><b>age index:</b> {AGE_INDEX}" +
+    //     "<br><b>visual change:</b> {VIS}" +
+    //     "<br><b>track depth:</b> {SLOPE}" +
+    //     "<br><b>track infiltration:</b> {ASPECT}" +
+    //     "<br><b>track colour change:</b> {ASPECT}" +
+    //     "<br><b>track rock cover:</b> {ROCKCOVER}" +
+    //     "<br><b>footprint depth:</b> {ASPECT}" +
+    //     "<br><b>footprint infiltration:</b> {ASPECT}"
+    // };
+
     impactLayer = new MapImageLayer({
       url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
       title: "Impact",
@@ -302,6 +318,7 @@ $(document).ready(function () {
           id: 1,
           title: "Human Impact Sensitivity",
           visible: false,
+          // popupTemplate: SensitivityPopup,
         },
         {
           id: 2,
@@ -311,26 +328,26 @@ $(document).ready(function () {
       ]
     });
 
-    var napLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NAP/MapServer",
-      title: "NAP",
-      sublayers: [{
-          id: 0,
-          title: "NZ Events 1968-2002",
-          visible: false,
-        },
-        {
-          id: 1,
-          title: "MDV_ASMA",
-          visible: false,
-        },
-        {
-          id: 2,
-          title: "Hillshade",
-          visible: false,
-        },
-      ]
-    });
+    // var napLayer = new MapImageLayer({
+    //   url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NAP/MapServer",
+    //   title: "NAP",
+    //   sublayers: [{
+    //       id: 0,
+    //       title: "NZ Events 1968-2002",
+    //       visible: false,
+    //     },
+    //     {
+    //       id: 1,
+    //       title: "MDV_ASMA",
+    //       visible: false,
+    //     },
+    //     {
+    //       id: 2,
+    //       title: "Hillshade",
+    //       visible: false,
+    //     },
+    //   ]
+    // });
 
     // nztabsLayer = new MapImageLayer({
     //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
@@ -419,6 +436,41 @@ $(document).ready(function () {
       }, ]
     });
 
+    var eventsPopup = {
+      "title": "NZ Events",
+      "content": "<b>Season:</b> {season}" +
+        "<br><b>site:</b> {Site}" +
+        "<br><b>EventNo:</b> {EventNo}" +
+        "<br><b>EventTitle:</b> {EventTitle}" 
+    };
+
+    visitationLayer = new MapImageLayer({
+      url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/VISITATION/MapServer",
+      title: "Visitation",
+      sublayers: [{
+          id: 0,
+          title: "NZ Events (1957_2018)",
+          visible: false,
+          popupTemplate: eventsPopup,
+        },
+        {
+          id: 1,
+          title: "Visitation (1957-2018)",
+          visible: false,
+        },
+        {
+          id: 2,
+          title: "Distance to Camps",
+          visible: false,
+        },
+        {
+          id: 3,
+          title: "DT_ASPA",
+          visible: false,
+        },
+      ]
+    })
+
     climateLayer = new MapImageLayer({
       url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer",
       title: "Climate",
@@ -489,10 +541,11 @@ $(document).ready(function () {
     map.add(mcMurdoAsmaLayer);
     map.add(agarLayer);
     map.add(impactLayer);
-    map.add(napLayer);
+    // map.add(napLayer);
     map.add(nztabsLayer);
     map.add(sensitivityLayer);
     map.add(terrestrialLayer);
+    map.add(visitationLayer);
     map.add(climateLayer);
     map.add(particleDensityContourLayer);
     map.add(particleDensityLayer);
@@ -528,6 +581,10 @@ $(document).ready(function () {
           title: "Climate"
         },
         {
+          layer: visitationLayer,
+          title: "Visitation"
+        },
+        {
           layer: particleDensityContourLayer,
           title: "Particle Density Contour"
         },
@@ -552,10 +609,10 @@ $(document).ready(function () {
           layer: impactLayer,
           title: "Impact"
         },
-        {
-          layer: napLayer,
-          title: "NAP"
-        },
+        // {
+        //   layer: napLayer,
+        //   title: "NAP"
+        // },
         {
           layer: nztabsLayer,
           title: "nzTABS"
@@ -752,6 +809,7 @@ $(document).ready(function () {
       // view.on("click", executeIdentifyTask);
 
       // Create identify task for the specified map service
+      // This is why it was only working for few layers, have it work for all
       identifyTask = new IdentifyTask(aquaticLayerUrl);
 
       // Set the parameters for the Identify
@@ -926,6 +984,15 @@ $('.layer-toggle').click(function () {
         }
         break;
 
+      case 'visitation':
+        if(visitationLayer.loaded){
+          var sublayer = visitationLayer.findSublayerById(parseInt(id));
+          sublayer.visible = !sublayer.visible;
+        }
+        else{
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
+        break;
       case 'asma':
         if (asmaLayer.loaded) {
           var sublayer = asmaLayer.findSublayerById(parseInt(id));
