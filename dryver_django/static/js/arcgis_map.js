@@ -636,19 +636,19 @@ $(document).ready(function () {
       expandIconClass: "esri-icon-collection"
     });
 
+    // This needs to be removed
 
+    // var layerList = new LayerList({
+    //   container: document.createElement("div"),
+    //   view: view
+    // });
 
-    var layerList = new LayerList({
-      container: document.createElement("div"),
-      view: view
-    });
-
-    layerListExpand = new Expand({
-      expandIconClass: "esri-icon-layer-list", // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
-      // expandTooltip: "Expand LayerList", // optional, defaults to "Expand" for English locale
-      view: view,
-      content: layerList.domNode
-    });
+    // layerListExpand = new Expand({
+    //   expandIconClass: "esri-icon-layer-list", // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
+    //   // expandTooltip: "Expand LayerList", // optional, defaults to "Expand" for English locale
+    //   view: view,
+    //   content: layerList.domNode
+    // });
 
     var searchWidget = new Search({
       view: view,
@@ -681,7 +681,7 @@ $(document).ready(function () {
       position: "top-right"
     });
 
-    view.ui.add(layerListExpand, "top-right");
+    // view.ui.add(layerListExpand, "top-right");
 
     // add the toolbar for the measurement widgets
     view.ui.add("topbar", "top-right");
