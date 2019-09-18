@@ -297,12 +297,12 @@ $(document).ready(function () {
         "<br><b>Map unit:</b> {MAP_UNIT}" +
         "<br><b>age index:</b> {AGE_INDEX}" +
         "<br><b>visual change:</b> {VIS}" +
-        "<br><b>track depth:</b> {SLOPE}" +
+        "<br><b>track depth:</b> {DEPTH_20P}" +
         "<br><b>track infiltration:</b> {INFIL0_20}" +
-        "<br><b>track colour change:</b> {ASPECT}" +
+        "<br><b>track colour change:</b> {CCI_20P}" +
         "<br><b>track rock cover:</b> {ROCKCOVER}" +
-        "<br><b>footprint depth:</b> {ASPECT}" +
-        "<br><b>footprint infiltration:</b> {ASPECT}"
+        "<br><b>footprint depth:</b> {DEPTH_1P}" +
+        "<br><b>footprint infiltration:</b> {CHANGE_1P}"
     };
 
     impactLayer = new MapImageLayer({
@@ -318,7 +318,7 @@ $(document).ready(function () {
           id: 1,
           title: "Human Impact Sensitivity",
           visible: false,
-          // popupTemplate: SensitivityPopup,
+          popupTemplate: SensitivityPopup,
         },
         {
           id: 2,
