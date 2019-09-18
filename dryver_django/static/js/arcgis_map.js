@@ -173,11 +173,11 @@ $(document).ready(function () {
 
     var LakesPopup = {
       "title": "Linz Lakes and ponds",
-      "content": "<b>Name:</b> {name_ascii}" +
-        "<br><b>Elevation:</b> {ELE_MASL}" +
-        "<br><b>Ice Cover:</b> {ICE_COVER}" +
-        "<br><b>Inflow:</b> {INFLOW}" +
-        "<br><b>Outflow:</b> {OUTFLOW}"
+      "content": "<table class='table'><tr><th>Name</th><td> {name_ascii}</td>" +
+        "<tr><th>Elevation</th><td> {ELE_MASL}</td>" +
+        "<tr><th>Ice Cover</th><td> {ICE_COVER}</td>" +
+        "<tr><th>Inflow</th><td> {INFLOW}</td>" +
+        "<tr><th>Outflow</th><td> {OUTFLOW}</td></table>"
     };
 
     aquaticLayer = new MapImageLayer({
@@ -247,11 +247,11 @@ $(document).ready(function () {
 
     var AntarcticManagedAreaPopup = {
       "title": "Antarctic Managed Area",
-      "content": "<b>Name:</b> {NAME}" +
-        "<br><b>Type:</b> {Type}" +
-        "<br><b>Helo:</b> {HELO}" +
-        "<br><b>PDF:</b> {PDF}" +
-        "<br><b>Desc:</b> {DESC}"
+      "content": "<table class='table'><tr><th>Name</th><td> {NAME}</td>" +
+        "<tr><th>Type</th><td> {Type}</td>" +
+        "<tr><th>Helo</th><td> {HELO}</td>" +
+        "<tr><th>PDF</th><td> {PDF}</td>" +
+        "<tr><th>Desc</th><td> {DESC}</td></table>"
     };
 
     antarcticManagedAreaLayer = new FeatureLayer({
@@ -286,27 +286,27 @@ $(document).ready(function () {
 
     var DisturbanceSampleSitesPopup = {
       "title": "Sample Sites",
-      "content": "<b>New ID:</b> {NEW_ID}" +
-        "<br><b>location:</b> {LOCATION}" +
-        "<br><b>elevation:</b> {ELEV}" +
-        "<br><b>distance to coast:</b> {DIST}" +
-        "<br><b>slope:</b> {SLOPE}" +
-        "<br><b>Aspect:</b> {ASPECT}"
+      "content": "<table class='table'><tr><th>New ID</th><td> {NEW_ID}</td>" +
+        "<tr><th>location</th><td> {LOCATION}</td>" +
+        "<tr><th>elevation</th><td> {ELEV}</td>" +
+        "<tr><th>distance to coast</th><td> {DIST}</td>" +
+        "<tr><th>slope</th><td> {SLOPE}</td>" +
+        "<tr><th>Aspect</th><td> {ASPECT}</td>"
     };
 
     // Needs to be fixed
     var SensitivityPopup = {
       "title": "surface sensitivity",
-      "content": "<b>Dryver unit:</b> {DRYVER_GROUP}" +
-        "<br><b>Map unit:</b> {MAP_UNIT}" +
-        "<br><b>age index:</b> {AGE_INDEX}" +
-        "<br><b>visual change:</b> {VIS}" +
-        "<br><b>track depth:</b> {DEPTH_20P}" +
-        "<br><b>track infiltration:</b> {INFIL0_20}" +
-        "<br><b>track colour change:</b> {CCI_20P}" +
-        "<br><b>track rock cover:</b> {ROCKCOVER}" +
-        "<br><b>footprint depth:</b> {DEPTH_1P}" +
-        "<br><b>footprint infiltration:</b> {CHANGE_1P}"
+      "content": "<table class='table'><tr><th>Dryver unit</th><td> {DRYVER_GROUP}</td>" +
+        "<tr><th>Map unit</th><td> {MAP_UNIT}</td>" +
+        "<tr><th>age index</th><td> {AGE_INDEX}</td>" +
+        "<tr><th>visual change</th><td> {VIS}</td>" +
+        "<tr><th>track depth</th><td> {DEPTH_20P}</td>" +
+        "<tr><th>track infiltration</th><td> {INFIL0_20}</td>" +
+        "<tr><th>track colour change</th><td> {CCI_20P}</td>" +
+        "<tr><th>track rock cover</th><td> {ROCKCOVER}</td>" +
+        "<tr><th>footprint depth</th><td> {DEPTH_1P}</td>" +
+        "<tr><th>footprint infiltration</th><td> {CHANGE_1P}</td>"
     };
 
     impactLayer = new MapImageLayer({
@@ -395,7 +395,7 @@ $(document).ready(function () {
         "<tr><th>ATP</th><td>{ATP}</td>" +
         "<tr><th>Nematodes</th><td>{Nematodes}</td>" +
         "<tr><th>Rotifers</th><td>{Rotifers}</td>" +
-        "<tr><th>Tadigrades</th><td>{Tadigrades}</td>"
+        "<tr><th>Tadigrades</th><td>{Tadigrades}</td></table>"
     };
     nztabsLayer = new FeatureLayer({
       url: nztabsUrl,
@@ -442,10 +442,10 @@ $(document).ready(function () {
 
     var eventsPopup = {
       "title": "NZ Events",
-      "content": "<b>Season:</b> {season}" +
-        "<br><b>site:</b> {Site}" +
-        "<br><b>EventNo:</b> {EventNo}" +
-        "<br><b>EventTitle:</b> {EventTitle}"
+      "content": "<table class='table'><tr><th>Season</th><td>{season}</td>" +
+        "<tr><th>site</th><td>{Site}</td>" +
+        "<tr><th>EventNo</th><td>{EventNo}</td>" +
+        "<tr><th>EventTitle</th><td>{EventTitle}</td></table>"
     };
 
     visitationLayer = new MapImageLayer({
