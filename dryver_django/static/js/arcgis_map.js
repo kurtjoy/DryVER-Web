@@ -13,7 +13,9 @@ $(document).ready(function () {
     "esri/layers/ImageryLayer",
     "esri/layers/MapImageLayer",
     "esri/tasks/IdentifyTask",
+    "esri/tasks/ImageServiceIdentifyTask",
     "esri/tasks/support/IdentifyParameters",
+    "esri/tasks/support/ImageServiceIdentifyParameters",
     "esri/geometry/Point",
     "esri/widgets/Zoom",
     "esri/widgets/Legend",
@@ -33,7 +35,9 @@ $(document).ready(function () {
     ImageryLayer,
     MapImageLayer,
     IdentifyTask,
+    ImageServiceIdentifyTask,
     IdentifyParameters,
+    ImageServiceIdentifyParameters,
     Point,
     Zoom,
     Legend,
@@ -45,7 +49,7 @@ $(document).ready(function () {
     DistanceMeasurement2D,
     AreaMeasurement2D, ) {
 
-    var identifyTask, params;
+    var identifyTask, params, imageParams;
 
     var map = new Map({
       basemap: "satellite",
@@ -115,11 +119,11 @@ $(document).ready(function () {
 
     var GnsGeologyPopup = {
       "title": "GNS Geology",
-      "content": "<b>Dryver Group:</b> {DRYVER_GROUP}" +
-        "<br><b>Map Unit:</b> {MAP_UNIT}" +
-        "<br><b>Main rock:</b> {MAIN_ROCK}" +
-        "<br><b>sub rock:</b> {SUB_ROCKS}" +
-        "<br><b>Terrane:</b> {TERRANE}"
+      "content": "<table class='table'><tr><th>Dryver Group</th><td>{DRYVER_GROUP}</td>" +
+        "<tr><th>Map Unit</th><td> {MAP_UNIT}</td>" +
+        "<tr><th>Main rock</th><td> {MAIN_ROCK}</td>" +
+        "<tr><th>sub rock</th><td> {SUB_ROCKS}</td>" +
+        "<tr><th>Terrane</th><td> {TERRANE}</td></table>"
     };
 
     // Need more info on this
@@ -382,23 +386,23 @@ $(document).ready(function () {
 
     var nztabsPopup = {
       "title": "NZTABS",
-      "content": "<b>Wetness:</b> {Wetness}" +
-        "<br><b>Cyanobacteria:</b> {Cyanobacteria}" +
-        "<br><b>Moss:</b> {Moss}" +
-        "<br><b>Lichen:</b> {Lichen}" +
-        "<br><b>Springtails:</b> {Springtails}" +
-        "<br><b>Mites:</b> {Mites}" +
-        "<br><b>ATP:</b> {ATP}" +
-        "<br><b>Nematodes:</b> {Nematodes}" +
-        "<br><b>Rotifers:</b> {Rotifers}" +
-        "<br><b>Tadigrades:</b> {Tadigrades}"
+      "content": "<table class='table'><tr><th>Wetness</th><td>{Wetness}</td>" +
+        "<tr><th>Cyanobacteria</th><td>{Cyanobacteria}</td>" +
+        "<tr><th>Moss</th><td>{Moss}</td>" +
+        "<tr><th>Lichen</th><td>{Lichen}</td>" +
+        "<tr><th>Springtails</th><td>{Springtails}</td>" +
+        "<tr><th>Mites</th><td>{Mites}</td>" +
+        "<tr><th>ATP</th><td>{ATP}</td>" +
+        "<tr><th>Nematodes</th><td>{Nematodes}</td>" +
+        "<tr><th>Rotifers</th><td>{Rotifers}</td>" +
+        "<tr><th>Tadigrades</th><td>{Tadigrades}</td>"
     };
     nztabsLayer = new FeatureLayer({
       url: nztabsUrl,
       title: "nzTABS Sample Sites",
       // id: "event",
       visible: false,
-      renderer: nzTabsRenderer,
+      // renderer: nzTabsRenderer,
       popupTemplate: nztabsPopup
     });
 
@@ -441,7 +445,7 @@ $(document).ready(function () {
       "content": "<b>Season:</b> {season}" +
         "<br><b>site:</b> {Site}" +
         "<br><b>EventNo:</b> {EventNo}" +
-        "<br><b>EventTitle:</b> {EventTitle}" 
+        "<br><b>EventTitle:</b> {EventTitle}"
     };
 
     visitationLayer = new MapImageLayer({
@@ -805,13 +809,17 @@ $(document).ready(function () {
     view.when(function () {
       // executeIdentifyTask() is called each time the view is clicked
 
-      // commented for now, but it should be used for that tool to find report of any point
+
       // view.on("click", executeIdentifyTask);
 
       // Create identify task for the specified map service
       // This is why it was only working for few layers, have it work for all
-      identifyTask = new IdentifyTask(aquaticLayerUrl);
+      identifyTask = new IdentifyTask("https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/AQUATIC/MapServer/");
 
+      waterDistIdentifyTask = new ImageServiceIdentifyTask("https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/3")
+      imageParams = new ImageServiceIdentifyParameters();
+      imageParams.returnPixelValues = true;
+      imageParams.returnM = true;
       // Set the parameters for the Identify
       params = new IdentifyParameters();
       params.tolerance = 3;
@@ -824,6 +832,21 @@ $(document).ready(function () {
     // Executes each time the view is clicked
     // This should actually become the tool to identify a point
     function executeIdentifyTask(event) {
+      imageParams.geometry = event.mapPoint;
+      imageParams.mapExtent = map.extent;
+      var water = waterDistIdentifyTask.execute(imageParams).then(function (response) {
+        console.log("image exexuted");
+        console.log(response);
+        var results = response.results;
+        console.log(results);
+
+        return results.map(function (result) {
+          // var feature = result.feature;
+          var layerName = result.layerName;
+          // console.log(result);
+        })
+        return feature;
+      });
       // Set the geometry to the location of the view click
       params.geometry = event.mapPoint;
       params.mapExtent = view.extent;
@@ -836,11 +859,12 @@ $(document).ready(function () {
         .execute(params)
         .then(function (response) {
           var results = response.results;
+          // console.log(results);
 
           return results.map(function (result) {
             var feature = result.feature;
             var layerName = result.layerName;
-            console.log(result)
+            // console.log(result)
 
             feature.attributes.layerName = layerName;
             if (layerName === "LINZ Lakes and Ponds") {
@@ -865,8 +889,7 @@ $(document).ready(function () {
                 content: "<b>Dominant order:</b> {Dominant Order}" +
                   "<br><b>Dominant sub-order:</b> {Dominant Sub-Order}"
               };
-            }
-            else if (layerName === "NZTABS Sample Sites") {
+            } else if (layerName === "NZTABS Sample Sites") {
               feature.popupTemplate = {
                 // autocasts as new PopupTemplate()
                 title: "NZTABS",
@@ -995,11 +1018,10 @@ $('.layer-toggle').click(function () {
         break;
 
       case 'visitation':
-        if(visitationLayer.loaded){
+        if (visitationLayer.loaded) {
           var sublayer = visitationLayer.findSublayerById(parseInt(id));
           sublayer.visible = !sublayer.visible;
-        }
-        else{
+        } else {
           $(this).prop('checked', !$(this).prop('checked'));
         }
         break;
@@ -1013,8 +1035,7 @@ $('.layer-toggle').click(function () {
         break;
 
     }
-  }
-  else {
+  } else {
     $(this).prop('checked', !$(this).prop('checked'));
   }
   // console.log(id, layer)
