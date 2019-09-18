@@ -1,7 +1,7 @@
 var view;
 var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
 var antarcticManagedAreaLayer, mcMurdoAsmaLayer, particleDensityContourLayer, particleDensityLayer;
-var visitationLayer;
+var visitationLayer, terrestrialLayer;
 var activeWidget = null;
 // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
 $(document).ready(function () {
@@ -291,19 +291,19 @@ $(document).ready(function () {
     };
 
     // Needs to be fixed
-    // var SensitivityPopup = {
-    //   "title": "surface sensitivity",
-    //   "content": "<b>Dryver unit:</b> {DRYVER_GROUP}" +
-    //     "<br><b>Map unit:</b> {MAP_UNIT}" +
-    //     "<br><b>age index:</b> {AGE_INDEX}" +
-    //     "<br><b>visual change:</b> {VIS}" +
-    //     "<br><b>track depth:</b> {SLOPE}" +
-    //     "<br><b>track infiltration:</b> {ASPECT}" +
-    //     "<br><b>track colour change:</b> {ASPECT}" +
-    //     "<br><b>track rock cover:</b> {ROCKCOVER}" +
-    //     "<br><b>footprint depth:</b> {ASPECT}" +
-    //     "<br><b>footprint infiltration:</b> {ASPECT}"
-    // };
+    var SensitivityPopup = {
+      "title": "surface sensitivity",
+      "content": "<b>Dryver unit:</b> {DRYVER_GROUP}" +
+        "<br><b>Map unit:</b> {MAP_UNIT}" +
+        "<br><b>age index:</b> {AGE_INDEX}" +
+        "<br><b>visual change:</b> {VIS}" +
+        "<br><b>track depth:</b> {SLOPE}" +
+        "<br><b>track infiltration:</b> {INFIL0_20}" +
+        "<br><b>track colour change:</b> {ASPECT}" +
+        "<br><b>track rock cover:</b> {ROCKCOVER}" +
+        "<br><b>footprint depth:</b> {ASPECT}" +
+        "<br><b>footprint infiltration:</b> {ASPECT}"
+    };
 
     impactLayer = new MapImageLayer({
       url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
@@ -425,7 +425,7 @@ $(document).ready(function () {
       ]
     });
 
-    var terrestrialLayer = new MapImageLayer({
+    terrestrialLayer = new MapImageLayer({
       url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/TERRESTRIAL/MapServer",
       title: "Terrestrial",
       sublayers: [{
@@ -959,6 +959,7 @@ $('.layer-toggle').click(function () {
         }
         break;
 
+
       case 'particle density contour':
         if (particleDensityContourLayer.loaded) {
           particleDensityContourLayer.visible = !particleDensityContourLayer.visible;
@@ -978,6 +979,15 @@ $('.layer-toggle').click(function () {
       case 'abiotic':
         if (abioticLayer.loaded) {
           var sublayer = abioticLayer.findSublayerById(parseInt(id));
+          sublayer.visible = !sublayer.visible;
+        } else {
+          $(this).prop('checked', !$(this).prop('checked'));
+        }
+        break;
+
+      case 'terrestrial':
+        if (terrestrialLayer.loaded) {
+          var sublayer = terrestrialLayer.findSublayerById(parseInt(id));
           sublayer.visible = !sublayer.visible;
         } else {
           $(this).prop('checked', !$(this).prop('checked'));
