@@ -687,6 +687,8 @@ $(document).ready(function () {
 
     // view.ui.add(layerListExpand, "top-right");
 
+    view.ui.add("inspect", "top-right");
+
     // add the toolbar for the measurement widgets
     view.ui.add("topbar", "top-right");
 

@@ -5,7 +5,7 @@
     height: 24px;
 }
 
-.switch input { 
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -35,15 +35,15 @@
     transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: #2196F3;
 }
 
-input:focus + .slider {
+input:focus+.slider {
     box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     -webkit-transform: translateX(16px);
     -ms-transform: translateX(16px);
     transform: translateX(16px);
@@ -59,28 +59,34 @@ input:checked + .slider:before {
 }
 
 #topbar {
-background: #fff;
-padding: 1px;
+    background: #fff;
+    padding: 1px;
 }
 
+#inspect {
+    background: #fff;
+    padding: 1px;
+}
+
+
 .action-button {
-font-size: 16px;
-background-color: transparent;
-border: 1px solid #d3d3d3;
-color: #6e6e6e;
-height: 32px;
-width: 32px;
-text-align: center;
-box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    font-size: 16px;
+    background-color: transparent;
+    border: 1px solid #d3d3d3;
+    color: #6e6e6e;
+    height: 32px;
+    width: 32px;
+    text-align: center;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
 .action-button:hover,
 .action-button:focus {
-background: #0079c1;
-color: #e4e4e4;
+    background: #0079c1;
+    color: #e4e4e4;
 }
 
 .active {
-background: #0079c1;
-color: #e4e4e4;
+    background: #0079c1;
+    color: #e4e4e4;
 }
