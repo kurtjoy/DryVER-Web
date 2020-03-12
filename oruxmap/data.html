@@ -25,33 +25,10 @@
         overflow: hidden;
       }
 
-      .inherit-body {
-        max-height: inherit;
-        max-width: inherit;
-        height: inherit;
-        width: inherit;
-      }
-
-      .full-height {
-        height: 100%;
-      }
-
-      .contain-height {
-        max-height: 100%;
-      }
-
-      .inherit-height {
-        max-height: inherit;
-      }
-
       /* A working FireFox responsive CSS fix */
       /* https://moduscreate.com/blog/how-to-fix-overflow-issues-in-css-flex-layouts/ */
       .minimum-height {
         min-height: 0px;
-      }
-
-      .vertical-scroll {
-        overflow-y: auto;
       }
 
       .body {
@@ -89,11 +66,6 @@
 
       }
 
-      main .row {
-        /* color: inherit; */
-        /* color: rgba(255,255,255,0.6); */
-      }
-
       .logo-container {
         /* background-color: #cccccc; */
         background-color: var(--light);
@@ -112,9 +84,9 @@
     <title>Oruxmaps GPS data</title>
   </head>
   <body>
-    <div class="body w-100 full-height"></div>
-    <div class="grad w-100 full-height"></div>
-    <div class="container-fluid d-flex flex-column contain-height full-height text-light px-0">
+    <div class="body w-100 h-100"></div>
+    <div class="grad w-100 h-100"></div>
+    <div class="container-fluid d-flex flex-column mh-100 h-100 text-light px-0">
       <header class="header d-flex">
         <div class="container-fluid d-flex justify-content-center align-items-center">
           <div class="row flex-shrink-1 flex-grow-1 align-items-center">
@@ -131,9 +103,9 @@
           </div>
         </div>
       </header>
-      <main class="d-flex contain-height full-height minimum-height vertical-scroll">
-        <div class="container-fluid d-flex flex-column contain-height full-height justify-content-center align-items-center">
-          <div class="row contain-height">
+      <main class="d-flex mh-100 h-100 minimum-height overflow-auto">
+        <div class="container-fluid d-flex flex-column mh-100 h-100 justify-content-center align-items-center">
+          <div class="row mh-100">
             <!-- Add additional content here using bootstrap's column as containers, adjust the number of col's class for each addition as appropriate -->
             <div class="col-lg-6 col-12">
               <h2>
@@ -166,7 +138,7 @@
             </div>
           <!-- <div class="bg-danger" style="height:1000px; width: 100%;"></div> -->
           </div>
-        <!-- <div class="bg-success d-flex flex-column contain-height" style="height:1000px; width: 100%;"></div> -->
+        <!-- <div class="bg-success d-flex flex-column mh-100" style="height:1000px; width: 100%;"></div> -->
         </div>
       </main>
       <footer class="footer py-3">
