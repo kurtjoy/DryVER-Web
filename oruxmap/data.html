@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -34,7 +34,7 @@
       .body {
         position: absolute;
         z-index: -2;
-        background-image: url("./../DV.JPG");
+        background-image: url("DV.JPG");
         /* Center and scale the image nicely */
         background-position: center;
         /* background-repeat: no-repeat; */
@@ -51,100 +51,130 @@
 
       .header, .footer {
         background-color: #0873b8;
-        /* color: white; */
-      }
-
-      .main {
-
-      }
-
-      .header {
-
-      }
-
-      .footer {
-
       }
 
       .logo-container {
-        /* background-color: #cccccc; */
         background-color: var(--light);
         border-radius: 0 0 50% 50%;
-        /* border-radius: 50%; */
-        /* width: 15rem;
-        height: 11rem;
-        margin-top: -5rem; */
       }
 
       .logo {
         height: 7rem;
         width: auto;
       }
+
+      .google-play-badge {
+        height: 4rem;
+        width: auto;
+      }
     </style>
-    <title>Oruxmaps GPS data</title>
+    <title>DryVER GPS Tool</title>
   </head>
   <body>
     <div class="body w-100 h-100"></div>
     <div class="grad w-100 h-100"></div>
-    <div class="container-fluid d-flex flex-column mh-100 h-100 text-light px-0">
-      <header class="header d-flex">
-        <div class="container-fluid d-flex justify-content-center align-items-center">
-          <div class="row flex-shrink-1 flex-grow-1 align-items-center">
-            <div class="col-lg-3 col-12 d-flex justify-content-center">
-              <img
-                class="logo-container logo mt-auto"
-                src="./../dryver_django/static/img/Logo.png"
-              >
-            </div>
-            <div class="col-lg-9 col-12 d-none d-lg-block">
-              <h2>Dry Valley Ecosystem Resilience</h2>
-              <p>International Center for Terrestrial Antarctic Research</p>
-            </div>
-          </div>
+    <div class="container-fluid d-flex flex-column mh-100 h-100 text-light">
+      <header class="header row align-items-center">
+        <div class="col-lg-3 col-12 d-flex justify-content-center">
+          <img
+            class="logo-container logo mt-auto"
+            src="Logo.png"
+          >
+        </div>
+        <div class="col-lg-9 col-12 d-none d-lg-block">
+          <h2>Dry Valley Ecosystem Resilience</h2>
+          <p>International Center for Terrestrial Antarctic Research</p>
         </div>
       </header>
-      <main class="d-flex mh-100 h-100 minimum-height overflow-auto">
-        <div class="container-fluid d-flex flex-column mh-100 h-100 justify-content-center align-items-center">
-          <div class="row mh-100">
-            <!-- Add additional content here using bootstrap's column as containers, adjust the number of col's class for each addition as appropriate -->
-            <div class="col-lg-6 col-12">
-              <h2>
-                Latest 24/3/2018
-                Maps
-              </h2>
-              <a
-                class="btn btn-outline-light btn-block"
-                href="orux-map://https://trugis.sci.waikato.ac.nz/oruxmap/LIMA_MDV_201803.zip"
-              >LIMA basemap</a>
-              <a
-                class="btn btn-outline-light btn-block"
-                href="orux-map://https://trugis.sci.waikato.ac.nz/oruxmap/LINZ_MDV_201803.zip"
-              >LINZ basemap</a>
-              <p class="btn-block">
-                Sourced from the <a>LINZ Data Service</a>
-                and licensed by LINZ for re-use under the Creative Commons Attribution 3.0 New Zealand licence.
-              </p>
-            </div>
-            <div class="col-lg-6 col-12">
-              <h2>Overlays</h2>
-              <a
-                class="btn btn-outline-light btn-block"
-                href="orux-layer://https://trugis.sci.waikato.ac.nz/oruxmap/MDV_ASPA_250m.kmz"
-              >ASPA 250m Buffer KML</a>
-              <a
-                class="btn btn-outline-light btn-block"
-                href="orux-layer://https://trugis.sci.waikato.ac.nz/oruxmap/MDV_ASPA.kmz"
-              >ASPA KML</a>
-            </div>
-          <!-- <div class="bg-danger" style="height:1000px; width: 100%;"></div> -->
-          </div>
-        <!-- <div class="bg-success d-flex flex-column mh-100" style="height:1000px; width: 100%;"></div> -->
+      <main class="row mh-100 h-100 justify-content-center align-items-center overflow-auto p-lg-5">
+        <!-- Add additional content here using bootstrap's column as containers, adjust the number of col's class for each addition as appropriate -->
+        <div class="col-lg-12 col-12">
+          <p>Welcome to the DryVER GPS Tool, created by the International Centre for Terrestrial Antarctic Research (University of Waikato, New Zealand) as part of the Dry Valley Ecosystem Resilience project (funded by the New Zealand Government). The main purpose of the DryVER GPS Tool is to provide visitors (both scientists and tourists) to the McMurdo Dry Valleys of Antarctica with information that helps them better understand the requirements and restrictions within the McMurdo Dry Valleys (MDV) Antarctic Specially Managed Area Manual.</p>
+          <p>Features of the DryVER GPS Tool include:</p>
+          <ul>
+            <li>1:50,000 topographic base map</li>
+            <li>Landsat satellite imagery</li>
+            <li>Locations and boundaries of Antarctic Specially Protected Areas (ASPAs), Scientific Zones, Restricted Zones, Facility Zones, and Visitor Zones</li>
+            <li>Geofenced warning with proximity to Restricted Zones and ASPAs</li>
+            <li>Specific ASPA maps</li>
+            <li>Geological maps</li>
+            <li>Surface sensitivity maps</li>
+            <li> ASPA Management Plans and the McMurdo Dry Valleys ASMA Manual</li>
+            <li>The ability to import and export ESRI shapefile, GPX, and KML files</li>
+          </ul>
+          <p>The software is based on <a href="https://www.oruxmaps.com/cs/en/"> Oruxmaps </a> and contains custom data and features for use in the McMurdo Dry Valleys. A complete user manual for the Oruxmaps is available in a number of languages from https://www.oruxmaps.com/cs/en/manual. Be aware that the Oruxmaps manual is specific to the latest version of Oruxmaps and may contain features not present or different from the DryVER GPS Tool.</p>
+        </div>
+        <div class="col-lg-6 col-12">
+          <h2>
+            Latest 24/3/2018
+            Maps
+          </h2>
+          <a
+            class="btn btn-outline-light btn-block"
+            href="orux-map://https://trugis.sci.waikato.ac.nz/oruxmap/LIMA_MDV_201803.zip"
+          >LIMA basemap</a>
+          <a
+            class="btn btn-outline-light btn-block"
+            href="orux-map://https://trugis.sci.waikato.ac.nz/oruxmap/LINZ_MDV_201803.zip"
+          >LINZ basemap</a>
+          <p class="btn-block">
+            Sourced from the <a>LINZ Data Service</a>
+            and licensed by LINZ for re-use under the Creative Commons Attribution 3.0 New Zealand licence.
+          </p>
+        </div>
+        <div class="col-lg-6 col-12">
+          <h2>
+            User manuals
+          </h2>
+          <a
+            class="btn btn-outline-light btn-block"
+            href="manual.pdf"
+          >DryVER GPS Tool appendum</a>
+          <a
+            class="btn btn-outline-light btn-block"
+            href="https://www.oruxmaps.com/oruxmapsmanual_en.pdf"
+          >Oruxmaps user manual</a>
+          <p class="btn-block">
+            Sourced from the <a>LINZ Data Service</a>
+            and licensed by LINZ for re-use under the Creative Commons Attribution 3.0 New Zealand licence.
+          </p>
+        </div>
+        <div class="col-lg-6 col-12">
+          <h2>Overlays</h2>
+          <a
+            class="btn btn-outline-light btn-block"
+            href="orux-layer://https://trugis.sci.waikato.ac.nz/oruxmap/MDV_ASPA_250m.kmz"
+          >ASPA 250m Buffer KML</a>
+          <a
+            class="btn btn-outline-light btn-block"
+            href="orux-layer://https://trugis.sci.waikato.ac.nz/oruxmap/MDV_ASPA.kmz"
+          >ASPA KML</a>
+          <a
+            class="btn btn-outline-light btn-block"
+            href="orux-layer://https://trugis.sci.waikato.ac.nz/oruxmap/GNS_GEOLOGY.kmz"
+          >GNS Geology</a>
+          <p class="btn-block">
+            Sourced from <a>Geological and Nuclear Sciences</a>
+            and licensed by GNS for re-use under the Creative Commons Attribution 3.0 New Zealand licence.
+          </p>
+        </div>
+        <div class="col-lg-6 col-12">
+          <h2>Other data</h2>
+          <a
+            class="btn btn-outline-light btn-block"
+            href="https://trugis.sci.waikato.ac.nz/oruxmap/maps.zip"
+          >MDV field manual and maps</a>
+          <p class="btn-block">
+            Extract this zip file into the DRYVER application folder on your device. ASMA manual and maps can be then be accessed from the "Documents" dropdown menu. Additionally your PEE can also be accessed from here if it is copied to DRYVER/PDFS with the name PEE.pdf
+          </p>
         </div>
       </main>
-      <footer class="footer py-3">
-        <div class="container">
-          <span>Place sticky footer content here.</span>
-        </div>
+      <footer class="footer row justify-content-center align-items-center p-3 p-lg-0">
+        <span>At this time, the DryVER GPS Tool is Android only with no planned iOS development.</span>
+        <img
+          class="google-play-badge d-none d-lg-block"
+          src="google-play-badge.png"
+        >
       </footer>
     </div>
     <!-- Optional JavaScript -->
@@ -153,19 +183,16 @@
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
       integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
       crossorigin="anonymous"
-    >
-    </script>
+    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
       integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
       crossorigin="anonymous"
-    >
-    </script>
+    ></script>
     <script
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
-    >
-    </script>
+    ></script>
   </body>
 </html>
