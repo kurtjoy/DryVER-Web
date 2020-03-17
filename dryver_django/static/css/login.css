@@ -1,79 +1,52 @@
-@CHARSET "UTF-8";
-/*
-over-ride "Weak" message, show font in dark grey
-*/
-
-.progress-bar {
-    color: #333;
-} 
-
-/*
-Reference:
-http://www.bootstrapzen.com/item/135/simple-login-form-logo/
-*/
-
-* {
-    -webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
-	outline: none;
+/* {% load staticfiles %} */
+body {
+	max-height: 100vh;
+	max-width: 100vw;
+	display: flex;
+	height: 100vh;
+	width: 100vw;
+	/* overflow: hidden; */
 }
 
-    .form-control {
-	  position: relative;
-	  font-size: 16px;
-	  height: auto;
-	  padding: 10px;
-		@include box-sizing(border-box);
+.inherit-height {
+	max-height: inherit;
+}
 
-		&:focus {
-		  z-index: 2;
-		}
-	}
+.minimum-height {
+	min-height: 0px;
+}
 
-body {
-	background: url(https://i.imgur.com/GHr12sH.jpg) no-repeat center center fixed;
-    -webkit-background-size: cover;
+.body {
+	position: absolute;
+	z-index: -2;
+	background-image: url("./../img/DV.JPG");
+	/* Center and scale the image nicely */
+	background-position: center;
+	/* background-repeat: no-repeat; */
+	-webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+	filter: blur(10px);
 }
 
-.login-form {
-	margin-top: 60px;
+.grad {
+	position: absolute;
+	z-index: -1;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome, Safari4+ */
+	opacity: 0.7;
 }
 
-form[role=login] {
+form.form-login {
 	color: #5d5d5d;
 	background: #f2f2f2;
-	padding: 26px;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
+	border-radius: 0.75rem;
+	-moz-border-radius: 0.75rem;
+	-webkit-border-radius: 0.75rem;
+	max-width: 30%;
 }
-	form[role=login] img {
-		display: block;
-		margin: 0 auto;
-		margin-bottom: 35px;
-	}
-	form[role=login] input,
-	form[role=login] button {
-		font-size: 18px;
-		margin: 16px 0;
-	}
-	form[role=login] > div {
-		text-align: center;
-	}
-	
-.form-links {
-	text-align: center;
-	margin-top: 1em;
-	margin-bottom: 50px;
-}
-.form-links a {
-    color: #fff;
-}
-    
-.error-text{
-    color: red;
+
+.logo {
+	height: 7rem;
+	width: auto;
 }

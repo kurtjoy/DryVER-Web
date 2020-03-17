@@ -1,55 +1,90 @@
-{% load staticfiles %}
+<!-- {% load staticfiles %} -->
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    >
+    <link
+      rel="icon"
+      type="image/png"
+      href="{% static 'img/Logo.png' %}"
+    >
     <title>DryVER: McMurdo Dry Valleys Environmental Data Portal - Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-</head>
-<body>
-        <div class="container">
-  
-            <div class="row" id="pwd-container">
-                <div class="col-md-4"></div>
-                
-                <div class="col-md-4">
-                <section class="login-form">
-                    <form method="post" role="login">
-                        {%csrf_token%}
-                        <center><h2>DryVER: McMurdo Dry Valleys Environmental Data Portal</h2></center>
-                        <!-- <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="" /> -->
-                        <input type="text" placeholder="username" required class="form-control input-lg" name="username" />
-                        
-                        <input type="password" class="form-control input-lg" id="password" name="password" placeholder="Password" required="" />
-
-                        {% if form.errors %}
-                            <p class="error-text">username or password not correct</p>
-                        {% endif %}
-                        
-                        <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
-                    
-                    
-                    </form>
-                    
-                    <div class="form-links">
-                        <a href="/">DryVER: McMurdo Dry Valleys Environmental Data Portal</a>
-                    </div>
-                </section>  
-                </div>
-                
-                <div class="col-md-4"></div>
-                
-            
-            </div>   
-            
-            
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    >
+    <link
+      rel="stylesheet"
+      href="{% static 'css/login.css' %}"
+    >
+  </head>
+  <body>
+    <div class="body w-100 h-100"></div>
+    <div class="grad w-100 h-100"></div>
+    <div class="container-fluid d-flex flex-column mh-100 h-100 justify-content-center overflow-auto">
+      <div class="row mh-100 justify-content-center">
+        <form
+          class="form-login col-12 p-5"
+          method="post"
+          role="login"
+        >
+          <!-- {% csrf_token %} -->
+          <div class="form-row justify-content-center">
+            <img class="logo" src="{% static 'img/Logo.png' %}">
+            <h2 class="text-center">McMurdo Dry Valleys Environmental Data Portal</h2>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              placeholder="Username"
+              required
+              class="form-control form-control-lg"
+              name="username"
+            >
+          </div>
+          <div class="form-group">
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              required
+              class="form-control form-control-lg"
+              name="password"
+            >
+            <!-- {% if form.errors %} -->
+            <small class="form-text text-danger">
+              Username or Password is incorrect.
+            </small>
+            <!-- {% endif %} -->
+          </div>
+          <button
+            type="submit"
+            name="go"
+            class="btn btn-lg btn-block btn-primary"
+          >
+            Submit
+          </button>
+        </form>
+        <div class="col-12 d-flex justify-content-center">  
+          <small class="py-3">
+            <a class="text-light" href="/">DryVER: McMurdo Dry Valleys Environmental Data Portal</a>
+          </small>
         </div>
-    
-</body>
-</html>>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
