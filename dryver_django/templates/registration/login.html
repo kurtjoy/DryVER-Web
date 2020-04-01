@@ -1,4 +1,4 @@
-<!-- {% load staticfiles %} -->
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,7 +37,7 @@
           method="post"
           role="login"
         >
-          <!-- {% csrf_token %} -->
+          {% csrf_token %}
           <div class="form-row justify-content-center">
             <img class="logo" src="{% static 'img/Logo.png' %}">
             <h2 class="text-center">McMurdo Dry Valleys Environmental Data Portal</h2>
@@ -60,11 +60,11 @@
               class="form-control form-control-lg"
               name="password"
             >
-            <!-- {% if form.errors %} -->
+            {% if form.errors %}
             <small class="form-text text-danger">
               Username or Password is incorrect.
             </small>
-            <!-- {% endif %} -->
+            {% endif %}
           </div>
           <button
             type="submit"

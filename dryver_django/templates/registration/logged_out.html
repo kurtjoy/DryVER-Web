@@ -1,4 +1,4 @@
-<!-- {% load staticfiles %} -->
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -41,7 +41,7 @@
           method="post"
           role="login"
         >
-          <!-- {% csrf_token %} -->
+          {% csrf_token %}
           <div class="form-row justify-content-center align-items-center">
             <img class="logo" src="{% static 'img/Logo.png' %}">
             <h2>Logged out</h2>
