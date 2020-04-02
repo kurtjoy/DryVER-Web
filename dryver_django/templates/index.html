@@ -1,304 +1,694 @@
+<!-- dryver_django\templates\index.html -->
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load widget_tweaks %}
 
 {% block sheets %}
-<link href="{% static 'css/arcgis_map.css' %}" rel="stylesheet">
+<link
+  href="{% static 'css/arcgis_map.css' %}"
+  rel="stylesheet"
+>
 {% endblock %}
 {% block content %}
 <!-- https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Widget.html -->
 <!-- https://developers.arcgis.com/javascript/latest/api-reference/esri-support-actions-ActionToggle.html -->
-    <!-- <div id="viewDiv"></div> -->
-    <div id="topbar">
-      <button
-        class="action-button distance-measurement-button esri-icon-minus"
-        id="distanceButton"
-        type="button"
-        title="Measure distance between two or more points"
-        data-hint="Measure distance between two or more points"
-      ></button>
-      <br>
-      <button
-        class="action-button area-measurement-button esri-icon-polygon"
-        id="areaButton"
-        type="button"
-        title="Measure area"
-        data-hint="Measure area"
-      ></button>
+<!-- <div id="viewDiv"></div> -->
+<div id="topbar">
+  <button
+    id="distanceButton"
+    class="action-button distance-measurement-button esri-icon-minus"
+    type="button"
+    title="Measure distance between two or more points"
+    data-hint="Measure distance between two or more points"
+  ></button>
+  <br>
+  <button
+    id="areaButton"
+    class="action-button area-measurement-button esri-icon-polygon"
+    type="button"
+    title="Measure area"
+    data-hint="Measure area"
+  ></button>
+</div>
+<div id="inspect">
+  <button
+    id="inspectButton"
+    class="action-button esri-icon-applications"
+    type="button"
+    title="Get report of any point"
+    data-hint="Get report of any point"
+  ></button>
+</div>
+<!--map-->
+<div
+  id="map_canvas"
+  class="map"
+></div>
+<!--/map-->
+<div class="row site">
+  <div class="col-md-1 general_menu inner">
+    <!-- <a href="#" class="avatar">
+      <img src="{% static 'img/no_ava.png' %}" alt="..." /></a> -->
+    <ul>
+      <li>
+        <a
+          id="jump-to-loc-icon"
+          href="#"
+          data-name="jump-to-loc"
+          class="gradientmenu jump-to-loc"
+        ><i class="fas fa-search-location"></i></a>
+      </li>
+      <li>
+        <a
+          href="#"
+          data-name="Datasets"
+          class="gradientmenu"
+        ><i class="fas fa-layer-group"></i></a>
+      </li>
+      <li>
+        <a
+          href="#"
+          data-nasme="Dryver"
+          class="gradientmenu"
+        ><i class="fas fa-icicles"></i></a>
+      </li>
+      <!-- <li>
+        <a href="#" data-name="Tools" class="gradientmenu"><i class="fas fa-tools"></i></a>
+      </li> -->
+      <!-- Removing because this will move inside popup -->
+      <!-- <li>
+        <a href="#" class="gradientmenu" id="pdf-report-form"><i class="fas fa-file"></i></a>
+      </li> -->
+      <li>
+        <a
+          id="windy-button"
+          href="{% url 'Windy' %}"
+          class="gradientmenu Windy"
+        ><i class="icon-wind"></i></a>
+      </li>
+      <li>
+        <a
+          id="logout"
+          href="{% url 'logout' %}"
+          class="gradientmenu logout"
+        ><i class="fas fa-sign-out-alt"></i></a>
+      </li>
+    </ul>
+  </div>
+  <!--/Profile-->
+  <!--Content-->
+  <div
+    id="cont"
+    class="col-md-11 side-bar profile_closed"
+  >
+    <!--header-->
+    <div class="row">
+      <div class="col-md-12 header">
+        <div class="logo">
+          <a href="/">
+            <img
+              style="max-width: 114px;"
+              src="{% static 'img/Logo.png' %}"
+              alt="..."
+            >
+          </a>
+        </div>
+      </div>
     </div>
-    <div id="inspect">
-        <button
-        class="action-button esri-icon-applications"
-        id="inspectButton"
-        type="button"
-        title="Get report of any point"
-        data-hint="Get report of any point"
-      ></button>
+    <!--/header-->
+    <!--Map open (for adaptive)-->
+    <div class="row map_open">
+      <div class="col-md-12">
+        <a
+          id="map_open"
+          href="#"
+        >Show map</a>
+      </div>
     </div>
-    <!--map-->
-    <div id="map_canvas" class="map"></div>
-    <!--/map-->
-    <div class="row site">
-        <div class="col-md-1 general_menu inner">
-            <!-- <a href="#" class="avatar">
-                <img src="{% static 'img/no_ava.png' %}" alt="..."/></a> -->
-            <ul>
-                <li>
-                    <a href="#" data-name="jump-to-loc" id="jump-to-loc-icon" class="gradientmenu jump-to-loc"><i class="fas fa-search-location"></i></a>
-                </li>
-                <li>
-                    <a href="#" data-name="Datasets" class="gradientmenu"><i class="fas fa-layer-group"></i></a>
-                </li>
-                <li>
-                    <a href="#" data-nasme="Dryver" class="gradientmenu"><i class="fas fa-icicles"></i></a>
-                </li>
-                <!-- <li>
-                    <a href="#" data-name="Tools" class="gradientmenu"><i class="fas fa-tools"></i></a>
-                </li> -->
-                <!-- Removing because this will move inside popup -->
-                <!-- <li>
-                    <a href="#" class="gradientmenu" id="pdf-report-form"><i class="fas fa-file"></i></a>
-                </li> -->
-                <li>
-                    <a href="{% url 'Windy' %}" id="windy-button" class="gradientmenu Windy"><i class="icon-wind"></i></a>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}" id="logout" class="gradientmenu logout"><i class="fas fa-sign-out-alt"></i></a>
-                </li>
+    <!--/Map open (for adaptive)-->
+    <!--Category menu-->
+    <div class="row">
+      <div class="col-md-12">
+        <div id="tabs">
+          <div
+            id="tab1"
+            class="tab"
+          >
+            <h5 class="cat">
+              Jump to Location
+            </h5>
+            <span
+              class="btn-group btn-group-toggle col-md-12"
+              data-toggle="buttons"
+            >
+              <label class="btn btn-primary col-md-6 jump_deg">
+                <input
+                  id="option1"
+                  type="radio"
+                  name="jump_option"
+                  value="1"
+                > Decimal<br>Degrees
+              </label>
+              <label class="btn btn-primary col-md-6 jump_deg_min">
+                <input
+                  id="option2"
+                  type="radio"
+                  name="jump_option"
+                  value="2"
+                > Decimal<br>Minutes
+              </label>
+            </span>
+            <form class="loc_jump_dd">
+              <label for="lat">Latitude:</label>
+              <input
+                id="lat_jump"
+                class="form-control"
+                type="number"
+                step="any"
+                name="lat"
+                min="-90"
+                max="90"
+                required
+              >
+              <label for="long">Longitude:</label>
+              <input
+                id="long_jump"
+                class="form-control"
+                type="number"
+                step="any"
+                name="long"
+                min="-180"
+                max="180"
+                required
+              >
+              <br>
+              <button
+                type="submit"
+                class="btn btn-primary"
+              >
+                Jump
+              </button>
+            </form>
+            <form class="loc_jump_dm hidden">
+              <label for="lat">Latitude Degrees:</label>
+              <input
+                id="lat_deg_jump"
+                class="form-control"
+                type="number"
+                name="lat_deg"
+                min="-90"
+                max="90"
+                required
+              >
+              <label for="lat">Latitude Minutes:</label>
+              <input
+                id="lat_min_jump"
+                class="form-control"
+                type="number"
+                step="any"
+                name="lat_min"
+                value="0"
+                min="0"
+                max="60"
+                required
+              >
+              <label for="long">Longitude Degrees:</label>
+              <input
+                id="long_deg_jump"
+                class="form-control"
+                type="number"
+                name="long_deg"
+                min="-180"
+                max="180"
+                required
+              >
+              <label for="lat">Longitude Minutes:</label>
+              <input
+                id="long_min_jump"
+                class="form-control"
+                type="number"
+                step="any"
+                name="long_min"
+                value="0"
+                min="0"
+                max="60"
+                required
+              >
+              <br>
+              <button
+                type="submit"
+                class="btn btn-primary"
+              >
+                Jump
+              </button>
+            </form>
+          </div>
+          <div
+            id="tab2"
+            class="tab"
+          >
+            <h5 class="cat">
+              Datasets
+            </h5>
+            <ul class="catalog">
+              <li class="agar-layer">
+                <a href="#">AGAr<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="0"
+                  data-layer="agar"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="agar-layer">
+                <a href="#">nzTABS<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="0"
+                  data-layer="nztabs"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="agar-layer">
+                <a href="#">NZ Events<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="0"
+                  data-layer="visitation"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="abiotic-layer">
+                <a href="#">Aspect<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="3"
+                  data-layer="abiotic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="abiotic-layer">
+                <a href="#">Slope<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="4"
+                  data-layer="abiotic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="abiotic-layer">
+                <a href="#">GNS Geology<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="2"
+                  data-layer="abiotic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="abiotic-layer">
+                <a href="#">GNS Ice/Snow<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="1"
+                  data-layer="abiotic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="abiotic-layer">
+                <a href="#">LiDAR Hillshade<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="5"
+                  data-layer="abiotic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="abiotic-layer">
+                <a href="#">NZ Visitation<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="1"
+                  data-layer="visitation"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="abiotic-layer">
+                <a href="#">ASPA/Management Zones<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="-1"
+                  data-layer="antarctic managed area"
+                  type="checkbox"
+                  checked
+                ><span class="slider round"></span></label></span></a>
+              </li>
             </ul>
+          </div>
+          <div
+            id="tab3"
+            class="tab"
+          >
+            <h5 class="cat">
+              DryVER
+            </h5>
+            <ul class="catalog">
+              <!-- <li class="drop-down" data-target="abiotic-layer"><a href="#" class="activepoint">Abiotic<span><i class="fas fa-angle-down"></i></span></a></li> -->
+              <!-- <li class="abiotic-layer hide"><a href="#">Aspect<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+              <li class="abiotic-layer hide"><a href="#">Slope<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+              <li class="abiotic-layer hide"><a href="#">GNS Geology<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+              <li class="abiotic-layer hide"><a href="#">GNS Ice/Snow<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+              <li class="abiotic-layer hide"><a href="#">LiDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
+              <!-- <li class="abiotic-layer hide"><a href="#">McMurdo ASMA<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="mcmurdo asma" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
+              <!-- <li class="abiotic-layer hide"><a href="#">ASPA/Management Zones<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
+              <!-- <li class="abiotic-layer hide"><a href="#">SCAR Placenames<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="asma" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
+              <li
+                class="drop-down"
+                data-target="aquatic-layer"
+              >
+                <a
+                  href="#"
+                  class="activepoint"
+                >Aquatic<span><i class="fas fa-angle-down"></i></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Aquatic habitat Classification<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="-1"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Aquatic Connectivity<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="-1"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Lakes and Ponds<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="0"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Streams<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="1"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Wetness Index<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="2"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Distance to Water<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="3"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Distance to Streams<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="4"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Distance to Water Bodies<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="5"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="aquatic-layer hide">
+                <a href="#">Distance to Coast<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="6"
+                  data-layer="aquatic"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li
+                class="drop-down"
+                data-target="climate-layer"
+              >
+                <a
+                  href="#"
+                  class="activepoint"
+                >Climate<span><i class="fas fa-angle-down"></i></span></a>
+              </li>
+              <li class="climate-layer hide">
+                <a href="#">High Summer winds<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="0"
+                  data-layer="climate"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="climate-layer hide">
+                <a href="#">High Annual winds<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="1"
+                  data-layer="climate"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="climate-layer hide">
+                <a href="#">Summer mean wind speed<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="2"
+                  data-layer="climate"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="climate-layer hide">
+                <a href="#">Annual mean wind speed<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="3"
+                  data-layer="climate"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="climate-layer hide">
+                <a href="#">Summer max wind speed<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="4"
+                  data-layer="climate"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="climate-layer hide">
+                <a href="#">Annual max wind speed<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="5"
+                  data-layer="climate"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="climate-layer hide">
+                <a href="#">Particle density contours<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="5"
+                  data-layer="particle density contour"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="climate-layer hide">
+                <a href="#">Particle density<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="7"
+                  data-layer="climate"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li
+                class="drop-down"
+                data-target="impact-layer"
+              >
+                <a
+                  href="#"
+                  class="activepoint"
+                >Human Impact<span><i class="fas fa-angle-down"></i></span></a>
+              </li>
+              <li class="impact-layer hide">
+                <a href="#">Impact sample Sites<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="0"
+                  data-layer="impact"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="impact-layer hide">
+                <a href="#">Sensitivity Index<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="1"
+                  data-layer="impact"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li class="impact-layer hide">
+                <a href="#">Colluvium and Bedrock<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="2"
+                  data-layer="impact"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li
+                class="drop-down"
+                data-target="terrestrial-layer"
+              >
+                <a
+                  href="#"
+                  class="activepoint"
+                >Terrestrial<span><i class="fas fa-angle-down"></i></span></a>
+              </li>
+              <li class="terrestrial-layer hide">
+                <a href="#">Cyanobacterial Prediction<span><label class="switch"><input
+                  class="layer-toggle"
+                  data-id="0"
+                  data-layer="terrestrial"
+                  type="checkbox"
+                ><span class="slider round"></span></label></span></a>
+              </li>
+              <li
+                class="drop-down"
+                data-target="ecoforcasting-layer"
+              >
+                <a
+                  href="#"
+                  class="activepoint"
+                >Ecoforecasting<span><i class="fas fa-angle-down"></i></span></a>
+              </li>
+            </ul>
+          </div>
+          <!-- <div id="tab4" class="tab">
+            <h5 class="cat">Tools</h5>
+            <ul class="catalog">
+              <li><a href="#">Internet cafe<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+              <li><a href="#">Dota<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+              <li><a href="#">Chempions<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+              <li><a href="#" class="activepoint">Video game centre<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span><p class="arrow"></p>
+              </a></li>
+              <li><a href="#">Classic game<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+            </ul>
+          </div> -->
+          <!-- Removing from here because the export tool will go inside popup -->
+          <!-- <div id="tab4" class="tab">
+            <h5 class="cat">PDF Report Form</h5>
+            <form method="POST">
+              {% csrf_token %}
+              <span class="form-group">
+                <label>{{ pdf_report_form.programme.label }}:</label>
+                {% render_field pdf_report_form.programme class+="form-control" %}
+              </span>
+              <span class="form-group">
+                <label>{{ pdf_report_form.event_number.label }}:</label>
+                {% render_field pdf_report_form.event_number class+="form-control" %}
+              </span>
+              <span class="form-group">
+                <label>{{ pdf_report_form.event_field_leader.label }}:</label>
+                {% render_field pdf_report_form.event_field_leader class+="form-control" %}
+              </span>
+              <span class="form-group">
+                <label>{{ pdf_report_form.field_manager.label }}:</label>
+                {% render_field pdf_report_form.field_manager class+="form-control" %}
+              </span>
+              <span class="form-group">
+                <label>{{ pdf_report_form.institution.label }}:</label>
+                {% render_field pdf_report_form.institution class+="form-control" %}
+              </span>
+              <span class="form-group">
+                <label>{{ pdf_report_form.location.label }}:</label>
+                {% render_field pdf_report_form.location class+="form-control" %}
+              </span>
+              <span class="form-group">
+                <label>{{ pdf_report_form.date_of_event.label }}:</label>
+                {% render_field pdf_report_form.date_of_event class+="form-control" data-date-format="yyyy-mm-dd" data-provide+="datepicker" %}
+              </span>
+              <br>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div> -->
         </div>
-        <!--/Profile-->
-        <!--Content-->
-        <div class="col-md-11 side-bar profile_closed" id="cont">
-            <!--header-->
-            <div class="row">
-                <div class="col-md-12 header">
-                    <div class="logo">
-                        <a href="/">
-                            <img style="max-width: 114px;" src="{% static 'img/Logo.png' %}" alt="..."/>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!--/header-->
-             <!--Map open (for adaptive)-->
-            <div class="row map_open">
-                <div class="col-md-12">
-                    <a href="#" id="map_open">Show map</a>
-                </div>
-            </div>
-              <!--/Map open (for adaptive)-->
-            <!--Category menu-->
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="tabs">
-                        <div id="tab1" class="tab">
-                            <h5 class="cat">Jump to Location</h5>
-                            <span class="btn-group btn-group-toggle col-md-12" data-toggle="buttons">
-                                <label class="btn btn-primary col-md-6 jump_deg">
-                                    <input type="radio" name="jump_option" value="1" id="option1"> Decimal<br>Degrees
-                                </label>
-                                <label class="btn btn-primary col-md-6 jump_deg_min">
-                                    <input type="radio" name="jump_option" value="2" id="option2"> Decimal<br>Minutes
-                                </label>
-                            </span>
-                            <form class="loc_jump_dd">
-                                <label for="lat">Latitude:</label>
-                                <input id="lat_jump" class="form-control" type="number" step="any" name="lat" min="-90" max="90" required>
-                                <label for="long">Longitude:</label>
-                                <input id="long_jump" class="form-control" type="number" step="any" name="long" min="-180" max="180" required>
-                                <br>
-                                <button type="submit" class="btn btn-primary">Jump</button>
-                            </form>
-                            <form class="loc_jump_dm hidden">
-                                <label for="lat">Latitude Degrees:</label>
-                                <input id="lat_deg_jump" class="form-control" type="number" name="lat_deg" min="-90" max="90" required>
-                                <label for="lat">Latitude Minutes:</label>
-                                <input id="lat_min_jump" class="form-control" type="number" step="any" name="lat_min" value="0" min="0" max="60" required>
-                                <label for="long">Longitude Degrees:</label>
-                                <input id="long_deg_jump" class="form-control" type="number" name="long_deg" min="-180" max="180" required>
-                                <label for="lat">Longitude Minutes:</label>
-                                <input id="long_min_jump" class="form-control" type="number" step="any" name="long_min" value="0" min="0" max="60" required>
-                                <br>
-                                <button type="submit" class="btn btn-primary">Jump</button>
-                            </form>
-                        </div>
-                        <div id="tab2" class="tab">
-                            <h5 class="cat">Datasets</h5>
-                            <ul class="catalog">
-                                <li class="agar-layer"><a href="#">AGAr<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="agar" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="agar-layer"><a href="#">nzTABS<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="nztabs" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="agar-layer"><a href="#">NZ Events<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="visitation" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer"><a href="#">Aspect<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer"><a href="#">Slope<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer"><a href="#">GNS Geology<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer"><a href="#">GNS Ice/Snow<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer"><a href="#">LiDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer"><a href="#">NZ Visitation<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="visitation" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer"><a href="#">ASPA/Management Zones<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li>
-                            </ul>
-                        </div>
-                        <div id="tab3" class="tab">
-                            <h5 class="cat">DryVER</h5>
-                            <ul class="catalog">
-                                <!-- <li class="drop-down" data-target="abiotic-layer"><a href="#" class="activepoint">Abiotic<span><i class="fas fa-angle-down"></i></span></a></li> -->
-                                <!-- <li class="abiotic-layer hide"><a href="#">Aspect<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer hide"><a href="#">Slope<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer hide"><a href="#">GNS Geology<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer hide"><a href="#">GNS Ice/Snow<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="abiotic-layer hide"><a href="#">LiDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
-                                <!-- <li class="abiotic-layer hide"><a href="#">McMurdo ASMA<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="mcmurdo asma" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
-                                <!-- <li class="abiotic-layer hide"><a href="#">ASPA/Management Zones<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
-                                <!-- <li class="abiotic-layer hide"><a href="#">SCAR Placenames<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="asma" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
-                                <li class="drop-down" data-target="aquatic-layer"><a href="#" class="activepoint">Aquatic<span><i class="fas fa-angle-down"></i></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Aquatic habitat Classification<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Aquatic Connectivity<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Lakes and Ponds<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Streams<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Wetness Index<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Distance to Water<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Distance to Streams<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Distance to Water Bodies<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="aquatic-layer hide"><a href="#">Distance to Coast<span><label class="switch"><input class="layer-toggle" data-id="6" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="drop-down" data-target="climate-layer"><a href="#" class="activepoint">Climate<span><i class="fas fa-angle-down"></i></span></a></li>
-                                <li class="climate-layer hide"><a href="#">High Summer winds<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="climate-layer hide"><a href="#">High Annual winds<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="climate-layer hide"><a href="#">Summer mean wind speed<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="climate-layer hide"><a href="#">Annual mean wind speed<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="climate-layer hide"><a href="#">Summer max wind speed<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="climate-layer hide"><a href="#">Annual max wind speed<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="climate-layer hide"><a href="#">Particle density contours<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="particle density contour" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="climate-layer hide"><a href="#">Particle density<span><label class="switch"><input class="layer-toggle" data-id="7" data-layer="climate" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="drop-down" data-target="impact-layer"><a href="#" class="activepoint">Human Impact<span><i class="fas fa-angle-down"></i></span></a></li>
-                                <li class="impact-layer hide"><a href="#">Impact sample Sites<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="impact" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="impact-layer hide"><a href="#">Sensitivity Index<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="impact" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="impact-layer hide"><a href="#">Colluvium and Bedrock<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="impact" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="drop-down" data-target="terrestrial-layer"><a href="#" class="activepoint">Terrestrial<span><i class="fas fa-angle-down"></i></span></a></li>
-                                <li class="terrestrial-layer hide"><a href="#">Cyanobacterial Prediction<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="terrestrial" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li class="drop-down" data-target="ecoforcasting-layer"><a href="#" class="activepoint">Ecoforecasting<span><i class="fas fa-angle-down"></i></span></a></li>
-                            </ul>
-                        </div>
-                        <!-- <div id="tab4" class="tab">
-                            <h5 class="cat">Tools</h5>
-                            <ul class="catalog">
-                                <li><a href="#">Internet cafe<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li><a href="#">Dota<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li><a href="#">Chempions<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                                <li><a href="#" class="activepoint">Video game centre<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span><p class="arrow"></p>
-                                </a></li>
-                                <li><a href="#">Classic game<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="aquatic" type="checkbox"><span class="slider round"></span></label></span></a></li>
-                            </ul>
-                        </div> -->
-                        <!-- Removing from here because the export tool will go inside popup -->
-                        <!-- <div id="tab4" class="tab">
-                            <h5 class="cat">PDF Report Form</h5>
-                            <form method="POST">
-                                {% csrf_token %}
-                                <span class="form-group">
-                                    <label>{{ pdf_report_form.programme.label }}:</label>
-                                    {% render_field pdf_report_form.programme class+="form-control" %}
-                                </span>
-                                <span class="form-group">
-                                    <label>{{ pdf_report_form.event_number.label }}:</label>
-                                    {% render_field pdf_report_form.event_number class+="form-control" %}
-                                </span>
-                                <span class="form-group">
-                                    <label>{{ pdf_report_form.event_field_leader.label }}:</label>
-                                    {% render_field pdf_report_form.event_field_leader class+="form-control" %}
-                                </span>
-                                <span class="form-group">
-                                    <label>{{ pdf_report_form.field_manager.label }}:</label>
-                                    {% render_field pdf_report_form.field_manager class+="form-control" %}
-                                </span>
-                                <span class="form-group">
-                                    <label>{{ pdf_report_form.institution.label }}:</label>
-                                    {% render_field pdf_report_form.institution class+="form-control" %}
-                                </span>
-                                <span class="form-group">
-                                    <label>{{ pdf_report_form.location.label }}:</label>
-                                    {% render_field pdf_report_form.location class+="form-control" %}
-                                </span>
-                                <span class="form-group">
-                                    <label>{{ pdf_report_form.date_of_event.label }}:</label>
-                                    {% render_field pdf_report_form.date_of_event class+="form-control" data-date-format="yyyy-mm-dd" data-provide+="datepicker" %}
-                                </span>
-                                <br>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-            <!--/Category menu-->
-        </div>
-        <!--/Content-->
+      </div>
     </div>
+    <!--/Category menu-->
+  </div>
+  <!--/Content-->
+</div>
 
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <script type="text/javascript" src="{% static 'js/arcgis_map.js' %}"></script>
-    <!-- Using this because the classes in above button don't let it happen -->
-    <script type="text/javascript">
-        var currently_opened = ''
-        $('.Windy').click(function(evt){
-            evt.stopImmediatePropagation();
-            window.location = "{% url 'Windy' %}";
-        });
-        $('.logout').click(function(evt){
-            evt.stopImmediatePropagation();
-            window.location = "{% url 'logout' %}";
-        });
-        
-        // if a tab item is clicked, check if profile_closed is there, remove it and update the currently_opened
-        // otherwise check currently_opened, if it is clicked again, remove active from both the items and add profile_closed and remove currently_opened
-        $('.gradientmenu').click(function(){
-            if (currently_opened == ''){
-                currently_opened = $(this).attr('data-name');
-                $('.side-bar').removeClass('profile_closed');
-            }
-            else {
-                var now_clicked = $(this).attr('data-name');
-                if (now_clicked == currently_opened){
-                    $('.side-bar').addClass('profile_closed');
-                    // Next line isn't working, do something to fix it
-                    $(this).removeClass('active');
-                    currently_opened = ''
-                }
-                else {
-                    currently_opened = now_clicked;
-                }
-            }
-        });
-        // Open 'jump to location' on load
-        $( document ).ready(function(){
-            $('.jump-to-loc').click();
-        });
-        tippy('#jump-to-loc-icon', {
-            content: 'Jump to any location (Latitude/Longitude) on the map',
-            size: 'large'
-        });
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script
+  type="text/javascript"
+  src="{% static 'js/arcgis_map.js' %}"
+></script>
+<!-- Using this because the classes in above button don't let it happen -->
+<script type="text/javascript">
+  var currently_opened = ''
+  $('.Windy').click(function(evt){
+    evt.stopImmediatePropagation();
+    window.location = "{% url 'Windy' %}";
+  });
+  $('.logout').click(function(evt){
+    evt.stopImmediatePropagation();
+    window.location = "{% url 'logout' %}";
+  });
 
-        tippy('#pdf-report-form', {
-            content: 'Generate PDF Reports',
-            size: 'large'
-        });
+  // if a tab item is clicked, check if profile_closed is there, remove it and update the currently_opened
+  // otherwise check currently_opened, if it is clicked again, remove active from both the items and add profile_closed and remove currently_opened
+  $('.gradientmenu').click(function(){
+    if (currently_opened == ''){
+    currently_opened = $(this).attr('data-name');
+    $('.side-bar').removeClass('profile_closed');
+  }
+  else {
+    var now_clicked = $(this).attr('data-name');
+    if (now_clicked == currently_opened){
+      $('.side-bar').addClass('profile_closed');
+      // Next line isn't working, do something to fix it
+      $(this).removeClass('active');
+      currently_opened = ''
+    }
+    else {
+      currently_opened = now_clicked;
+    }
+  }
+  });
+  // Open 'jump to location' on load
+  $( document ).ready(function(){
+    $('.jump-to-loc').click();
+  });
+  tippy('#jump-to-loc-icon', {
+    content: 'Jump to any location (Latitude/Longitude) on the map',
+    size: 'large'
+  });
 
-        tippy('#windy-button', {
-            content: 'Check Windy Weather',
-            size: 'large'
-        });
+  tippy('#pdf-report-form', {
+    content: 'Generate PDF Reports',
+    size: 'large'
+  });
 
-        tippy('#logout', {
-            content: 'Signout',
-            size: 'large'
-        });
-        
-        // the hints won't change location after topbar has been added to the map, need to fix this
-        // introJs().addHints();
-    </script>
+  tippy('#windy-button', {
+    content: 'Check Windy Weather',
+    size: 'large'
+  });
+
+  tippy('#logout', {
+    content: 'Signout',
+    size: 'large'
+  });
+
+  // the hints won't change location after topbar has been added to the map, need to fix this
+  // introJs().addHints();
+</script>
 {% endblock %}
-
 
 <!-- Continue from adding tipy hints -->
