@@ -3,10 +3,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    > -->
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta
@@ -18,6 +14,37 @@
       rel="stylesheet"
       href="{% static 'css/bootstrap.min.css' %}"
     >
+    <style>
+      body {
+        max-height: 100vh;
+        max-width: 100vw;
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      .inherit-body {
+        max-height: inherit;
+        max-width: inherit;
+        height: inherit;
+        width: inherit;
+      }
+
+      .inherit-height {
+        max-height: inherit;
+      }
+
+      /* A working FireFox responsive CSS fix */
+      /* https://moduscreate.com/blog/how-to-fix-overflow-issues-in-css-flex-layouts/ */
+      .minimum-height {
+        min-height: 0px;
+      }
+
+      .vertical-scroll {
+        overflow-y: auto
+      }
+    </style>
+    <!-- {% comment 'old contents' %} -->
     <link
       href="{% static 'css/main.css' %}"
       rel="stylesheet"
@@ -45,29 +72,32 @@
       integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
       crossorigin="anonymous"
     >
+    <!-- {% endcomment %} -->
     <link
       rel="icon"
       type="image/png"
       href="{% static 'img/Logo.png' %}"
     >
     <title>DryVER: McMurdo Dry Valleys Environmental Data Portal</title>
+    <!-- {% comment 'old contents' %} -->
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]> <script src="../../assets/js/html5shiv.js"></script> <script src="../../assets/js/respond.min.js"></script> <![endif]-->
     {% block sheets %}
-
     {% endblock %}
+    <!-- {% endcomment %} -->
   </head>
   <body>
-    {% block content %}
-
-    {% endblock %}
-
+    <div class="container-fluid h-100 mh-100">
+      {% block content %}
+      {% endblock %}
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- <script src="{% static 'js/jquery-3.4.1.slim.min.js' %}"></script> -->
     <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- {% comment 'old contents' %} -->
     <!-- <script src="https://unpkg.com/popper.js@1"></script> -->
     
     <script src="https://unpkg.com/tippy.js@4"></script>
@@ -175,6 +205,7 @@
     <script src="https://js.arcgis.com/4.11/"></script>
     {% block scripts %}
     {% endblock %}
-  <!--/Script for worked profile page-->
+    <!--/Script for worked profile page-->
+    <!-- {% endcomment %} -->
   </body>
 </html>
