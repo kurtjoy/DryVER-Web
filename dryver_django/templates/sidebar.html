@@ -1,0 +1,50 @@
+<!-- dryver_django\templates\need-to-decoupled.html -->
+{% load staticfiles %}
+<div class="row site">
+  {% include 'general_menu.html' %}
+  <!--/Profile-->
+  <!--Content-->
+  <div
+    id="cont"
+    class="col-md-11 side-bar profile_closed"
+  >
+    <!--header-->
+    <div class="row">
+      <div class="col-md-12 header">
+        <div class="logo">
+          <a href="/">
+            <img
+              style="max-width: 114px;"
+              src="{% static 'img/Logo.png' %}"
+              alt="..."
+            >
+          </a>
+        </div>
+      </div>
+    </div>
+    <!--/header-->
+    <!--Map open (for adaptive)-->
+    <div class="row map_open">
+      <div class="col-md-12">
+        <a
+          id="map_open"
+          href="#"
+        >Show map</a>
+      </div>
+    </div>
+    <!--/Map open (for adaptive)-->
+    <!--Category menu-->
+    <div class="row">
+      <div class="col-md-12">
+        <div id="tabs">
+          {% include 'tabs/tab1.html' %}
+          {% include 'tabs/tab2.html' %}
+          {% include 'tabs/tab3.html' %}
+          {% include 'tabs/tab4.html' %}
+        </div>
+      </div>
+    </div>
+    <!--/Category menu-->
+  </div>
+  <!--/Content-->
+</div>

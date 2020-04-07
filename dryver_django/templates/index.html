@@ -1,24 +1,24 @@
 <!-- dryver_django\templates\index.html -->
 {% extends 'base.html' %}
 {% load staticfiles %}
-<!-- {% comment 'old contents' %} -->
+
 {% block sheets %}
 <link
   href="{% static 'css/arcgis_map.css' %}"
   rel="stylesheet"
 >
 {% endblock %}
-<!-- {% endcomment %} -->
+
 {% block content %}
-<!-- {% comment 'old contents' %} -->
+
 {% include 'map/topbar.html' %}
 {% include 'map/inspect.html' %}
 {% include 'map/map.html' %}
-{% include 'need-to-decoupled.html' %}
-<!-- {% endcomment %} -->
+{% include 'sidebar.html' %}
+
 
 {% endblock %}
-<!-- {% comment 'old contents' %} -->
+
 {% block scripts %}
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script
@@ -87,4 +87,4 @@
 
 <!-- Continue from adding tipy hints -->
 {% endblock %}
-<!-- {% endcomment %} -->
+

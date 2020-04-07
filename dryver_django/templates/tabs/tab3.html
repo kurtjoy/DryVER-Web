@@ -1,0 +1,287 @@
+<!-- dryver_django\templates\tabs\tab3.html -->
+<div
+  id="tab3"
+  class="tab"
+>
+  <h5 class="cat">
+    DryVER
+  </h5>
+  <ul class="catalog">
+    <!-- <li class="drop-down" data-target="abiotic-layer"><a href="#" class="activepoint">Abiotic<span><i class="fas fa-angle-down"></i></span></a></li> -->
+    <!-- <li class="abiotic-layer hide"><a href="#">Aspect<span><label class="switch"><input class="layer-toggle" data-id="3" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+    <li class="abiotic-layer hide"><a href="#">Slope<span><label class="switch"><input class="layer-toggle" data-id="4" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+    <li class="abiotic-layer hide"><a href="#">GNS Geology<span><label class="switch"><input class="layer-toggle" data-id="2" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+    <li class="abiotic-layer hide"><a href="#">GNS Ice/Snow<span><label class="switch"><input class="layer-toggle" data-id="1" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li>
+    <li class="abiotic-layer hide"><a href="#">LiDAR Hillshade<span><label class="switch"><input class="layer-toggle" data-id="5" data-layer="abiotic" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
+    <!-- <li class="abiotic-layer hide"><a href="#">McMurdo ASMA<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="mcmurdo asma" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
+    <!-- <li class="abiotic-layer hide"><a href="#">ASPA/Management Zones<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
+    <!-- <li class="abiotic-layer hide"><a href="#">SCAR Placenames<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="asma" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
+    <li
+      class="drop-down"
+      data-target="aquatic-layer"
+    >
+      <a
+        href="#"
+        class="activepoint"
+      >Aquatic<span><i class="fas fa-angle-down"></i></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Aquatic habitat Classification<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="-1"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    {% for layer in aquatic %}
+    <li class="aquatic-layer hide">
+      <a href="#">{{ layer.name }}<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="{{ layer.id }}"
+        data-layer="{{ layer.layer }}"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    {% endfor %}
+    <!-- {% comment 'old contents' %} -->
+    <li class="aquatic-layer hide">
+      <a href="#">Aquatic habitat Classification<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="-1"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Aquatic Connectivity<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="-1"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Lakes and Ponds<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="0"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Streams<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="1"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Wetness Index<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="2"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Distance to Water<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="3"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Distance to Streams<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="4"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Distance to Water Bodies<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="5"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="aquatic-layer hide">
+      <a href="#">Distance to Coast<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="6"
+        data-layer="aquatic"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <!-- {% endcomment %} -->
+    <li
+      class="drop-down"
+      data-target="climate-layer"
+    >
+      <a
+        href="#"
+        class="activepoint"
+      >Climate<span><i class="fas fa-angle-down"></i></span></a>
+    </li>
+    {% for layer in climate %}
+    <li class="climate-layer hide">
+      <a href="#">{{ layer.name }}<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="{{ layer.id }}"
+        data-layer="{{ layer.layer }}"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    {% endfor %}
+    <!-- {% comment 'old contents' %} -->
+    <li class="climate-layer hide">
+      <a href="#">High Summer winds<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="0"
+        data-layer="climate"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="climate-layer hide">
+      <a href="#">High Annual winds<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="1"
+        data-layer="climate"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="climate-layer hide">
+      <a href="#">Summer mean wind speed<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="2"
+        data-layer="climate"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="climate-layer hide">
+      <a href="#">Annual mean wind speed<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="3"
+        data-layer="climate"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="climate-layer hide">
+      <a href="#">Summer max wind speed<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="4"
+        data-layer="climate"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="climate-layer hide">
+      <a href="#">Annual max wind speed<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="5"
+        data-layer="climate"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="climate-layer hide">
+      <a href="#">Particle density contours<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="5"
+        data-layer="particle density contour"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="climate-layer hide">
+      <a href="#">Particle density<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="7"
+        data-layer="climate"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <!-- {% endcomment %} -->
+    <li
+      class="drop-down"
+      data-target="impact-layer"
+    >
+      <a
+        href="#"
+        class="activepoint"
+      >Human Impact<span><i class="fas fa-angle-down"></i></span></a>
+    </li>
+    {% for layer in impact %}
+    <li class="impact-layer hide">
+      <a href="#">{{ layer.name }}<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="{{ layer.id }}"
+        data-layer="{{ layer.layer }}"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    {% endfor %}
+    <!-- {% comment 'old contents' %} -->
+    <li class="impact-layer hide">
+      <a href="#">Impact sample Sites<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="0"
+        data-layer="impact"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="impact-layer hide">
+      <a href="#">Sensitivity Index<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="1"
+        data-layer="impact"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <li class="impact-layer hide">
+      <a href="#">Colluvium and Bedrock<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="2"
+        data-layer="impact"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    <!-- {% endcomment %} -->
+    <li
+      class="drop-down"
+      data-target="terrestrial-layer"
+    >
+      <a
+        href="#"
+        class="activepoint"
+      >Terrestrial<span><i class="fas fa-angle-down"></i></span></a>
+    </li>
+    {% for layer in terrestrial %}
+    <li class="terrestrial-layer hide">
+      <a href="#">{{ layer.name }}<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="{{ layer.id }}"
+        data-layer="{{ layer.layer }}"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li>
+    {% endfor %}
+    <!-- <li class="terrestrial-layer hide">
+      <a href="#">Cyanobacterial Prediction<span><label class="switch"><input
+        class="layer-toggle"
+        data-id="0"
+        data-layer="terrestrial"
+        type="checkbox"
+      ><span class="slider round"></span></label></span></a>
+    </li> -->
+    <li
+      class="drop-down"
+      data-target="ecoforcasting-layer"
+    >
+      <a
+        href="#"
+        class="activepoint"
+      >Ecoforecasting<span><i class="fas fa-angle-down"></i></span></a>
+    </li>
+  </ul>
+</div>
