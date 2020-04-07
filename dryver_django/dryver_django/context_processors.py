@@ -44,6 +44,14 @@ ecoforcasting = [
     # { 'name': 'Cyanobacterial Prediction', 'id': 0, 'layer': 'terrestrial' },
 ]
 
+dryver_layers = [
+    { 'name': 'Aquatic', 'key': 'aquatic', 'layers': aquatic },
+    { 'name': 'Climate', 'key': 'climate', 'layers': climate },
+    { 'name': 'Human Impact', 'key': 'impact', 'layers': impact },
+    { 'name': 'Terrestrial', 'key': 'terrestrial', 'layers': terrestrial },
+    { 'name': 'Ecoforecasting', 'key': 'ecoforcasting', 'layers': ecoforcasting },
+]
+
 def constants(request):
     return {
         'datasets': datasets,
@@ -52,4 +60,5 @@ def constants(request):
         'impact': impact,
         'terrestrial': terrestrial,
         'ecoforcasting': ecoforcasting,
+        'dryver_layers': dryver_layers,
     }
