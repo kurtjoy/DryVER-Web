@@ -1,14 +1,24 @@
 datasets = [
-    { 'name': 'AGAr', 'id': 0, 'layer': 'agar' },
+    # { 'name': 'AGAr', 'id': 0, 'layer': 'agar' },
     { 'name': 'nzTABS', 'id': 0, 'layer': 'nztabs' },
     { 'name': 'NZ Events', 'id': 0, 'layer': 'visitation' },
-    { 'name': 'Aspect', 'id': 3, 'layer': 'abiotic' },
-    { 'name': 'Slope', 'id': 4, 'layer': 'abiotic' },
-    { 'name': 'GNS Geology', 'id': 2, 'layer': 'abiotic' },
-    { 'name': 'GNS Ice/Snow', 'id': 1, 'layer': 'abiotic' },
-    { 'name': 'LiDAR Hillshade', 'id': 5, 'layer': 'abiotic' },
+    { 'name': 'Aspect', 'id': 8, 'layer': 'abiotic' },
+    { 'name': 'Slope', 'id': 9, 'layer': 'abiotic' },
+    { 'name': 'GNS Geology', 'id': 7, 'layer': 'abiotic' },
+    { 'name': 'GNS Ice/Snow', 'id': 6, 'layer': 'abiotic' },
+    { 'name': 'LiDAR Hillshade', 'id': 10, 'layer': 'abiotic' },
+    { 'name': 'Contour', 'id': 1, 'layer': 'abiotic' },
     { 'name': 'NZ Visitation', 'id': 1, 'layer': 'visitation' },
     { 'name': 'ASPA/Management Zones', 'id': -1, 'layer': 'antarctic managed area' },
+]
+
+abiotic = [
+    { 'name': 'Aspect', 'id': 8, 'layer': 'abiotic' },
+    { 'name': 'Slope', 'id': 9, 'layer': 'abiotic' },
+    { 'name': 'GNS Geology', 'id': 7, 'layer': 'abiotic' },
+    { 'name': 'GNS Ice/Snow', 'id': 6, 'layer': 'abiotic' },
+    { 'name': 'LiDAR Hillshade', 'id': 10, 'layer': 'abiotic' },
+    { 'name': 'Contour', 'id': 1, 'layer': 'abiotic' },
 ]
 
 aquatic = [
@@ -29,8 +39,8 @@ climate = [
     { 'name': 'Annual mean wind speed', 'id': 3, 'layer': 'climate' },
     { 'name': 'Summer max wind speed', 'id': 4, 'layer': 'climate' },
     { 'name': 'Annual max wind speed', 'id': 5, 'layer': 'climate' },
-    { 'name': 'Particle density contours', 'id': 5, 'layer': 'climate' },
-    { 'name': 'Particle density', 'id': 7, 'layer': 'climate' },
+    # { 'name': 'Particle density contours', 'id': 5, 'layer': 'climate' },
+    # { 'name': 'Particle density', 'id': 7, 'layer': 'climate' },
 ]
 impact = [
     { 'name': 'Impact sample Sites', 'id': 0, 'layer': 'impact' },
