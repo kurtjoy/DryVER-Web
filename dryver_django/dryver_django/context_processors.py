@@ -55,10 +55,5 @@ dryver_layers = [
 def constants(request):
     return {
         'datasets': datasets,
-        'aquatic': aquatic,
-        'climate': climate,
-        'impact': impact,
-        'terrestrial': terrestrial,
-        'ecoforcasting': ecoforcasting,
         'dryver_layers': dryver_layers,
     }
