@@ -16,22 +16,23 @@
     <!-- <li class="abiotic-layer hide"><a href="#">McMurdo ASMA<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="mcmurdo asma" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
     <!-- <li class="abiotic-layer hide"><a href="#">ASPA/Management Zones<span><label class="switch"><input class="layer-toggle" data-id="-1" data-layer="antarctic managed area" type="checkbox" checked><span class="slider round"></span></label></span></a></li> -->
     <!-- <li class="abiotic-layer hide"><a href="#">SCAR Placenames<span><label class="switch"><input class="layer-toggle" data-id="0" data-layer="asma" type="checkbox"><span class="slider round"></span></label></span></a></li> -->
-    {% for layers in dryver_layers %}
+    {% for key, value in dryver_layers.items %}
     <li
       class="drop-down"
-      data-target="{{ layers.key }}-layer"
+      data-target="{{ key }}-layer"
     >
       <a
         href="#"
         class="activepoint"
-      >{{ layers.name }}<span><i class="fas fa-angle-down"></i></span></a>
+      >{{ value.title }}<span><i class="fas fa-angle-down"></i></span></a>
     </li>
-    {% for layer in layers.layers %}
-    <li class="{{ layers.key }}-layer hide">
-      <a href="#">{{ layer.name }}<span><label class="switch"><input
+    {% for layer in value.layers %}
+    <li class="{{ key }}-layer hide">
+      <a href="#">{{ layer.title }}<span><label class="switch"><input
         class="layer-toggle"
         data-id="{{ layer.id }}"
-        data-layer="{{ layer.layer }}"
+        data-layer="{{ key }}"
+        value="{{ layer.visible }}"
         type="checkbox"
       ><span class="slider round"></span></label></span></a>
     </li>

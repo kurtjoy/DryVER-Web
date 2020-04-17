@@ -1,5 +1,5 @@
 var view;
-var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
+var aquaticLayer, climateLayer, impactLayer, nztabsLayer, abioticLayer, asmaLayer;
 var antarcticManagedAreaLayer, mcMurdoAsmaLayer, particleDensityContourLayer, particleDensityLayer;
 var visitationLayer, terrestrialLayer;
 var activeWidget = null;
@@ -64,55 +64,54 @@ $(document).ready(function () {
 
     // symbologies and renderers
 
-    var nzTabsSym = {
-      type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-      color: [0, 0, 0],
-      outline: {
-        // autocasts as new SimpleLineSymbol()
-        color: "#5d8eae",
-        width: 1
-      }
-    };
-    var nzTabsRenderer = {
-      type: "simple", // autocasts as new SimpleRenderer()
-      symbol: nzTabsSym,
-      visualVariables: [{
-        type: "size",
-        field: "WET",
-        // normalizationField: "PH",
-        legendOptions: {
-          title: "nzTABS Sample Sites"
-        },
-        stops: [{
-            value: 4,
-            size: 4,
-            label: "0-4"
-          },
-          {
-            value: 6,
-            size: 8,
-            label: "4-6"
-          },
-          {
-            value: 8,
-            size: 12,
-            label: "6-8"
-          },
-          {
-            value: 10,
-            size: 16,
-            label: "8-10"
-          },
-          {
-            value: 12,
-            size: 20,
-            label: "10-12"
-          }
-        ]
-      }],
-
-      useSymbolValue: true
-    };
+    // var nzTabsSym = {
+    //   type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+    //   color: [0, 0, 0],
+    //   outline: {
+    //     // autocasts as new SimpleLineSymbol()
+    //     color: "#5d8eae",
+    //     width: 1
+    //   }
+    // };
+    // var nzTabsRenderer = {
+    //   type: "simple", // autocasts as new SimpleRenderer()
+    //   symbol: nzTabsSym,
+    //   visualVariables: [{
+    //     type: "size",
+    //     field: "WET",
+    //     // normalizationField: "PH",
+    //     legendOptions: {
+    //       title: "nzTABS Sample Sites"
+    //     },
+    //     stops: [{
+    //         value: 4,
+    //         size: 4,
+    //         label: "0-4"
+    //       },
+    //       {
+    //         value: 6,
+    //         size: 8,
+    //         label: "4-6"
+    //       },
+    //       {
+    //         value: 8,
+    //         size: 12,
+    //         label: "6-8"
+    //       },
+    //       {
+    //         value: 10,
+    //         size: 16,
+    //         label: "8-10"
+    //       },
+    //       {
+    //         value: 12,
+    //         size: 20,
+    //         label: "10-12"
+    //       }
+    //     ]
+    //   }],
+    //   useSymbolValue: true
+    // };
 
 
     // layers
@@ -272,16 +271,6 @@ $(document).ready(function () {
       visible: true,
       // renderer: nzTabsRenderer,
       // popupTemplate: eventTemp
-    });
-
-    agarLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer",
-      title: "AGAR",
-      sublayers: [{
-        id: 0,
-        title: "AGAR Sample Points",
-        visible: false,
-      }, ]
     });
 
     var DisturbanceSampleSitesPopup = {
@@ -508,11 +497,11 @@ $(document).ready(function () {
           title: "5 Yr Annual max wind speed",
           visible: false,
         },
-        {
-          id: 7,
-          title: "Particle density",
-          visible: false,
-        },
+        // {
+        //   id: 7,
+        //   title: "Particle density",
+        //   visible: false,
+        // },
       ]
     });
 
@@ -543,7 +532,6 @@ $(document).ready(function () {
     map.add(asmaLayer);
     map.add(antarcticManagedAreaLayer);
     map.add(mcMurdoAsmaLayer);
-    map.add(agarLayer);
     map.add(impactLayer);
     // map.add(napLayer);
     map.add(nztabsLayer);
@@ -566,7 +554,8 @@ $(document).ready(function () {
     });
 
     var scaleBar = new ScaleBar({
-      view: view
+      view: view,
+      unit: 'metric',
     });
 
 
@@ -604,10 +593,6 @@ $(document).ready(function () {
         {
           layer: antarcticManagedAreaLayer,
           title: "Antarctic Managed Area"
-        },
-        {
-          layer: agarLayer,
-          title: "AGAR"
         },
         {
           layer: impactLayer,
@@ -953,15 +938,6 @@ $('.layer-toggle').click(function () {
       case 'impact':
         if (impactLayer.loaded) {
           var sublayer = impactLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
-        }
-        break;
-
-      case 'agar':
-        if (agarLayer.loaded) {
-          var sublayer = agarLayer.findSublayerById(parseInt(id));
           sublayer.visible = !sublayer.visible;
         } else {
           $(this).prop('checked', !$(this).prop('checked'));

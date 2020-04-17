@@ -9,96 +9,14 @@
   <ul class="catalog">
     {% for dataset in datasets %}
     <li class="{{ dataset.layer }}-layer">
-      <a href="#">{{ dataset.name }}<span><label class="switch"><input
+      <a href="#">{{ dataset.title }}<span><label class="switch"><input
         class="layer-toggle"
         data-id="{{ dataset.id }}"
         data-layer="{{ dataset.layer }}"
+        value="{{ dataset.visible }}"
         type="checkbox"
       ><span class="slider round"></span></label></span></a>
     </li>
     {% endfor %}
-    <!-- {% comment 'old contents' %} -->
-    <!-- <li class="agar-layer">
-      <a href="#">AGAr<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="0"
-        data-layer="agar"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="agar-layer">
-      <a href="#">nzTABS<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="0"
-        data-layer="nztabs"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="agar-layer">
-      <a href="#">NZ Events<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="0"
-        data-layer="visitation"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="abiotic-layer">
-      <a href="#">Aspect<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="3"
-        data-layer="abiotic"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="abiotic-layer">
-      <a href="#">Slope<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="4"
-        data-layer="abiotic"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="abiotic-layer">
-      <a href="#">GNS Geology<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="2"
-        data-layer="abiotic"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="abiotic-layer">
-      <a href="#">GNS Ice/Snow<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="1"
-        data-layer="abiotic"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="abiotic-layer">
-      <a href="#">LiDAR Hillshade<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="5"
-        data-layer="abiotic"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="abiotic-layer">
-      <a href="#">NZ Visitation<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="1"
-        data-layer="visitation"
-        type="checkbox"
-      ><span class="slider round"></span></label></span></a>
-    </li>
-    <li class="abiotic-layer">
-      <a href="#">ASPA/Management Zones<span><label class="switch"><input
-        class="layer-toggle"
-        data-id="-1"
-        data-layer="antarctic managed area"
-        type="checkbox"
-        checked
-      ><span class="slider round"></span></label></span></a>
-    </li> -->
-    <!-- {% endcomment %} -->
   </ul>
 </div>
