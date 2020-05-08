@@ -1,1056 +1,899 @@
-var view;
-var aquaticLayer, climateLayer, impactLayer, agarLayer, nztabsLayer, abioticLayer, asmaLayer;
-var antarcticManagedAreaLayer, mcMurdoAsmaLayer, particleDensityContourLayer, particleDensityLayer;
-var visitationLayer, terrestrialLayer;
-var activeWidget = null;
-// https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
-$(document).ready(function () {
-  require([
-    "esri/Map",
-    "esri/views/SceneView",
-    "esri/views/MapView",
-    "esri/layers/FeatureLayer",
-    "esri/layers/ImageryLayer",
-    "esri/layers/MapImageLayer",
-    "esri/tasks/IdentifyTask",
-    "esri/tasks/ImageServiceIdentifyTask",
-    "esri/tasks/support/IdentifyParameters",
-    "esri/tasks/support/ImageServiceIdentifyParameters",
-    "esri/geometry/Point",
-    "esri/widgets/Zoom",
-    "esri/widgets/Legend",
-    "esri/widgets/Expand",
-    "esri/widgets/LayerList",
-    "esri/widgets/Compass",
-    "esri/widgets/ScaleBar",
-    "esri/widgets/Search",
-    "esri/widgets/DistanceMeasurement2D",
-    "esri/widgets/AreaMeasurement2D",
-    "dojo/domReady!",
-  ], function (
-    Map,
-    SceneView,
-    MapView,
-    FeatureLayer,
-    ImageryLayer,
-    MapImageLayer,
-    IdentifyTask,
-    ImageServiceIdentifyTask,
-    IdentifyParameters,
-    ImageServiceIdentifyParameters,
-    Point,
-    Zoom,
-    Legend,
-    Expand,
-    LayerList,
-    Compass,
-    ScaleBar,
-    Search,
-    DistanceMeasurement2D,
-    AreaMeasurement2D, ) {
+const requestURL = '/static/data.json'
+const request = new XMLHttpRequest()
+request.open('GET', requestURL)
+request.responseType = 'json'
+request.send()
+request.onload = function () {
+  const source = request.response
+  console.log(source)
 
-    var identifyTask, params, imageParams;
+  const {
+    'antarctic managed area': antarcticManagedAreaSource,
+    'mcmurdo asma': mcmurdoAsmaSource,
+    nztabs: nzTabsSource,
+    'place names': placeNamesSource,
+    asma: asmaSource,
+    sensitivity: sensitivitySource,
+    visitation: visitationSource,
+    abiotic: abioticSource,
+    // datasets: datasetsSource,
+    dryver_layers: dryverLayersSource,
+  } = source
 
-    var map = new Map({
-      basemap: "satellite",
-      // ground: "world-elevation"
-    });
-    view = new MapView({
-      container: "map_canvas", // Reference to the DOM node that will contain the view
-      map: map, // References the map object created in step 3
-      center: [162, -77.5],
-      zoom: 7,
-    });
+  const {
+    aquatic: aquaticSource,
+    climate: climateSource,
+    impact: impactSource,
+    terrestrial: terrestrialSource,
+    ecoforcasting: ecoforcastingSource,
+  } = dryverLayersSource
 
-    // symbologies and renderers
+  function getPopupTemplate (array) {
+    return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="text-capitalize pl-0">${header}</th>` + keyValues.map(value => `<td class="text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
+  }
 
-    var nzTabsSym = {
-      type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-      color: [0, 0, 0],
-      outline: {
-        // autocasts as new SimpleLineSymbol()
-        color: "#5d8eae",
-        width: 1
+  function getPopupTemplateNoPaddings (array) {
+    return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="text-capitalize p-0">${header}</th>` + keyValues.map(value => `<td class="p-0 text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
+  }
+
+  let view
+  let aquaticLayer, climateLayer, impactLayer, nztabsLayer, abioticLayer, asmaLayer, antarcticManagedAreaLayer, mcMurdoAsmaLayer, placeNamesLayer, visitationLayer, terrestrialLayer, sensitivityLayer, ecoforcastingLayer
+  let activeWidget = null
+
+  // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
+  $(document).ready(function () {
+    require([
+      'esri/Map',
+      'esri/views/SceneView',
+      'esri/views/MapView',
+      'esri/layers/FeatureLayer',
+      'esri/layers/ImageryLayer',
+      'esri/layers/MapImageLayer',
+      'esri/tasks/IdentifyTask',
+      'esri/tasks/ImageServiceIdentifyTask',
+      'esri/tasks/support/IdentifyParameters',
+      'esri/tasks/support/ImageServiceIdentifyParameters',
+      'esri/geometry/Point',
+      'esri/widgets/Zoom',
+      'esri/widgets/Legend',
+      'esri/widgets/Expand',
+      'esri/widgets/LayerList',
+      'esri/widgets/Compass',
+      'esri/widgets/ScaleBar',
+      'esri/widgets/Search',
+      'esri/widgets/DistanceMeasurement2D',
+      'esri/widgets/AreaMeasurement2D',
+      'esri/widgets/Print',
+      'esri/widgets/Print/PrintViewModel',
+      'esri/tasks/support/PrintTemplate',
+    ], function (
+      Map,
+      SceneView,
+      MapView,
+      FeatureLayer,
+      ImageryLayer,
+      MapImageLayer,
+      IdentifyTask,
+      ImageServiceIdentifyTask,
+      IdentifyParameters,
+      ImageServiceIdentifyParameters,
+      Point,
+      Zoom,
+      Legend,
+      Expand,
+      LayerList,
+      Compass,
+      ScaleBar,
+      Search,
+      DistanceMeasurement2D,
+      AreaMeasurement2D,
+      Print,
+      PrintViewModel,
+      PrintTemplate) {
+      const map = new Map({
+        basemap: 'satellite',
+        // ground: "world-elevation"
+      })
+      view = new MapView({
+        container: 'map_canvas', // Reference to the DOM node that will contain the view
+        map: map, // References the map object created in step 3
+        center: [162, -77.5],
+        zoom: 7,
+      })
+
+      const GnsGeologyPopup = {
+        id: 7,
+        title: 'GNS Geology',
+        content: getPopupTemplate([
+          ['Dryver Group', '{DRYVER_GROUP}'],
+          ['Map Unit', '{MAP_UNIT}'],
+          ['Main rock', '{MAIN_ROCK}'],
+          ['sub rock', '{SUB_ROCKS}'],
+          ['Terrane', '{TERRANE}'],
+        ]),
       }
-    };
-    var nzTabsRenderer = {
-      type: "simple", // autocasts as new SimpleRenderer()
-      symbol: nzTabsSym,
-      visualVariables: [{
-        type: "size",
-        field: "WET",
-        // normalizationField: "PH",
-        legendOptions: {
-          title: "nzTABS Sample Sites"
-        },
-        stops: [{
-            value: 4,
-            size: 4,
-            label: "0-4"
-          },
-          {
-            value: 6,
-            size: 8,
-            label: "4-6"
-          },
-          {
-            value: 8,
-            size: 12,
-            label: "6-8"
-          },
-          {
-            value: 10,
-            size: 16,
-            label: "8-10"
-          },
-          {
-            value: 12,
-            size: 20,
-            label: "10-12"
-          }
-        ]
-      }],
 
-      useSymbolValue: true
-    };
+      // Need more info on this
+      const GnsIcePopup = {
+        id: 6,
+        title: 'GNS Ice/Snow',
+        content: getPopupTemplate([
+          ['Dryver Group', '{DRYVER_GROUP}'],
+          ['Map Unit', '{MAP_UNIT}'],
+          ['Main rock', '{MAIN_ROCK}'],
+          ['sub rock', '{SUB_ROCKS}'],
+          ['Terrane', '{TERRANE}'],
+        ]),
+      }
 
+      abioticLayer = new MapImageLayer({
+        url: abioticSource.url,
+        title: abioticSource.title,
+        sublayers: abioticSource.layers.reduce((newArray, layer) => {
+          if (layer.id === GnsGeologyPopup.id) layer.popupTemplate = { ...GnsGeologyPopup, title: layer.title }
+          if (layer.id === GnsIcePopup.id) layer.popupTemplate = { ...GnsIcePopup, title: layer.title }
+          if (layer.id !== -1) newArray.push(layer)
+          return newArray
+        }, []),
+      })
 
-    // layers
+      const aquaticLayerUrl = aquaticSource.url
 
-    var GnsGeologyPopup = {
-      "title": "GNS Geology",
-      "content": "<table class='table'><tr><th>Dryver Group</th><td>{DRYVER_GROUP}</td>" +
-        "<tr><th>Map Unit</th><td> {MAP_UNIT}</td>" +
-        "<tr><th>Main rock</th><td> {MAIN_ROCK}</td>" +
-        "<tr><th>sub rock</th><td> {SUB_ROCKS}</td>" +
-        "<tr><th>Terrane</th><td> {TERRANE}</td></table>"
-    };
-
-    // Need more info on this
-    var GnsIcePopup = {
-      "title": "GNS Ice/Snow",
-      "content": "<b>Dryver Group:</b> {DRYVER_GROUP}" +
-        "<br><b>Map Unit:</b> {MAP_UNIT}" +
-        "<br><b>Main rock:</b> {MAIN_ROCK}" +
-        "<br><b>sub rock:</b> {SUB_ROCKS}" +
-        "<br><b>Terrane:</b> {TERRANE}"
-    };
-
-    abioticLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
-      title: "Abiotic",
-      sublayers: [{
-          id: 1,
-          title: "GNS Ice",
-          visible: false,
-          // popupTemplate: GnsIcePopup
-        },
-        {
-          id: 2,
-          title: "GNS Geology",
-          visible: false,
-          popupTemplate: GnsGeologyPopup
-        },
-        {
-          id: 3,
-          title: "Aspect",
-          visible: false,
-        },
-        {
-          id: 4,
-          title: "Slope",
-          visible: false,
-        },
-        {
-          id: 5,
-          title: "Lidar Hillshades",
-          visible: false,
-        },
-      ]
-    });
-
-    var aquaticLayerUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer"
-
-    var LakesPopup = {
-      "title": "Linz Lakes and ponds",
-      "content": "<table class='table'><tr><th>Name</th><td> {name_ascii}</td>" +
-        "<tr><th>Elevation</th><td> {ELE_MASL}</td>" +
-        "<tr><th>Ice Cover</th><td> {ICE_COVER}</td>" +
-        "<tr><th>Inflow</th><td> {INFLOW}</td>" +
-        "<tr><th>Outflow</th><td> {OUTFLOW}</td></table>"
-    };
-
-    aquaticLayer = new MapImageLayer({
-      url: aquaticLayerUrl,
-      title: "Aquatic",
-      sublayers: [{
-          id: 0,
-          title: "LINZ Lakes and Ponds",
-          visible: false,
-          popupTemplate: LakesPopup
-        },
-        {
-          id: 1,
-          title: "Streams",
-          visible: false,
-        },
-        {
-          id: 2,
-          title: "Wetness Index",
-          visible: false,
-        },
-        {
-          id: 3,
-          title: "Distance to Water",
-          visible: false,
-        },
-        {
-          id: 4,
-          title: "Distance to Streams",
-          visible: false,
-        },
-        {
-          id: 5,
-          title: "Distance to Water Bodies",
-          visible: false,
-        },
-        {
-          id: 6,
-          title: "Distance to Coast",
-          visible: false,
-        },
-      ]
-    });
-
-    asmaLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer",
-      title: "ASMA",
-      sublayers: [{
-          id: 0,
-          title: "SCAR Place Names",
-          visible: false,
-        },
-        {
-          id: 1,
-          title: "Antarctic Managed Area",
-          visible: false,
-        },
-        {
-          id: 2,
-          title: "McMurdo ASMA",
-          visible: false,
-        },
-      ]
-    });
-
-    var antarcticManagedAreaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/1"
-
-    var AntarcticManagedAreaPopup = {
-      "title": "Antarctic Managed Area",
-      "content": "<table class='table'><tr><th>Name</th><td> {NAME}</td>" +
-        "<tr><th>Type</th><td> {Type}</td>" +
-        "<tr><th>Helo</th><td> {HELO}</td>" +
-        "<tr><th>PDF</th><td> {PDF}</td>" +
-        "<tr><th>Desc</th><td> {DESC}</td></table>"
-    };
-
-    antarcticManagedAreaLayer = new FeatureLayer({
-      url: antarcticManagedAreaUrl,
-      title: "Antarctic Managed Area",
-      // id: "event",
-      visible: true,
-      // renderer: nzTabsRenderer,
-      popupTemplate: AntarcticManagedAreaPopup
-    });
-
-    var mcMurdoAsmaUrl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/2"
-
-    mcMurdoAsmaLayer = new FeatureLayer({
-      url: mcMurdoAsmaUrl,
-      title: "McMurdo ASMA",
-      // id: "event",
-      visible: true,
-      // renderer: nzTabsRenderer,
-      // popupTemplate: eventTemp
-    });
-
-    agarLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AGAR/MapServer",
-      title: "AGAR",
-      sublayers: [{
+      const LakesPopup = {
         id: 0,
-        title: "AGAR Sample Points",
-        visible: false,
-      }, ]
-    });
+        title: 'Linz Lakes and ponds',
+        content: getPopupTemplate([
+          ['Name', '{name_ascii}'],
+          ['Elevation', '{ELE_MASL}'],
+          ['Ice Cover', '{ICE_COVER}'],
+          ['Inflow', '{INFLOW}'],
+          ['Outflow', '{OUTFLOW}'],
+        ]),
+      }
 
-    var DisturbanceSampleSitesPopup = {
-      "title": "Sample Sites",
-      "content": "<table class='table'><tr><th>New ID</th><td> {NEW_ID}</td>" +
-        "<tr><th>location</th><td> {LOCATION}</td>" +
-        "<tr><th>elevation</th><td> {ELEV}</td>" +
-        "<tr><th>distance to coast</th><td> {DIST}</td>" +
-        "<tr><th>slope</th><td> {SLOPE}</td>" +
-        "<tr><th>Aspect</th><td> {ASPECT}</td>"
-    };
+      aquaticLayer = new MapImageLayer({
+        url: aquaticLayerUrl,
+        title: aquaticSource.title,
+        sublayers: aquaticSource.layers.reduce((newArray, layer) => {
+          if (layer.id === LakesPopup.id) layer.popupTemplate = { ...LakesPopup, title: layer.title }
+          if (layer.id !== -1) newArray.push(layer)
+          return newArray
+        }, []),
+      })
 
-    // Needs to be fixed
-    var SensitivityPopup = {
-      "title": "surface sensitivity",
-      "content": "<table class='table'><tr><th>Dryver unit</th><td> {DRYVER_GROUP}</td>" +
-        "<tr><th>Map unit</th><td> {MAP_UNIT}</td>" +
-        "<tr><th>age index</th><td> {AGE_INDEX}</td>" +
-        "<tr><th>visual change</th><td> {VIS}</td>" +
-        "<tr><th>track depth</th><td> {DEPTH_20P}</td>" +
-        "<tr><th>track infiltration</th><td> {INFIL0_20}</td>" +
-        "<tr><th>track colour change</th><td> {CCI_20P}</td>" +
-        "<tr><th>track rock cover</th><td> {ROCKCOVER}</td>" +
-        "<tr><th>footprint depth</th><td> {DEPTH_1P}</td>" +
-        "<tr><th>footprint infiltration</th><td> {CHANGE_1P}</td>"
-    };
+      asmaLayer = new MapImageLayer({
+        url: asmaSource.url,
+        title: asmaSource.title,
+        sublayers: asmaSource.layers,
+      })
 
-    impactLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
-      title: "Impact",
-      sublayers: [{
-          id: 0,
-          title: "Disturbance sample sites",
-          visible: false,
-          popupTemplate: DisturbanceSampleSitesPopup
-        },
-        {
-          id: 1,
-          title: "Human Impact Sensitivity",
-          visible: false,
-          popupTemplate: SensitivityPopup,
-        },
-        {
-          id: 2,
-          title: "Colluvium and Bedrock",
-          visible: false,
-        },
-      ]
-    });
+      const antarcticManagedAreaUrl = antarcticManagedAreaSource.url
 
-    // var napLayer = new MapImageLayer({
-    //   url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NAP/MapServer",
-    //   title: "NAP",
-    //   sublayers: [{
-    //       id: 0,
-    //       title: "NZ Events 1968-2002",
-    //       visible: false,
-    //     },
-    //     {
-    //       id: 1,
-    //       title: "MDV_ASMA",
-    //       visible: false,
-    //     },
-    //     {
-    //       id: 2,
-    //       title: "Hillshade",
-    //       visible: false,
-    //     },
-    //   ]
-    // });
+      const AntarcticManagedAreaPopup = {
+        title: antarcticManagedAreaSource.title,
+        content: getPopupTemplate([
+          ['Name', '{NAME}'],
+          ['Type', '{Type}'],
+          ['Helo', '{HELO}'],
+          ['PDF', '{PDF}'],
+          ['Desc', '{DESC}'],
+        ]),
+      }
 
-    // nztabsLayer = new MapImageLayer({
-    //     url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer",
-    //     title: "nzTABS",
-    //     sublayers: [
-    //         {
-    //           id: 0,
-    //           title: "nzTABS Sample Sites",
-    //           visible: false,
-    //           renderer: nzTabsRenderer,
-    //           fieldInfos: [
-    //             {
-    //               fieldName: "WET",
-    //               format: {
-    //                 digitSeparator: true,
-    //                 places: 0
-    //               }
-    //             },
-    //             {
-    //               fieldName: "PH",
-    //               format: {
-    //                 digitSeparator: true,
-    //                 places: 0
-    //               }
-    //             }
-    //           ]
-    //         },
-    //     ]
-    // });
+      antarcticManagedAreaLayer = new FeatureLayer({
+        url: antarcticManagedAreaUrl,
+        title: antarcticManagedAreaSource.title,
+        visible: antarcticManagedAreaSource.visible,
+        popupTemplate: AntarcticManagedAreaPopup,
+      })
 
-    var nztabsUrl = "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0"
+      const mcMurdoAsmaUrl = mcmurdoAsmaSource.url
 
-    var nztabsPopup = {
-      "title": "NZTABS",
-      "content": "<table class='table'><tr><th>Wetness</th><td>{Wetness}</td>" +
-        "<tr><th>Cyanobacteria</th><td>{Cyanobacteria}</td>" +
-        "<tr><th>Moss</th><td>{Moss}</td>" +
-        "<tr><th>Lichen</th><td>{Lichen}</td>" +
-        "<tr><th>Springtails</th><td>{Springtails}</td>" +
-        "<tr><th>Mites</th><td>{Mites}</td>" +
-        "<tr><th>ATP</th><td>{ATP}</td>" +
-        "<tr><th>Nematodes</th><td>{Nematodes}</td>" +
-        "<tr><th>Rotifers</th><td>{Rotifers}</td>" +
-        "<tr><th>Tadigrades</th><td>{Tadigrades}</td></table>"
-    };
-    nztabsLayer = new FeatureLayer({
-      url: nztabsUrl,
-      title: "nzTABS Sample Sites",
-      // id: "event",
-      visible: false,
-      // renderer: nzTabsRenderer,
-      popupTemplate: nztabsPopup
-    });
+      mcMurdoAsmaLayer = new FeatureLayer({
+        url: mcMurdoAsmaUrl,
+        title: mcmurdoAsmaSource.title,
+        visible: mcmurdoAsmaSource.visible,
+      })
 
-    placeNamesLayer = new FeatureLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
-      title: "SCAR Placenames",
-      visible: true,
-    });
-    placeNamesLayer.minScale = 95000;
-
-    var sensitivityLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/SENSITIVITY/MapServer",
-      title: "Sensitivity",
-      sublayers: [{
-          id: 0,
-          title: "MDV_ASMA",
-          visible: false,
-        },
-        {
-          id: 1,
-          title: "Hillshade",
-          visible: false,
-        },
-      ]
-    });
-
-    terrestrialLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/TERRESTRIAL/MapServer",
-      title: "Terrestrial",
-      sublayers: [{
+      const DisturbanceSampleSitesPopup = {
         id: 0,
-        title: "Cyanobacterial Prediction",
-        visible: false,
-        //   renderer: rendererToUse
-      }, ]
-    });
+        title: 'Sample Sites',
+        content: getPopupTemplate([
+          ['New ID', '{NEW_ID}'],
+          ['location', '{LOCATION}'],
+          ['elevation', '{ELEV}'],
+          ['distance to coast', '{DIST}'],
+          ['slope', '{SLOPE}'],
+          ['Aspect', '{ASPECT}'],
+        ]),
+      }
 
-    var eventsPopup = {
-      "title": "NZ Events",
-      "content": "<table class='table'><tr><th>Season</th><td>{season}</td>" +
-        "<tr><th>site</th><td>{Site}</td>" +
-        "<tr><th>EventNo</th><td>{EventNo}</td>" +
-        "<tr><th>EventTitle</th><td>{EventTitle}</td></table>"
-    };
+      // Needs to be fixed
+      const SensitivityPopup = {
+        id: 1,
+        title: 'surface sensitivity',
+        content: getPopupTemplate([
+          ['Dryver unit', '{DRYVER_GROUP}'],
+          ['Map unit', '{MAP_UNIT}'],
+          ['age index', '{AGE_INDEX}'],
+          ['visual change', '{VIS}'],
+          ['track depth', '{DEPTH_20P}'],
+          ['track infiltration', '{INFIL0_20}'],
+          ['track colour change', '{CCI_20P}'],
+          ['track rock cover', '{ROCKCOVER}'],
+          ['footprint depth', '{DEPTH_1P}'],
+          ['footprint infiltration', '{CHANGE_1P}'],
+        ]),
+      }
 
-    visitationLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/VISITATION/MapServer",
-      title: "Visitation",
-      sublayers: [{
-          id: 0,
-          title: "NZ Events (1957_2018)",
-          visible: false,
-          popupTemplate: eventsPopup,
-        },
-        {
-          id: 1,
-          title: "NZ Visitation",
-          visible: false,
-        },
-        {
-          id: 2,
-          title: "Distance to Camps",
-          visible: false,
-        },
-        {
-          id: 3,
-          title: "DT_ASPA",
-          visible: false,
-        },
-      ]
-    })
+      impactLayer = new MapImageLayer({
+        url: impactSource.url,
+        title: 'Impact',
+        sublayers: impactSource.layers.reduce((newArray, layer) => {
+          if (layer.id === DisturbanceSampleSitesPopup.id) layer.popupTemplate = { ...DisturbanceSampleSitesPopup, title: layer.title }
+          if (layer.id === SensitivityPopup.id) layer.popupTemplate = { ...SensitivityPopup, title: layer.title }
+          if (layer.id !== -1) newArray.push(layer)
+          return newArray
+        }, []),
+      })
 
-    climateLayer = new MapImageLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer",
-      title: "Climate",
-      sublayers: [{
-          id: 0,
-          title: "Summer high wind hotspots (>10ms)",
-          visible: false,
-        },
-        {
-          id: 1,
-          title: "Yearly high wind hotspots (>10ms)",
-          visible: false,
-        },
-        {
-          id: 2,
-          title: "5 Yr Summer mean wind speed",
-          visible: false,
-        },
-        {
-          id: 3,
-          title: "5 Yr Annual mean wind speed",
-          visible: false,
-        },
-        {
-          id: 4,
-          title: "5 Yr Summer max wind speed",
-          visible: false,
-        },
-        {
-          id: 5,
-          title: "5 Yr Annual max wind speed",
-          visible: false,
-        },
-        {
-          id: 7,
-          title: "Particle density",
-          visible: false,
-        },
-      ]
-    });
+      const nztabsUrl = nzTabsSource.url
 
-    var ParticleDensityContoururl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CLIMATE/MapServer/6"
-    // var ParticleDensityurl = "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/CLIMATE/MapServer/7"
+      const nztabsPopup = {
+        title: nzTabsSource.title,
+        content: getPopupTemplate([
+          ['Wetness', '{Wetness}'],
+          ['Cyanobacteria', '{Cyanobacteria}'],
+          ['Moss', '{Moss}'],
+          ['Lichen', '{Lichen}'],
+          ['Springtails', '{Springtails}'],
+          ['Mites', '{Mites}'],
+          ['ATP', '{ATP}'],
+          ['Nematodes', '{Nematodes}'],
+          ['Rotifers', '{Rotifers}'],
+          ['Tadigrades', '{Tadigrades}'],
+        ]),
+      }
+      nztabsLayer = new FeatureLayer({
+        url: nztabsUrl,
+        title: nzTabsSource.title,
+        visible: nzTabsSource.visible,
+        popupTemplate: nztabsPopup,
+      })
 
-    particleDensityContourLayer = new FeatureLayer({
-      url: ParticleDensityContoururl,
-      title: "Particle density contours",
-      visible: false,
-    });
+      sensitivityLayer = new MapImageLayer({
+        url: sensitivitySource.url,
+        title: sensitivitySource.title,
+        sublayers: sensitivitySource.layers,
+      })
 
-    // particleDensityLayer = new FeatureLayer({
-    //   url: ParticleDensityurl,
-    //   title: "Particle density",
-    //   visible: false,
-    // });
+      terrestrialLayer = new MapImageLayer({
+        url: terrestrialSource.url,
+        title: terrestrialSource.title,
+        sublayers: terrestrialSource.layers,
+      })
 
-    placeNamesLayer = new FeatureLayer({
-      url: "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
-      title: "SCAR Placenames",
-      visible: true,
-    });
-    placeNamesLayer.minScale = 70000;
+      const eventsPopup = {
+        id: 0,
+        title: 'NZ Events',
+        content: getPopupTemplate([
+          ['Season', '{season}'],
+          ['site', '{Site}'],
+          ['EventNo', '{EventNo}'],
+          ['EventTitle', '{EventTitle}'],
+        ]),
+      }
 
-    map.add(abioticLayer);
-    map.add(aquaticLayer);
-    map.add(asmaLayer);
-    map.add(antarcticManagedAreaLayer);
-    map.add(mcMurdoAsmaLayer);
-    map.add(agarLayer);
-    map.add(impactLayer);
-    // map.add(napLayer);
-    map.add(nztabsLayer);
-    map.add(sensitivityLayer);
-    map.add(terrestrialLayer);
-    map.add(visitationLayer);
-    map.add(climateLayer);
-    map.add(particleDensityContourLayer);
-    map.add(particleDensityLayer);
-    map.add(placeNamesLayer);
-    // widgets
-    // zoom
-    var zoom = new Zoom({
-      view: view
-    });
+      visitationLayer = new MapImageLayer({
+        url: visitationSource.url,
+        title: visitationSource.title,
+        sublayers: visitationSource.layers.reduce((newArray, layer) => {
+          if (layer.id === eventsPopup.id) layer.popupTemplate = { ...eventsPopup, title: layer.title }
+          if (layer.id !== -1) newArray.push(layer)
+          return newArray
+        }, []),
+      })
 
-    // compass
-    var compass = new Compass({
-      view: view
-    });
+      climateLayer = new MapImageLayer({
+        url: climateSource.url,
+        title: climateSource.title,
+        sublayers: climateSource.layers,
+      })
 
-    var scaleBar = new ScaleBar({
-      view: view
-    });
+      placeNamesLayer = new FeatureLayer({
+        url: placeNamesSource.url,
+        title: placeNamesSource.title,
+        visible: placeNamesSource.visible,
+      })
+      placeNamesLayer.minScale = 70000
 
+      ecoforcastingLayer = new MapImageLayer({
+        url: ecoforcastingSource.url,
+        title: ecoforcastingSource.title,
+        sublayers: ecoforcastingSource.layers,
+      })
 
+      map.add(abioticLayer)
+      map.add(aquaticLayer)
+      map.add(asmaLayer)
+      map.add(antarcticManagedAreaLayer)
+      map.add(mcMurdoAsmaLayer)
+      map.add(impactLayer)
+      map.add(nztabsLayer)
+      map.add(sensitivityLayer)
+      map.add(terrestrialLayer)
+      map.add(visitationLayer)
+      map.add(climateLayer)
+      map.add(placeNamesLayer)
+      map.add(ecoforcastingLayer)
+      // widgets
+      // zoom
+      const zoom = new Zoom({
+        view: view,
+      })
 
+      // compass
+      const compass = new Compass({
+        view: view,
+      })
 
-    // legend
-    var legendList = new Legend({
-      view: view,
-      container: document.createElement("div"),
-      layerInfos: [{
+      const scaleBar = new ScaleBar({
+        view: view,
+        unit: 'metric',
+      })
+
+      // legend
+      const legendList = new Legend({
+        view: view,
+        container: document.createElement('div'),
+        layerInfos: [{
           layer: abioticLayer,
-          title: "Abiotic"
+          title: 'Abiotic',
         },
         {
           layer: climateLayer,
-          title: "Climate"
+          title: 'Climate',
         },
         {
           layer: visitationLayer,
-          title: "Visitation"
-        },
-        {
-          layer: particleDensityContourLayer,
-          title: "Particle Density Contour"
+          title: 'Visitation',
         },
         {
           layer: aquaticLayer,
-          title: "Aquatic"
+          title: 'Aquatic',
         },
         {
           layer: asmaLayer,
-          title: "ASMA"
+          title: 'ASMA',
         },
-        // {layer: mcMurdoAsmaLayer, title:"McMurdo ASMA"},
         {
           layer: antarcticManagedAreaLayer,
-          title: "Antarctic Managed Area"
-        },
-        {
-          layer: agarLayer,
-          title: "AGAR"
+          title: 'Antarctic Managed Area',
         },
         {
           layer: impactLayer,
-          title: "Impact"
+          title: 'Impact',
         },
-        // {
-        //   layer: napLayer,
-        //   title: "NAP"
-        // },
         {
           layer: nztabsLayer,
-          title: "nzTABS"
+          title: 'nzTABS',
         },
         {
           layer: sensitivityLayer,
-          title: "Sensitivity"
+          title: 'Sensitivity',
         },
         {
           layer: terrestrialLayer,
-          title: "Terrestrial"
+          title: 'Terrestrial',
         },
-      ]
-    });
+        ],
+      })
 
-    var legendEx = new Expand({
-      view: view,
-      expandTooltip: "Legend",
-      content: legendList.container,
-      autoCollapse: false,
-      expandIconClass: "esri-icon-collection"
-    });
+      const legendEx = new Expand({
+        view: view,
+        expandTooltip: 'Legend',
+        content: legendList.container,
+        autoCollapse: false,
+        expandIconClass: 'esri-icon-collection',
+      })
 
-    // This needs to be removed
+      const searchWidget = new Search({
+        view: view,
+        allPlaceholder: 'Search',
+        autoSelect: true,
+        includeDefaultSources: false,
+        sources: [{
+          layer: placeNamesLayer,
+          searchFields: ['PLACE_NAME'],
+          displayField: 'PLACE_NAME',
+          exactMatch: false,
+          name: 'SCAR Place Names',
+          placeholder: 'Place Name',
+          zoomScale: 50000,
+        }],
+      })
+      searchWidget.on('select-result', function (response) {
+        console.log('searchWidget on search result!!!', response)
+        view.goTo({
+          center: [response.result.feature.geometry.longitude, response.result.feature.geometry.latitude],
+          scale: 500000, // region level of zoom
+        })
+      })
 
-    // var layerList = new LayerList({
-    //   container: document.createElement("div"),
-    //   view: view
-    // });
+      // Add the search widget to the top right corner of the view
+      view.ui.add(searchWidget, {
+        position: 'top-right',
+      })
 
-    // layerListExpand = new Expand({
-    //   expandIconClass: "esri-icon-layer-list", // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
-    //   // expandTooltip: "Expand LayerList", // optional, defaults to "Expand" for English locale
-    //   view: view,
-    //   content: layerList.domNode
-    // });
+      view.ui.add(zoom, {
+        position: 'top-right',
+      })
 
-    var searchWidget = new Search({
-      view: view,
-      allPlaceholder: "Search",
-      // autoSelect: true,
-      includeDefaultSources: false,
-      sources: [{
-        layer: placeNamesLayer,
-        searchFields: ["PLACE_NAME"],
-        displayField: "PLACE_NAME",
-        exactMatch: false,
-        name: "SCAR Place Names",
-        placeholder: "Place Name",
-        zoomScale: 50000,
-      }, ]
-    });
+      view.ui.add(compass, {
+        position: 'top-right',
+      })
 
-    // Add the search widget to the top right corner of the view
-    view.ui.add(searchWidget, {
-      position: "top-right"
-    });
+      view.ui.add(scaleBar, {
+        position: 'bottom-right',
+      })
 
-    view.ui.add(zoom, "top-right");
+      view.ui.add(legendEx, {
+        position: 'top-right',
+      })
 
-    view.ui.add(compass, "top-right");
-
-    view.ui.add(scaleBar, "bottom-right");
-
-    view.ui.add(legendEx, {
-      position: "top-right"
-    });
-
-    // view.ui.add(layerListExpand, "top-right");
-
-    view.ui.add("inspect", "top-right");
-
-    // add the toolbar for the measurement widgets
-    view.ui.add("topbar", "top-right");
-
-    document
-      .getElementById("distanceButton")
-      .addEventListener("click", function () {
-        setActiveWidget(null);
-        if (!this.classList.contains("active")) {
-          setActiveWidget("distance");
-        } else {
-          setActiveButton(null);
-        }
-      });
-
-    document
-      .getElementById("areaButton")
-      .addEventListener("click", function () {
-        setActiveWidget(null);
-        if (!this.classList.contains("active")) {
-          setActiveWidget("area");
-        } else {
-          setActiveButton(null);
-        }
-      });
-
-    function setActiveWidget(type) {
-      switch (type) {
-        case "distance":
-          activeWidget = new DistanceMeasurement2D({
-            view: view
-          });
-
-          // skip the initial 'new measurement' button
-          activeWidget.viewModel.newMeasurement();
-
-          view.ui.add(activeWidget, "top-right");
-          setActiveButton(document.getElementById("distanceButton"));
-          break;
-        case "area":
-          activeWidget = new AreaMeasurement2D({
-            view: view
-          });
-
-          // skip the initial 'new measurement' button
-          activeWidget.viewModel.newMeasurement();
-
-          view.ui.add(activeWidget, "top-right");
-          setActiveButton(document.getElementById("areaButton"));
-          break;
-        case null:
-          if (activeWidget) {
-            view.ui.remove(activeWidget);
-            activeWidget.destroy();
-            activeWidget = null;
+      // The logic of fetching data base of where user click is in executeIdentifyTask
+      view.ui.add('inspect-point-component', {
+        position: 'top-right',
+      })
+      document
+        .querySelector('#inspectButton')
+        .addEventListener('click', function () {
+          if (!this.classList.contains('active')) {
+            view.popup.autoOpenEnabled = false // Disables default layer popups behaviour
+            this.classList.add('active', 'bg-primary', 'text-white')
+          } else {
+            view.popup.autoOpenEnabled = true // Enables default layer popups behaviour
+            this.classList.remove('active', 'bg-primary', 'text-white')
           }
-          break;
-      }
-    }
-
-    function setActiveButton(selectedButton) {
-      // focus the view to activate keyboard shortcuts for sketching
-      view.focus();
-      var elements = document.getElementsByClassName("active");
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].classList.remove("active");
-      }
-      if (selectedButton) {
-        selectedButton.classList.add("active");
-      }
-    }
-
-    $('.distance-measurement-button').click(function () {
-      $(this).toggleClass('esri-icon-minus');
-      $(this).toggleClass('fas fa-angle-double-right');
-    });
-
-    $('.area-measurement-button').click(function () {
-      $(this).toggleClass('esri-icon-polygon');
-      $(this).toggleClass('fas fa-angle-double-right');
-    });
-
-    $('.jump_deg').click(function () {
-      $('.loc_jump_dd').removeClass('hidden')
-      $('.loc_jump_dm').addClass('hidden')
-    });
-
-    $('.jump_deg_min').click(function () {
-      $('.loc_jump_dd').addClass('hidden')
-      $('.loc_jump_dm').removeClass('hidden')
-    });
-
-    $('.loc_jump_dm').submit(function (evt) {
-      var lat = parseFloat($('#lat_deg_jump').val())
-      var lat_min = parseFloat($('#lat_min_jump').val())
-      lat_min /= 60;
-      lat += lat_min;
-      var long = parseFloat($('#long_deg_jump').val())
-      var long_min = parseFloat($('#long_min_jump').val())
-      long_min /= 60;
-      long += long_min;
-      evt.preventDefault();
-      var new_loc = new Point({
-        latitude: lat,
-        longitude: long
-      });
-      view.goTo(new_loc)
-    });
-
-    $('.loc_jump_dd').submit(function (evt) {
-      var lat = parseFloat($('#lat_jump').val());
-      var long = parseFloat($('#long_jump').val());
-      evt.preventDefault();
-      var new_loc = new Point({
-        latitude: lat,
-        longitude: long
-      });
-      view.goTo(new_loc)
-    });
-
-    view.when(function () {
-      // executeIdentifyTask() is called each time the view is clicked
-
-
-      // view.on("click", executeIdentifyTask);
-
-      // Create identify task for the specified map service
-      // This is why it was only working for few layers, have it work for all
-      identifyTask = new IdentifyTask("https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/AQUATIC/MapServer/");
-
-      waterDistIdentifyTask = new ImageServiceIdentifyTask("https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ABIOTIC/MapServer/3")
-      imageParams = new ImageServiceIdentifyParameters();
-      imageParams.returnPixelValues = true;
-      imageParams.returnM = true;
-      // Set the parameters for the Identify
-      params = new IdentifyParameters();
-      params.tolerance = 3;
-      params.layerIds = [0, 1, 2];
-      params.layerOption = "top";
-      params.width = view.width;
-      params.height = view.height;
-    });
-
-    // Executes each time the view is clicked
-    // This should actually become the tool to identify a point
-    function executeIdentifyTask(event) {
-      imageParams.geometry = event.mapPoint;
-      imageParams.mapExtent = map.extent;
-      var water = waterDistIdentifyTask.execute(imageParams).then(function (response) {
-        console.log("image exexuted");
-        console.log(response);
-        var results = response.results;
-        console.log(results);
-
-        return results.map(function (result) {
-          // var feature = result.feature;
-          var layerName = result.layerName;
-          // console.log(result);
         })
-        return feature;
-      });
-      // Set the geometry to the location of the view click
-      params.geometry = event.mapPoint;
-      params.mapExtent = view.extent;
-      document.getElementById("map_canvas").style.cursor = "wait";
 
-      // This function returns a promise that resolves to an array of features
-      // A custom popupTemplate is set for each feature based on the layer it
-      // originates from
-      identifyTask
-        .execute(params)
-        .then(function (response) {
-          var results = response.results;
-          // console.log(results);
+      // https://developers.arcgis.com/javascript/latest/sample-code/widgets-measurement-2d/index.html
+      // add the toolbar for the measurement widgets
+      view.ui.add('distance-measurement-component', {
+        position: 'top-right',
+      })
+      document
+        .querySelector('#distanceButton')
+        .addEventListener('click', function () {
+          setActiveWidget(null)
+          if (!this.classList.contains('active')) {
+            setActiveWidget('distance')
+          } else {
+            setActiveButton(null)
+          }
+        })
 
-          return results.map(function (result) {
-            var feature = result.feature;
-            var layerName = result.layerName;
-            // console.log(result)
+      view.ui.add('area-measurement-component', {
+        position: 'top-right',
+      })
+      document
+        .querySelector('#areaButton')
+        .addEventListener('click', function () {
+          setActiveWidget(null)
+          if (!this.classList.contains('active')) {
+            setActiveWidget('area')
+          } else {
+            setActiveButton(null)
+          }
+        })
 
-            feature.attributes.layerName = layerName;
-            if (layerName === "LINZ Lakes and Ponds") {
-              feature.popupTemplate = {
-                // autocasts as new PopupTemplate()
-                title: "Lake / Pond",
-                content: "<b>Name:</b> {name}" +
-                  "<br><b>Land Type:</b> {L_TYPE}" +
-                  "<br><b>Type:</b> {TYPE}"
-              };
-            } else if (layerName === "Aquatic Connectivity") {
-              feature.popupTemplate = {
-                // autocasts as new PopupTemplate()
-                title: "Stream",
-                content: "<b>Main Rock:</b> {MAIN_ROCK}" +
-                  "<br><b>RVR CLASS:</b> {RVR_CLASS}"
-              };
-            } else if (layerName === "Wetness Index Jan-Feb") {
-              feature.popupTemplate = {
-                // autocasts as new PopupTemplate()
-                title: "Wetness Index",
-                content: "<b>Dominant order:</b> {Dominant Order}" +
-                  "<br><b>Dominant sub-order:</b> {Dominant Sub-Order}"
-              };
-            } else if (layerName === "NZTABS Sample Sites") {
-              feature.popupTemplate = {
-                // autocasts as new PopupTemplate()
-                title: "NZTABS",
-                content: "<b>Wetness:</b> {Wetness}" +
-                  "<br><b>Cyanobacteria:</b> {Cyanobacteria}" +
-                  "<br><b>Moss:</b> {Moss}" +
-                  "<br><b>Lichen:</b> {Lichen}" +
-                  "<br><b>Springtails:</b> {Springtails}" +
-                  "<br><b>Mites:</b> {Mites}" +
-                  "<br><b>ATP:</b> {ATP}" +
-                  "<br><b>Nematodes:</b> {Nematodes}" +
-                  "<br><b>Rotifers:</b> {Rotifers}" +
-                  "<br><b>Tadigrades:</b> {Tadigrades}"
-              };
+      function setActiveWidget (type) {
+        switch (type) {
+          case 'distance':
+            activeWidget = new DistanceMeasurement2D({
+              view: view,
+            })
+
+            // skip the initial 'new measurement' button
+            activeWidget.viewModel.newMeasurement()
+
+            view.ui.add(activeWidget, {
+              position: 'top-right',
+            })
+            setActiveButton(document.querySelector('#distanceButton'))
+            break
+          case 'area':
+            activeWidget = new AreaMeasurement2D({
+              view: view,
+            })
+
+            // skip the initial 'new measurement' button
+            activeWidget.viewModel.newMeasurement()
+
+            view.ui.add(activeWidget, {
+              position: 'top-right',
+            })
+            setActiveButton(document.querySelector('#areaButton'))
+            break
+          case null:
+            if (activeWidget) {
+              view.ui.remove(activeWidget)
+              activeWidget.destroy()
+              activeWidget = null
             }
-            return feature;
-          });
-        })
-        .then(showPopup); // Send the array of features to showPopup()
-
-      // Shows the results of the Identify in a popup once the promise is resolved
-      function showPopup(response) {
-        if (response.length > 0) {
-          view.popup.open({
-            features: response,
-            location: event.mapPoint
-          });
+            break
         }
-        document.getElementById("map_canvas").style.cursor = "auto";
       }
-    }
-  });
-})
 
-$('.layer-toggle').click(function () {
-  var id = $(this).attr('data-id');
-  var layer = $(this).attr('data-layer');
-  // Checking via Abiotic because it is the first layer to load
-  if (abioticLayer.loaded) {
-    switch (layer) {
-      case 'aquatic':
-        if (aquaticLayer.loaded) {
-          var sublayer = aquaticLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
+      function setActiveButton (selectedButton) {
+        // focus the view to activate keyboard shortcuts for sketching
+        view.focus()
+        const elements = document.querySelectorAll('.custom-topbar-buttons')
+        for (let i = 0; i < elements.length; i++) {
+          elements[i].classList.remove('active')
+
+          // Assumes there's only a single child
+          elements[i].children[0].classList.remove('esri-icon-collapse')
+          if (elements[i].id === 'distanceButton') {
+            elements[i].children[0].classList.add('esri-icon-measure-line')
+          } else if (elements[i].id === 'areaButton') {
+            elements[i].children[0].classList.add('esri-icon-measure-area')
+          }
         }
-        break;
+        if (selectedButton) {
+          selectedButton.classList.add('active')
 
-      case 'climate':
-        if (climateLayer.loaded) {
-          var sublayer = climateLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
+          if (selectedButton.id === 'distanceButton') {
+            selectedButton.children[0].classList.remove('esri-icon-measure-line')
+          } else if (selectedButton.id === 'areaButton') {
+            selectedButton.children[0].classList.remove('esri-icon-measure-area')
+          }
+          selectedButton.children[0].classList.add('esri-icon-collapse')
         }
-        break;
+      }
 
-      case 'impact':
-        if (impactLayer.loaded) {
-          var sublayer = impactLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
+      $('#loc_jump_dm').submit(function (evt) {
+        let lat = parseFloat($('#lat_deg_jump').val())
+        let lat_min = parseFloat($('#lat_min_jump').val())
+        lat_min /= 60
+        lat += lat_min
+        let long = parseFloat($('#long_deg_jump').val())
+        let long_min = parseFloat($('#long_min_jump').val())
+        long_min /= 60
+        long += long_min
+        evt.preventDefault()
+        const new_loc = new Point({
+          latitude: lat,
+          longitude: long,
+        })
+        view.goTo(new_loc)
+      })
+
+      $('#loc_jump_dd').submit(function (evt) {
+        const lat = parseFloat($('#lat_jump').val())
+        const long = parseFloat($('#long_jump').val())
+        evt.preventDefault()
+        const new_loc = new Point({
+          latitude: lat,
+          longitude: long,
+        })
+        view.goTo(new_loc)
+      })
+
+      let impactIdentifyTask, aquaticIdentifyTask, impactParams, aquaticParams
+
+      view.when(function () {
+        // https://community.esri.com/thread/216034-search-widgetin-onfocusout-in-47-causes-error-when-used-with-jquery
+        // With version 4.7 the search widget's onfocusout handler will throw an error
+        // whenever there is a jQuery onfocusout handler along the event path because of
+        // jQuery's event bubbling workaround for focusin/out events. So for now, just
+        // remove the Search widget's onfocusout handler to silence the error.
+        document.querySelector('.esri-search__input').onfocusout = null
+
+        // https://developers.arcgis.com/javascript/latest/sample-code/sandbox/index.html?sample=widgets-print
+        // const print = new Print({
+        //   view: view,
+        //   printServiceUrl: 'https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+        //   // allowedFormats: ["jpg", "png8", "png32"]
+        // })
+
+        // view.ui.add(print, {
+        //   position: 'top-right',
+        // })
+
+        // https://developers.arcgis.com/javascript/latest/sample-code/sandbox/index.html?sample=tasks-identify
+        // executeIdentifyTask() is called each time the view is clicked
+        view.on('click', executeIdentifyTask)
+
+        // Create identify task for the specified map service
+        impactIdentifyTask = new IdentifyTask(impactSource.url)
+        aquaticIdentifyTask = new IdentifyTask(aquaticSource.url)
+
+        // Set the parameters for the Identify
+        impactParams = new IdentifyParameters({
+          tolerance: 3,
+          layerIds: [1],
+          layerOption: 'top',
+          width: view.width,
+          height: view.height,
+        })
+
+        aquaticParams = new IdentifyParameters({
+          tolerance: 3,
+          layerIds: aquaticSource.layers.reduce((newArray, { id }) => {
+            if (id !== -1) newArray.push(id)
+            return newArray
+          }, []),
+          layerOption: 'top',
+          width: view.width,
+          height: view.height,
+        })
+      })
+
+      // WORK IN PROGRESS, BACKEND NEEDS TO BE FIX BECAUSE OF TIMEOUT
+      const printVM = new PrintViewModel({
+        view,
+        printServiceUrl: 'https://trugis.sci.waikato.ac.nz/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+        // printServiceUrl: 'https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task'
+      })
+
+      const printReportThisAction = {
+        title: 'Print Report',
+        id: 'print-report',
+        className: 'esri-icon-printer',
+      }
+
+      function printPopupReport () {
+        console.log('printPopupReport function')
+        printVM.print(
+          new PrintTemplate({
+            format: 'pdf',
+            layout: 'a4-portrait',
+          }),
+        )
+          .then(response => {
+            window.open(response.url, '_blank')
+          })
+          .catch(error => console.warn(error))
+      }
+
+      // Event handler that fires each time an action is clicked.
+      view.popup.on('trigger-action', function (event) {
+        // Execute the printPopupReport() function if the measure-this action is clicked
+        if (event.action.id === 'print-report') {
+          printPopupReport()
         }
-        break;
+      })
 
-      case 'agar':
-        if (agarLayer.loaded) {
-          var sublayer = agarLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
+      // Executes each time the view is clicked
+      function executeIdentifyTask (event) {
+        if (!view.popup.autoOpenEnabled) {
+          const lat = Math.round(event.mapPoint.latitude * 1000) / 1000
+          const lon = Math.round(event.mapPoint.longitude * 1000) / 1000
+          // Set the geometry to the location of the view click
+          impactParams.geometry = aquaticParams.geometry = event.mapPoint
+          impactParams.mapExtent = aquaticParams.mapExtent = view.extent
+
+          const allIdentifyTasks = [
+            { task: impactIdentifyTask, params: impactParams },
+            { task: aquaticIdentifyTask, params: aquaticParams },
+          ]
+
+          document.querySelector('#map_canvas').style.cursor = 'wait'
+
+          // This function returns a promise that resolves to an array of features
+          // A custom popupTemplate is set for each feature based on the layer it
+          // originates from
+          Promise.all(allIdentifyTasks.map(({ task, params }) => task.execute(params)))
+            .then(function (responses) {
+              return responses.map(({ results }) => {
+                return results.map((result) => {
+                  const feature = result.feature
+                  const layerName = result.layerName
+                  console.log(layerName)
+                  console.log(feature)
+                  feature.attributes.layerName = layerName
+                  // layerName check logic is hardcoded for now as there is a chance that
+                  // the layer name on the server does not match the one in the source/data.json
+                  if (layerName === 'Human Impact Sensitivity') {
+                    //  If it's Extreme, it's red, if it's High, it's yellow
+                    let riskClass = ''
+                    switch (feature.attributes.OverAll_Risk) {
+                      case 'Extreme':
+                        riskClass = 'bg-danger'
+                        break
+                      case 'High':
+                        riskClass = 'bg-warning'
+                        break
+                      default:
+                        riskClass = ''
+                    }
+                    feature.popupTemplate = {
+                      title: layerName,
+                      content: getPopupTemplateNoPaddings([
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${lat}, ${lon}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">OverAll_Risk</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">{OverAll_Risk}</span>`],
+                      ]),
+                      actions: [printReportThisAction],
+                    }
+                  } else if (layerName === 'LINZ Lakes and Ponds') {
+                    feature.popupTemplate = {
+                      title: layerName,
+                      content: getPopupTemplate([
+                        ['Coordinate', `${lat}, ${lon}`],
+                        ...Object.keys(feature.attributes).map(key => [key, `{${key}}`]),
+                      ]),
+                      // content: getPopupTemplate([
+                      //   ['Coordinate', `${lat}, ${lon}`],
+                      //   ['OBJECTID', '{OBJECTID}'],
+                      //   ['Shape', '{Shape}'],
+                      //   ['name_ascii', '{name_ascii}'],
+                      //   ['macronated', '{macronated}'],
+                      //   ['name', '{name}'],
+                      //   ['basin', '{basin}'],
+                      //   ['INPUT', '{INPUT}'],
+                      //   ['TYPE', '{TYPE}'],
+                      //   ['buffer', '{buffer}'],
+                      //   ['Shape_Length', '{Shape_Length}'],
+                      //   ['Shape_Area', '{Shape_Area}'],
+                      //   ['L_TYPE', '{L_TYPE}'],
+                      //   ['WaterSource', '{WaterSource}'],
+                      //   ['CatchmentType', '{CatchmentType}'],
+                      //   ['RiverIntersect', '{RiverIntersect}'],
+                      //   ['Landscape', '{Landscape}'],
+                      //   ['River_In', '{River_In}'],
+                      //   ['River_Out', '{River_Out}'],
+                      //   ['Check', '{Check}'],
+                      // ]),
+                      actions: [printReportThisAction],
+                    }
+                  } else if (layerName === 'Aquatic Connectivity') {
+                    feature.popupTemplate = {
+                      title: layerName,
+                      content: getPopupTemplate([
+                        ['Coordinate', `${lat}, ${lon}`],
+                        ...Object.keys(feature.attributes).map(key => [key, `{${key}}`]),
+                      ]),
+                      // content: getPopupTemplate([
+                      //   ['Coordinate', `${lat}, ${lon}`],
+                      //   ['SHAPE', '{SHAPE}'],
+                      //   ['INPUT', '{INPUT}'],
+                      //   ['MAIN_ROCK', '{MAIN_ROCK}'],
+                      //   ['STRAT_AGE', '{STRAT_AGE}'],
+                      //   ['DRYVER_GROUP', '{DRYVER_GROUP}'],
+                      //   ['RVR_CLASS', '{RVR_CLASS}'],
+                      //   ['CLAST', '{CLAST}'],
+                      //   ['SHAPE_Length', '{SHAPE_Length}'],
+                      //   ['ECOSYS_SENS', '{ECOSYS_SENS}'],
+                      //   ['BIODIVERSITY', '{BIODIVERSITY}'],
+                      //   ['ESP_CV', '{ESP_CV}'],
+                      //   ['ESP_NNS', '{ESP_NNS}'],
+                      //   ['ESP_CONT', '{ESP_CONT}'],
+                      //   ['ESP_PHYS', '{ESP_PHYS}'],
+                      //   ['MAP_PSM', '{MAP_PSM}'],
+                      //   ['MAP_FZA', '{MAP_FZA}'],
+                      //   ['MAP_VZA', '{MAP_VZA}'],
+                      //   ['DATA_NEEDS', '{DATA_NEEDS}'],
+                      //   ['OBJECTID', '{OBJECTID}'],
+                      //   ['OBJECTID_1', '{OBJECTID_1}'],
+                      //   ['RiverID', '{RiverID}'],
+                      //   ['Glacial', '{Glacial}'],
+                      // ]),
+                      actions: [printReportThisAction],
+                    }
+                  } else if (layerName === 'Wetness Index Jan-Feb') {
+                    feature.popupTemplate = {
+                      title: layerName,
+                      // content: getPopupTemplate([
+                      // No Fields
+                      // ]),
+                    }
+                  }
+                  return feature
+                })
+              }).flat()
+            })
+            .then(showPopup) // Send the array of features to showPopup()
         }
-        break;
 
-      case 'nztabs':
-        if (nztabsLayer.loaded) {
-          nztabsLayer.visible = !nztabsLayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
+        // Shows the results of the Identify in a popup once the promise is resolved
+        function showPopup (response) {
+          if (response.length > 0) {
+            view.popup.open({
+              features: response,
+              location: event.mapPoint,
+            })
+          }
+          document.querySelector('#map_canvas').style.cursor = 'auto'
         }
-        break;
+      }
 
-      case 'antarctic managed area':
-        if (antarcticManagedAreaLayer.loaded) {
-          antarcticManagedAreaLayer.visible = !antarcticManagedAreaLayer.visible;
+      // Mapped All Layers to its Source Key
+      const mappedLayers = {
+        'antarctic managed area': antarcticManagedAreaLayer,
+        'mcmurdo asma': mcMurdoAsmaLayer,
+        nztabs: nztabsLayer,
+        'place names': placeNamesLayer,
+        asma: asmaLayer,
+        sensitivity: sensitivityLayer,
+        visitation: visitationLayer,
+        abiotic: abioticLayer,
+        aquatic: aquaticLayer,
+        climate: climateLayer,
+        impact: impactLayer,
+        terrestrial: terrestrialLayer,
+        ecoforcasting: ecoforcastingLayer,
+      }
+
+      // Tab 2 and 3 switches logic
+      $('.layer-toggle').click(function () {
+        const id = $(this).attr('data-id')
+        const keyLayer = $(this).attr('data-layer')
+        const keyLayerHTMLID = keyLayer.split(' ').join('-')
+        if (keyLayer in dryverLayersSource || keyLayer in source) {
+          const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
+          const layer = mappedLayers[keyLayer]
+          if (layer.loaded) {
+            const querySwitchCheckbox = `input[type="checkbox"]#${keyLayerHTMLID}-${id}-checkbox`
+            if (layerSource.layers) {
+              const sublayer = layer.findSublayerById(parseInt(id))
+              sublayer.visible = !document.querySelector(querySwitchCheckbox).checked
+
+              // WORK IN PROGRESS!!!
+              // https://codepen.io/john-orbica/pen/NWGXVRY John's Stowell
+              // layer = new MapImageLayer({
+              //   url: impactURL,
+              //   opacity: 0.85,
+              //   sublayers: [
+              //     {
+              //       id: 1,
+              //       renderer: {
+              //         type: "simple", // autocasts as new SimpleRenderer()
+              //         symbol: {
+              //           type: "simple-fill",
+              //           color: [ 255, 128, 0, 0.5 ],
+              //           outline: {  // autocasts as new SimpleLineSymbol()
+              //             width: 1,
+              //             color: "white"
+              //           }
+              //         }
+              //       }
+              //   }
+              // ]
+              // })
+              // The IMPORTANT PART IS THIS, IT IS POSSIBLE TO PROGRAM THE RENDER ON THE FLY
+              // console.log(layer.sublayers.items[0].renderer)
+              // layer.sublayers.items[0].renderer = {
+              //   type: "simple", // autocasts as new SimpleRenderer()
+              //   symbol: {
+              //     type: "simple-fill",
+              //     color: 'red',
+              //     outline: {  // autocasts as new SimpleLineSymbol()
+              //       width: 1,
+              //       color: "white"
+              //     }
+              //   }
+              // }
+            } else {
+              layer.visible = !document.querySelector(querySwitchCheckbox).checked
+            }
+          }
         } else {
-          $(this).prop('checked', !$(this).prop('checked'));
+          console.log('No key match', keyLayer)
         }
-        break;
+      })
 
-
-      case 'particle density contour':
-        if (particleDensityContourLayer.loaded) {
-          particleDensityContourLayer.visible = !particleDensityContourLayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
+      // Hacky solution, basically I have to check the opposite value then trigger the click
+      // Not an exact reset, a proper reset would require to read from the data file
+      $('#dryver-switch-control.btn-group button.btn').click(function () {
+        if ($(this).attr('id') === 'dryver-show-all') {
+          $('#dryver-switches .custom-control.custom-switch input[type="checkbox"].custom-control-input').not(this).prop('checked', false)
+          $('#dryver-switches .layer-toggle').click()
+        } else if ($(this).attr('id') === 'dryver-reset-all') {
+          $('#dryver-switches .custom-control.custom-switch input[type="checkbox"].custom-control-input').not(this).prop('checked', true)
+          $('#dryver-switches .layer-toggle').click()
         }
-        break;
-
-        // case 'particle density':
-        // particleDensityLayer.visible = !particleDensityLayer.visible;
-        // break;
-
-        // case 'mcmurdo asma':
-        // mcMurdoAsmaLayer.visible = !mcMurdoAsmaLayer.visible;
-        // break;
-
-      case 'abiotic':
-        if (abioticLayer.loaded) {
-          var sublayer = abioticLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
-        }
-        break;
-
-      case 'terrestrial':
-        if (terrestrialLayer.loaded) {
-          var sublayer = terrestrialLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
-        }
-        break;
-
-      case 'visitation':
-        if (visitationLayer.loaded) {
-          var sublayer = visitationLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
-        }
-        break;
-      case 'asma':
-        if (asmaLayer.loaded) {
-          var sublayer = asmaLayer.findSublayerById(parseInt(id));
-          sublayer.visible = !sublayer.visible;
-        } else {
-          $(this).prop('checked', !$(this).prop('checked'));
-        }
-        break;
-
-    }
-  } else {
-    $(this).prop('checked', !$(this).prop('checked'));
-  }
-  // console.log(id, layer)
-});
-
-$('.drop-down').click(function () {
-  var target = $(this).attr('data-target');
-  $('.' + target).toggleClass('hide');
-});
-
-
-// For identify:
-// 1. https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-IdentifyTask.html
-// 2. https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-support-IdentifyResult.html
-// 3. https://developers.arcgis.com/javascript/latest/api-reference/esri-tasks-support-IdentifyParameters.html#returnZ
-// https://developers.arcgis.com/rest/services-reference/identify-map-service-.htm (Seems like this needs to be used, seems like it is exporting in HTML/JSON. Might not work)
+      })
+    })
+  })
+}

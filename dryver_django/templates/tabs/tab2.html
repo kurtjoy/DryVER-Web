@@ -1,0 +1,34 @@
+<!-- dryver_django\templates\tabs\tab2.html -->
+<div>
+  <h5 class="px-3">
+    Datasets
+  </h5>
+  <ul
+    id="datasets-tab"
+    class="list-group list-group-flush"
+  >
+    {% for dataset in datasets %}
+    {% if dataset.id != -1 %}
+    <li class="list-group-item">
+      <div class="custom-control custom-switch">
+        <input
+          id="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-checkbox"
+          type="checkbox"
+          class="custom-control-input"
+          {% if dataset.visible %}checked{% endif %}
+        >
+        <label
+          class="custom-control-label text-capitalize layer-toggle"
+          for="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-checkbox"
+          data-id="{{ dataset.id }}"
+          data-layer="{{ dataset.layer }}"
+        >
+          {{ dataset.title }}
+        </label>
+      </div>
+    </li>
+    {% endif %}
+    {% endfor %}
+    <li class="list-group-item"></li>
+  </ul>
+</div>

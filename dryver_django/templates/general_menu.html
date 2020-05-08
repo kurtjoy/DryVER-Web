@@ -1,0 +1,83 @@
+<!-- dryver_django\templates\general_menu.html -->
+{% load staticfiles %}
+<div
+  id="sidebar-menu"
+  class="col-2 d-flex flex-column bg-dark mh-100"
+>
+  <div
+    id="sidebar-nav"
+    class="list-group list-group-flush"
+    role="tablist"
+  >
+    <a
+      id="list-home-list"
+      data-toggle="list"
+      data-target="#list-home"
+      role="tab"
+      aria-controls="home"
+      class="list-group-item list-group-item-action active d-flex align-items-center justify-content-center"
+    >
+      <i class="fas fa-search-location"></i>
+    </a>
+    <a
+      id="list-datasets-list"
+      data-toggle="list"
+      data-target="#list-datasets"
+      role="tab"
+      aria-controls="datasets"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
+    >
+      <i class="fas fa-layer-group"></i>
+    </a>
+    <a
+      id="list-dryver-list"
+      data-toggle="list"
+      data-target="#list-dryver"
+      role="tab"
+      aria-controls="dryver"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
+    >
+      <i class="fas fa-icicles"></i>
+    </a>
+  </div>
+  <div
+    id="main-pane-nav"
+    class="list-group list-group-flush"
+    role="tablist"
+  >
+    <a
+      id="list-map-list"
+      data-toggle="list"
+      data-target="#map-pane"
+      role="tab"
+      aria-controls="map"
+      class="list-group-item list-group-item-action active d-flex align-items-center justify-content-center"
+    >
+      <!-- <i class="fas fa-map-marked-alt"></i> -->
+      <i class="fas fa-wind"></i>
+    </a>
+    <a
+      id="list-wind-list"
+      data-toggle="list"
+      data-target="#windy-pane"
+      role="tab"
+      aria-controls="wind"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
+    >
+      <i class="fas fa-wind"></i>
+    </a>
+  </div>
+  <div
+    class="list-group list-group-flush"
+  >
+    <a
+      id="list-signout-list"
+      aria-controls="signout"
+      href="{% url 'logout' %}"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
+    >
+      <i class="fas fa-sign-out-alt"></i>
+    </a>
+    <a class="list-group-item p-0"></a>
+  </div>
+</div>

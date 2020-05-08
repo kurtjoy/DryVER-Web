@@ -1,0 +1,96 @@
+<!-- dryver_django\templates\tabs\tab3.html -->
+<div class="d-flex flex-column align-items-center">
+  <h5 class="px-3">
+    DryVER
+  </h5>
+  <div
+    id="dryver-switch-control"
+    class="btn-group mb-2"
+    role="group"
+  >
+    <button
+      id="dryver-show-all"
+      class="btn btn-primary"
+      type="button"
+    >
+      Display All Layers
+    </button>
+    <button
+      id="dryver-reset-all"
+      class="btn btn-outline-secondary"
+      type="button"
+    >
+      Clear All Layers
+    </button>
+  </div>
+  <div id="dryver-switches" class="card w-100">
+    <div
+      id="expand-all-headings"
+      class="card-header p-0"
+    >
+      <h2 class="mb-0">
+        <button
+          class="btn btn-block d-flex align-items-center justify-content-between collapsed"
+          type="button"
+        >
+          <span class="when-closed">Expand All</span>
+          <span class="when-opened">Close All</span>
+          <span class="when-closed"><i class="fas fa-angle-down"></i></span>
+          <span class="when-opened"><i class="fas fa-angle-up"></i></span>
+        </button>
+      </h2>
+    </div>
+    {% for key, value in dryver_layers.items %}
+    <div
+      id="{{ key.split|join:'-' }}-heading"
+      class="card-header p-0"
+    >
+      <h2 class="mb-0">
+        <button
+          class="btn btn-block d-flex align-items-center justify-content-between collapsed"
+          type="button"
+          data-toggle="collapse"
+          data-target="#{{ key.split|join:'-' }}-card-body"
+          aria-expanded="true"
+          aria-controls="{{ key.split|join:'-' }}-card-body"
+        >
+          <span>{{ value.title }}</span><span class="when-closed"><i class="fas fa-angle-down"></i></span><span class="when-opened"><i class="fas fa-angle-up"></i></span>
+        </button>
+      </h2>
+    </div>
+
+    <div
+      id="{{ key.split|join:'-' }}-card-body"
+      class="collapse expand-all-cards"
+      aria-labelledby="{{ key.split|join:'-' }}-heading"
+    >
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          {% for layer in value.layers %}
+          {% if layer.id != -1 %}
+          <li class="list-group-item">
+            <div class="custom-control custom-switch">
+              <input
+                id="{{ key.split|join:'-' }}-{{ layer.id }}-checkbox"
+                type="checkbox"
+                class="custom-control-input"
+                {% if layer.visible %}checked{% endif %}
+              >
+              <label
+                class="custom-control-label text-capitalize layer-toggle"
+                for="{{ key.split|join:'-' }}-{{ layer.id }}-checkbox"
+                data-id="{{ layer.id }}"
+                data-layer="{{ key }}"
+              >
+                {{ layer.title }}
+              </label>
+            </div>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>

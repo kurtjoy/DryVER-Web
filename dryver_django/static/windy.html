@@ -1,13 +1,14 @@
 <!-- dryver_django\templates\windy.html -->
-{% load staticfiles %}
+<!-- {% load staticfiles %} -->
 <html>
   <head>
     <title>DryVER: McMurdo Dry Valleys Environmental Data Portal- Weather Map</title>
     <link
       rel="icon"
       type="image/png"
-      href="{% static 'img/Logo.png' %}"
+      href="/static/img/Logo.png"
     >
+    <!-- https://api.windy.com/map-forecast/examples/hello-world -->
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
     <script src="https://api4.windy.com/assets/libBoot.js"></script>
     <style>
