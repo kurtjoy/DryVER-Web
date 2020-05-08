@@ -836,7 +836,7 @@ request.onload = function () {
           if (layer.loaded) {
             const querySwitchCheckbox = `input[type="checkbox"]#${keyLayerHTMLID}-${id}-checkbox`
             if (layerSource.layers) {
-              const sublayer = layer.findSublayerById(parseInt(id))
+              const sublayer = layer.findSublayerById(+id)
               sublayer.visible = !document.querySelector(querySwitchCheckbox).checked
 
               // WORK IN PROGRESS!!!

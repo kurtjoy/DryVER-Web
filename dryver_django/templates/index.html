@@ -61,6 +61,14 @@
     }
   })
 
+  $('#main-pane-nav a').on('click', function (e) {
+    e.preventDefault()
+    if ($(this).attr('id') === 'list-wind-list') {
+      $('div#sidebar-content.col').addClass('d-none')
+      $('div#sidebar-content.col').removeClass('d-flex')
+    }
+  })
+
   // Tab 3 collapse behaviour
   $('#expand-all-headings button').on('click', function (e) {
     e.preventDefault()
