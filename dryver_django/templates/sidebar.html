@@ -3,11 +3,10 @@
 <div
   id="sidebar-container"
   class="inherit-body row no-gutters site"
-  style="pointer-events: none;"
 >
   <div
+    id="sidebar"
     class="col-3 d-flex flex-column mh-100"
-    style="pointer-events: auto;"
   >
     <div class="row no-gutters h-100 mh-100">
       {% include 'general_menu.html' %}
@@ -16,7 +15,7 @@
         id="sidebar-content"
         class="col d-flex flex-column bg-light w-100 h-100 mh-100 vertical-scroll"
       >
-        <div class="d-flex justify-content-center mh-100 header">
+        <div class="d-flex justify-content-center mh-100 header pt-4 pb-2">
           <img
             src="{% static 'img/Logo.png' %}"
             alt="DryVER Home"

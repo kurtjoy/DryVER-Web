@@ -12,14 +12,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="row no-gutters w-100 h-100 mh-100" id="mapContainer" style="pointer-events: none;">
+<div class="row no-gutters w-100 h-100 mh-100" id="map-container">
   <div class="col d-flex flex-column mh-100">    
     <div class="tab-content d-flex w-100 h-100 mh-100">
       <div class="tab-pane active w-100 h-100 mh-100" id="map-pane" role="tabpanel">
         {% include 'map/map.html' %}
       </div>
       <div class="tab-pane w-100 h-100 mh-100" id="windy-pane" role="tabpanel">
-        <iframe src="{% static 'windy.html' %}" class="w-100 h-100 mh-100" style="pointer-events: auto;"></iframe>
+        <iframe src="{% static 'windy.html' %}" class="w-100 h-100 mh-100"></iframe>
       </div>
     </div>
   </div>

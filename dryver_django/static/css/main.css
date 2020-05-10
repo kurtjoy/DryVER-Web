@@ -28,13 +28,27 @@
     overflow-y: auto
   }
 
-  #mapContainer {
+  #map-container {
     background: #ebe6dc;
+    pointer-events: none;
+  }
+
+  #map_canvas {
+    pointer-events: auto;
+  }
+
+  #windy-pane iframe {
+    pointer-events: auto;
   }
 
   #sidebar-container {
     position: absolute;
     z-index: 1;
+    pointer-events: none;
+  }
+
+  #sidebar {
+    pointer-events: auto;
   }
   
   #sidebar-menu .list-group .list-group-item i {
@@ -82,7 +96,7 @@
   }
   
   .header {
-    background: url("{% static 'img/headerbg.png' %}") repeat-x;
+    background: url("/static/img/headerbg.png") repeat-x;
     background-position-y: bottom;
   }
 

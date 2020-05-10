@@ -5,7 +5,6 @@ request.responseType = 'json'
 request.send()
 request.onload = function () {
   const source = request.response
-  console.log(source)
 
   const {
     'antarctic managed area': antarcticManagedAreaSource,
@@ -552,13 +551,13 @@ request.onload = function () {
         }
       }
 
-      $('#loc_jump_dm').submit(function (evt) {
-        let lat = parseFloat($('#lat_deg_jump').val())
-        let lat_min = parseFloat($('#lat_min_jump').val())
+      document.querySelector('#loc_jump_dm').addEventListener('submit', function (evt) {
+        let lat = +document.querySelector('#lat_deg_jump').value
+        let lat_min = +document.querySelector('#lat_min_jump').value
         lat_min /= 60
         lat += lat_min
-        let long = parseFloat($('#long_deg_jump').val())
-        let long_min = parseFloat($('#long_min_jump').val())
+        let long = +document.querySelector('#long_deg_jump').value
+        let long_min = +document.querySelector('#long_min_jump').value
         long_min /= 60
         long += long_min
         evt.preventDefault()
@@ -569,9 +568,9 @@ request.onload = function () {
         view.goTo(new_loc)
       })
 
-      $('#loc_jump_dd').submit(function (evt) {
-        const lat = parseFloat($('#lat_jump').val())
-        const long = parseFloat($('#long_jump').val())
+      document.querySelector('#loc_jump_dd').addEventListener('submit', function (evt) {
+        const lat = +document.querySelector('#lat_jump').value
+        const long = +document.querySelector('#long_jump').value
         evt.preventDefault()
         const new_loc = new Point({
           latitude: lat,
@@ -690,8 +689,6 @@ request.onload = function () {
                 return results.map((result) => {
                   const feature = result.feature
                   const layerName = result.layerName
-                  console.log(layerName)
-                  console.log(feature)
                   feature.attributes.layerName = layerName
                   // layerName check logic is hardcoded for now as there is a chance that
                   // the layer name on the server does not match the one in the source/data.json
