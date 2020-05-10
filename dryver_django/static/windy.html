@@ -1,0 +1,67 @@
+<!-- dryver_django\templates\windy.html -->
+<!-- {% load staticfiles %} -->
+<html>
+  <head>
+    <title>DryVER: McMurdo Dry Valleys Environmental Data Portal- Weather Map</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="/static/img/Logo.png"
+    >
+    <!-- https://api.windy.com/map-forecast/examples/hello-world -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://api4.windy.com/assets/libBoot.js"></script>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+      #windy {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="windy"></div>
+
+    <script>
+      const options = {
+        key: 'yVM7GfUtkIGJmpjv3VX2XrLeKCenfaS2',
+        lat: -77.5, lon: 162, zoom: 7,
+      }
+
+      windyInit( options, windyAPI => {
+
+        const { picker, utils, broadcast } = windyAPI
+
+        picker.on('pickerOpened', latLon => {
+          // picker has been opened at latLon coords
+
+          let { lat, lon, values, overlay } = picker.getParams()
+          // -> 50.4, 14.3, 'wind', [ U,V, ]
+
+          let windObject = utils.wind2obj( values )
+
+        })
+
+        picker.on('pickerMoved', latLon => {
+          // picker was dragged by user to latLon coords
+        })
+
+        picker.on('pickerClosed', () => {
+          // picker was closed
+        })
+
+        // Wait since wather is rendered
+        broadcast.once('redrawFinished', () => {
+
+          // picker.open({ lat: 48.4, lon: 14.3 })
+          // Opening of a picker (async)
+
+        })
+
+      })
+    </script>
+  </body>
+</html>

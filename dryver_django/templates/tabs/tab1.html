@@ -1,0 +1,138 @@
+<!-- dryver_django\templates\tabs\tab1.html -->
+<div>
+  <h5>Jump to Location</h5>
+  <div
+    class="list-group list-group-horizontal pb-2"
+    role="tablist"
+  >
+    <button
+      type="button"
+      class="list-group-item list-group-item-action active text-center"
+      data-toggle="list"
+      data-target="#degrees"
+      role="tab"
+    >
+      Decimal Degrees
+    </button>
+    <button
+      type="button"
+      class="list-group-item list-group-item-action text-center"
+      data-toggle="list"
+      data-target="#minutes"
+      role="tab"
+    >
+      Decimal Minutes
+    </button>
+  </div>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div
+      id="degrees"
+      class="tab-pane active"
+      role="tabpanel"
+    >
+      <form id="loc_jump_dd">
+        <div class="form-group">
+          <label class="font-weight-bold text-muted" for="lat_jump">Latitude:</label>
+          <input
+            id="lat_jump"
+            type="number"
+            step="any"
+            min="-90"
+            max="90"
+            name="lat"
+            required
+            class="form-control"
+          >
+        </div>
+        <div class="form-group">
+          <label class="font-weight-bold text-muted" for="long_jump">Longitude:</label>
+          <input
+            id="long_jump"
+            type="number"
+            step="any"
+            min="-180"
+            max="180"
+            name="long"
+            required
+            class="form-control"
+          >
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Jump
+        </button>
+      </form>
+    </div>
+    <div
+      id="minutes"
+      class="tab-pane"
+      role="tabpanel"
+    >
+      <form id="loc_jump_dm">
+        <div class="form-group">
+          <label class="font-weight-bold text-muted" for="lat_deg_jump">Latitude Degrees:</label>
+          <input
+            id="lat_deg_jump"
+            type="number"
+            step="any"
+            min="-90"
+            max="90"
+            name="lat_deg"
+            required
+            class="form-control"
+          >
+        </div>
+        <div class="form-group">
+          <label class="font-weight-bold text-muted" for="lat_min_jump">Latitude Minutes:</label>
+          <input
+            id="lat_min_jump"
+            type="number"
+            step="any"
+            value="0"
+            min="0"
+            max="60"
+            name="lat_min"
+            required
+            class="form-control"
+          >
+        </div>
+        <div class="form-group">
+          <label class="font-weight-bold text-muted" for="long_deg_jump">Longitude Degrees:</label>
+          <input
+            id="long_deg_jump"
+            type="number"
+            step="any"
+            min="-180"
+            max="180"
+            name="long_deg"
+            required
+            class="form-control"
+          >
+        </div>
+        <div class="form-group">
+          <label class="font-weight-bold text-muted" for="long_min_jump">Longitude Minutes:</label>
+          <input
+            id="long_min_jump"
+            type="number"
+            step="any"
+            value="0"
+            min="0"
+            max="60"
+            name="long_min"
+            required
+            class="form-control"
+          >
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Jump
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

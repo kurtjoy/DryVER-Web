@@ -1,0 +1,57 @@
+<!-- dryver_django\templates\sidebar.html -->
+{% load staticfiles %}
+<div
+  id="sidebar-container"
+  class="inherit-body row no-gutters site"
+>
+  <div
+    id="sidebar"
+    class="col-3 d-flex flex-column mh-100"
+  >
+    <div class="row no-gutters h-100 mh-100">
+      {% include 'general_menu.html' %}
+      <!-- The sidebar itself -->
+      <div
+        id="sidebar-content"
+        class="col d-flex flex-column bg-light w-100 h-100 mh-100 vertical-scroll"
+      >
+        <div class="d-flex justify-content-center mh-100 header pt-4 pb-2">
+          <img
+            src="{% static 'img/Logo.png' %}"
+            alt="DryVER Home"
+          >
+        </div>
+        <div
+          id="sidebar-tabContent"
+          class="tab-content w-100 h-100 mh-100 minimum-height"
+        >
+          <div
+            id="list-home"
+            class="tab-pane fade show active p-3"
+            role="tabpanel"
+            aria-labelledby="list-home-list"
+          >
+            <!-- <div class="bg-danger w-100 h-100" style="height:2000px !important;"></div> -->
+            {% include 'tabs/tab1.html' %}
+          </div>
+          <div
+            id="list-datasets"
+            class="tab-pane fade py-3"
+            role="tabpanel"
+            aria-labelledby="list-datasets-list"
+          >
+            {% include 'tabs/tab2.html' %}
+          </div>
+          <div
+            id="list-dryver"
+            class="tab-pane fade py-3"
+            role="tabpanel"
+            aria-labelledby="list-dryver-list"
+          >
+            {% include 'tabs/tab3.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

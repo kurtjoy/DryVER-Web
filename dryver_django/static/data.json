@@ -1,0 +1,358 @@
+{
+    "antarctic managed area": {
+        "url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/1",
+        "title": "Antarctic Managed Area",
+        "visible": true
+    },
+    "mcmurdo asma": {
+        "url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/2",
+        "title": "McMurdo ASMA",
+        "visible": true
+    },
+    "nztabs": {
+        "url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0",
+        "title": "nzTABS Sample Sites",
+        "visible": false
+    },
+    "place names": {
+        "url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
+        "title": "SCAR Place Names",
+        "visible": true
+    },
+	"asma": {
+		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer",
+		"title": "ASMA",
+		"layers": [
+            {
+				"id": 0,
+				"title": "SCAR Place Names",
+				"visible": false
+			},
+			{
+				"id": 1,
+				"title": "Antarctic Specially Protected Areas",
+				"visible": false
+			},
+			{
+				"id": 2,
+				"title": "McMurdo ASMA",
+				"visible": false
+			}
+		]
+    },
+	"sensitivity": {
+		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/SENSITIVITY/MapServer",
+		"title": "Sensitivity",
+		"layers": [
+            {
+				"id": 0,
+				"title": "MDV_ASMA",
+				"visible": false
+			},
+			{
+				"id": 1,
+				"title": "Hillshade",
+				"visible": false
+			}
+		]
+	},
+	"visitation": {
+		"url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/VISITATION/MapServer",
+		"title": "Visitation",
+		"layers": [
+            {
+                "id": 0,
+                "title": "NZ Events",
+                "visible": false
+            },
+            {
+                "id": 1,
+                "title": "Visitation",
+                "visible": false
+            },
+            {
+                "id": 2,
+                "title": "Distant to Camps",
+                "visible": false
+            },
+            {
+                "id": 3,
+                "title": "DT_ASPA",
+                "visible": false
+            }
+        ]
+	},
+	"abiotic": {
+		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
+		"title": "Abiotic",
+		"layers": [
+            {
+				"id": 8,
+				"title": "Aspect",
+				"visible": false
+			},
+			{
+				"id": 9,
+				"title": "Slope",
+				"visible": false
+			},
+			{
+				"id": 7,
+				"title": "GNS Geology",
+				"visible": false
+			},
+			{
+				"id": 6,
+				"title": "GNS Ice",
+				"visible": false
+			},
+			{
+				"id": 10,
+				"title": "LIDAR Hillshades",
+				"visible": false
+			},
+			{
+				"id": 1,
+				"title": "Contours",
+				"visible": false
+			}
+		]
+	},
+	"datasets": [
+        {
+			"id": 0,
+			"title": "nzTABS",
+			"layer": "nztabs",
+			"visible": false
+		},
+		{
+			"id": 0,
+			"title": "NZ events",
+			"layer": "visitation",
+			"visible": false
+		},
+		{
+			"id": 8,
+			"title": "Aspect",
+			"layer": "abiotic",
+			"visible": false
+		},
+		{
+			"id": 9,
+			"title": "Slope",
+			"layer": "abiotic",
+			"visible": false
+		},
+		{
+			"id": 7,
+			"title": "GNS geology",
+			"layer": "abiotic",
+			"visible": false
+		},
+		{
+			"id": 6,
+			"title": "GNS ice & snow",
+			"layer": "abiotic",
+			"visible": false
+		},
+		{
+			"id": 10,
+			"title": "LIDAR hillshade",
+			"layer": "abiotic",
+			"visible": false
+		},
+		{
+			"id": 1,
+			"title": "Contours",
+			"layer": "abiotic",
+			"visible": false
+		},
+		{
+			"id": 1,
+			"title": "NZ visitation hexbins",
+			"layer": "visitation",
+			"visible": false
+		},
+		{
+			"id": 1,
+			"title": "ASPA/management zones",
+			"layer": "antarctic managed area",
+			"visible": true
+		}
+	],
+	"dryver_layers": {
+		"aquatic": {
+			"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer",
+			"title": "Aquatic",
+			"layers": [
+                {
+					"id": 0,
+					"title": "LINZ Lakes and Ponds",
+					"visible": false
+				},
+				{
+					"id": 1,
+					"title": "Streams",
+					"visible": false
+				},
+				{
+					"id": 2,
+					"title": "Wetness Index Jan-Feb",
+					"visible": false
+				},
+				{
+					"id": -1,
+					"title": "Aquatic Classification",
+					"visible": false
+				}
+			]
+		},
+		"climate": {
+			"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer",
+			"title": "Climate",
+			"layers": [
+                {
+					"id": 0,
+					"title": "High Summer winds (>10ms)",
+					"visible": false
+				},
+				{
+					"id": 1,
+					"title": "High Annual winds (>10ms)",
+					"visible": false
+				},
+				{
+					"id": 2,
+					"title": "5 Yr summer mean wind speed",
+					"visible": false
+				},
+				{
+					"id": 3,
+					"title": "5 Yr annual mean wind speed",
+					"visible": false
+				},
+				{
+					"id": 4,
+					"title": "5 Yr summer max wind speed",
+					"visible": false
+				},
+				{
+					"id": 5,
+					"title": "5 Yr annual max wind speed",
+					"visible": false
+				}
+			]
+		},
+		"impact": {
+			"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
+			"title": "Human Impact",
+			"layers": [
+                {
+					"id": 0,
+					"title": "Human Impact Sample Sites",
+					"visible": false
+				},
+				{
+					"id": 1,
+					"title": "Human Impact Sensitivity",
+					"visible": false
+				}
+			]
+		},
+		"terrestrial": {
+			"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/TERRESTRIAL/MapServer",
+			"title": "Terrestrial",
+			"layers": [{
+				"id": 0,
+				"title": "Cyanobacterial Prediction",
+				"visible": false
+			}]
+		},
+		"ecoforcasting": {
+			"url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ECOFORECASTING/MapServer",
+			"title": "Ecoforecasting",
+			"layers": [
+				{
+					"id": 1,
+					"title": "Mean precipitation (mm) 2020-2029",
+					"visible": false
+				},
+				{
+					"id": 2,
+					"title": "Mean precipitation (mm) 2030-2039",
+					"visible": false
+				},
+				{
+					"id": 3,
+					"title": "Mean precipitation (mm) 2040-2049",
+					"visible": false
+				},
+				{
+					"id": 4,
+					"title": "Mean precipitation (mm) 2050-2059",
+					"visible": false
+				},
+				{
+					"id": 5,
+					"title": "Mean precipitation (mm) 2060-2069",
+					"visible": false
+				},
+				{
+					"id": 6,
+					"title": "Mean precipitation (mm) 2070-2079",
+					"visible": false
+				},
+				{
+					"id": 7,
+					"title": "Mean precipitation (mm) 2080-2089",
+					"visible": false
+				},
+				{
+					"id": 8,
+					"title": "Mean precipitation (mm) 2090-2100",
+					"visible": false
+				},
+				{
+					"id": 10,
+					"title": "Mean surface temperature (deg C) 2020-2029",
+					"visible": false
+				},
+				{
+					"id": 11,
+					"title": "Mean surface temperature (deg C) 2030-2039",
+					"visible": false
+				},
+				{
+					"id": 12,
+					"title": "Mean surface temperature (deg C) 2040-2049",
+					"visible": false
+				},
+				{
+					"id": 13,
+					"title": "Mean surface temperature (deg C) 2050-2059",
+					"visible": false
+				},
+				{
+					"id": 14,
+					"title": "Mean surface temperature (deg C) 2060-2069",
+					"visible": false
+				},
+				{
+					"id": 15,
+					"title": "Mean surface temperature (deg C) 2070-2079",
+					"visible": false
+                },
+                {
+					"id": 16,
+					"title": "Mean surface temperature (deg C) 2080-2089",
+					"visible": false
+                },
+                {
+					"id": 17,
+					"title": "Mean surface temperature (deg C) 2090-20100",
+					"visible": false
+				}
+			]
+		}
+	}
+}
