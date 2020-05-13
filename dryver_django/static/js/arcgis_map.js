@@ -689,17 +689,19 @@ request.onload = function () {
                 return results.map((result) => {
                   const feature = result.feature
                   const layerName = result.layerName
+                  console.log(layerName)
+                  console.log(feature)
                   feature.attributes.layerName = layerName
                   // layerName check logic is hardcoded for now as there is a chance that
                   // the layer name on the server does not match the one in the source/data.json
                   if (layerName === 'Human Impact Sensitivity') {
                     //  If it's Extreme, it's red, if it's High, it's yellow
                     let riskClass = ''
-                    switch (feature.attributes.OverAll_Risk) {
-                      case 'Extreme':
+                    switch (feature.attributes['Total Sensitivity']) {
+                      case 'EXTREME':
                         riskClass = 'bg-danger'
                         break
-                      case 'High':
+                      case 'HIGH':
                         riskClass = 'bg-warning'
                         break
                       default:
@@ -709,7 +711,7 @@ request.onload = function () {
                       title: layerName,
                       content: getPopupTemplateNoPaddings([
                         ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${lat}, ${lon}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">OverAll_Risk</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">{OverAll_Risk}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Total Sensitivity</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">{Total Sensitivity}</span>`],
                       ]),
                       actions: [printReportThisAction],
                     }
