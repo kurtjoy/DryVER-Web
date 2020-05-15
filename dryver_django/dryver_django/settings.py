@@ -25,7 +25,10 @@ SECRET_KEY = 'b!k13x$nnhy@vs+#403=e1_xio$^tc2ijoj#iewbq5emhge&)7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    'dryver-env.eba-nz9m6hym.ap-southeast-2.elasticbeanstalk.com'
+]
 
 
 # Application definition
