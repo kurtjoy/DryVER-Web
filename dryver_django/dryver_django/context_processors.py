@@ -5,4 +5,7 @@ data = json.load(json_data)
 json_data.close()
 
 def constants(request):
-    return data
+    return { 
+        'constants': data,
+        **data,
+    }

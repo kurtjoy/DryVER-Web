@@ -26,6 +26,17 @@
           {{ dataset.title }}
         </label>
       </div>
+      {% for key, val in constants.items %}
+      {% if key == dataset.layer %}
+      {% for layer in val.layers%}
+      {% if layer.id == dataset.id and layer.attribution %}
+      <small>
+        {{ layer.attribution|safe }}
+      </small>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+      {% endfor %}
     </li>
     {% endif %}
     {% endfor %}

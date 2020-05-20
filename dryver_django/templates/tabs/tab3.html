@@ -85,6 +85,11 @@
                 {{ layer.title }}
               </label>
             </div>
+            {% if layer.attribution %}
+            <small>
+              {{ layer.attribution|safe }}
+            </small>
+            {% endif %}
           </li>
           {% endif %}
           {% endfor %}
