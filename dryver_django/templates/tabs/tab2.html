@@ -29,10 +29,25 @@
       {% for key, val in constants.items %}
       {% if key == dataset.layer %}
       {% for layer in val.layers%}
-      {% if layer.id == dataset.id and layer.attribution %}
+      {% if layer.id == dataset.id %}
+      {% if layer.attribution %}
       <small>
         {{ layer.attribution|safe }}
       </small>
+      {% endif %}
+      {% if layer.fields %}
+      <select
+        id="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-select"
+        class="custom-select custom-select-sm mt-2 symbology-switch"
+        data-id="{{ dataset.id }}"
+        data-layer="{{ dataset.layer }}"
+      >
+        <option value="" selected>Open this select menu</option>
+        {% for field in layer.fields %}
+        <option value="{{ field.value }}">{{ field.text|default:field.value }}</option>
+        {% endfor %}
+      </select>
+      {% endif %}
       {% endif %}
       {% endfor %}
       {% endif %}

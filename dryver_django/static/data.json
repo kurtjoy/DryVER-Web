@@ -1,29 +1,29 @@
 {
-    "antarctic managed area": {
-        "url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/1",
-        "title": "Antarctic Managed Area",
-        "visible": true
-    },
-    "mcmurdo asma": {
-        "url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/2",
-        "title": "McMurdo ASMA",
-        "visible": true
-    },
-    "nztabs": {
-        "url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0",
-        "title": "nzTABS Sample Sites",
-        "visible": false
-    },
-    "place names": {
-        "url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
-        "title": "SCAR Place Names",
-        "visible": true
-    },
+	"antarctic managed area": {
+		"url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/1",
+		"title": "Antarctic Managed Area",
+		"visible": true
+	},
+	"mcmurdo asma": {
+		"url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/ASMA/MapServer/2",
+		"title": "McMurdo ASMA",
+		"visible": true
+	},
+	"nztabs": {
+		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/NZTABS/MapServer/0",
+		"title": "nzTABS Sample Sites",
+		"visible": false
+	},
+	"place names": {
+		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer/0",
+		"title": "SCAR Place Names",
+		"visible": true
+	},
 	"asma": {
 		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ASMA/MapServer",
 		"title": "ASMA",
 		"layers": [
-            {
+			{
 				"id": 0,
 				"title": "SCAR Place Names",
 				"visible": false
@@ -39,12 +39,12 @@
 				"visible": false
 			}
 		]
-    },
+	},
 	"sensitivity": {
 		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/SENSITIVITY/MapServer",
 		"title": "Sensitivity",
 		"layers": [
-            {
+			{
 				"id": 0,
 				"title": "MDV_ASMA",
 				"visible": false
@@ -60,34 +60,34 @@
 		"url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/VISITATION/MapServer",
 		"title": "Visitation",
 		"layers": [
-            {
-                "id": 0,
-                "title": "NZ Events",
-                "visible": false
-            },
-            {
-                "id": 1,
-                "title": "Visitation",
+			{
+				"id": 0,
+				"title": "NZ Events",
+				"visible": false
+			},
+			{
+				"id": 1,
+				"title": "Visitation",
 				"visible": false,
 				"attribution": "Contains data sourced from the <a href='https://datastore.landcareresearch.co.nz/'>Manaaki Whenua Landcare Research</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/3.0/nz/'>CC BY (3.0 NZ,</a> <a href='https://creativecommons.org/licenses/by/4.0/'>4.0 International)</a>"
-            },
-            {
-                "id": 2,
-                "title": "Distant to Camps",
-                "visible": false
-            },
-            {
-                "id": 3,
-                "title": "DT_ASPA",
-                "visible": false
-            }
-        ]
+			},
+			{
+				"id": 2,
+				"title": "Distant to Camps",
+				"visible": false
+			},
+			{
+				"id": 3,
+				"title": "DT_ASPA",
+				"visible": false
+			}
+		]
 	},
 	"abiotic": {
 		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
 		"title": "Abiotic",
 		"layers": [
-            {
+			{
 				"id": 10,
 				"title": "Aspect",
 				"visible": false
@@ -101,7 +101,21 @@
 				"id": 7,
 				"title": "GNS Geology",
 				"visible": false,
-				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>"
+				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>",
+				"fields": [
+					{
+						"value": "MAIN_ROCK",
+						"text": ""
+					},
+					{
+						"value": "MAP_UNIT",
+						"text": ""
+					},
+					{
+						"value": "DRYVER_GROUP",
+						"text": ""
+					}
+				]
 			},
 			{
 				"id": 6,
@@ -122,7 +136,7 @@
 		]
 	},
 	"datasets": [
-        {
+		{
 			"id": 0,
 			"title": "nzTABS",
 			"layer": "nztabs",
@@ -188,16 +202,56 @@
 			"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/AQUATIC/MapServer",
 			"title": "Aquatic",
 			"layers": [
-                {
+				{
 					"id": 0,
 					"title": "LINZ Lakes and Ponds",
 					"visible": false,
-					"attribution": "Contains data sourced from the <a href='https://data.linz.govt.nz/'>LINZ Data Service</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>"
+					"attribution": "Contains data sourced from the <a href='https://data.linz.govt.nz/'>LINZ Data Service</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>",
+					"fields": [
+						{
+							"value": "Combined_K",
+							"text": ""
+						},
+						{
+							"value": "TOTAL_SENS",
+							"text": ""
+						}
+					]
 				},
 				{
 					"id": 1,
 					"title": "Streams",
-					"visible": false
+					"visible": false,
+					"fields": [
+						{
+							"value": "ECO",
+							"text": ""
+						},
+						{
+							"value": "BIO",
+							"text": ""
+						},
+						{
+							"value": "CLIMATE",
+							"text": ""
+						},
+						{
+							"value": "NNS",
+							"text": ""
+						},
+						{
+							"value": "CONT",
+							"text": ""
+						},
+						{
+							"value": "PHYSICAL",
+							"text": ""
+						},
+						{
+							"value": "TOTAL_SENS",
+							"text": ""
+						}
+					]
 				},
 				{
 					"id": 2,
@@ -215,7 +269,7 @@
 			"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer",
 			"title": "Climate",
 			"layers": [
-                {
+				{
 					"id": 0,
 					"title": "High Summer winds (>10ms)",
 					"visible": false
@@ -251,7 +305,7 @@
 			"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/IMPACT/MapServer",
 			"title": "Human Impact",
 			"layers": [
-                {
+				{
 					"id": 0,
 					"title": "Human Impact Sample Sites",
 					"visible": false
@@ -259,14 +313,41 @@
 				{
 					"id": 1,
 					"title": "Human Impact Sensitivity",
-					"visible": false
+					"visible": false,
+					"fields": [
+						{
+							"value": "DEPTH_20P",
+							"text": ""
+						},
+						{
+							"value": "INFIL0_20",
+							"text": ""
+						},
+						{
+							"value": "ROCKCOVER",
+							"text": ""
+						},
+						{
+							"value": "VIS",
+							"text": ""
+						},
+						{
+							"value": "EXTRAP",
+							"text": ""
+						},
+						{
+							"value": "TOTAL_SENS",
+							"text": ""
+						}
+					]
 				}
 			]
 		},
 		"terrestrial": {
 			"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/TERRESTRIAL/MapServer",
 			"title": "Terrestrial",
-			"layers": [{
+			"layers": [
+				{
 				"id": 0,
 				"title": "Cyanobacterial Prediction",
 				"visible": false
@@ -345,13 +426,13 @@
 					"id": 15,
 					"title": "Mean surface temperature (deg C) 2070-2079",
 					"visible": false
-                },
-                {
+				},
+				{
 					"id": 16,
 					"title": "Mean surface temperature (deg C) 2080-2089",
 					"visible": false
-                },
-                {
+				},
+				{
 					"id": 17,
 					"title": "Mean surface temperature (deg C) 2090-20100",
 					"visible": false

@@ -65,6 +65,8 @@ request.onload = function () {
       'esri/widgets/Print',
       'esri/widgets/Print/PrintViewModel',
       'esri/tasks/support/PrintTemplate',
+      'esri/renderers/smartMapping/creators/type',
+      'esri/renderers/smartMapping/symbology/type',
     ], function (
       Map,
       SceneView,
@@ -88,7 +90,9 @@ request.onload = function () {
       AreaMeasurement2D,
       Print,
       PrintViewModel,
-      PrintTemplate) {
+      PrintTemplate,
+      typeRendererCreator,
+      typeSchemes) {
       const map = new Map({
         basemap: 'satellite',
         // ground: "world-elevation"
@@ -311,7 +315,8 @@ request.onload = function () {
         title: ecoforcastingSource.title,
         sublayers: ecoforcastingSource.layers,
       })
-
+      
+      console.log(impactLayer)
       map.add(abioticLayer)
       map.add(aquaticLayer)
       map.add(asmaLayer)
@@ -824,6 +829,81 @@ request.onload = function () {
         ecoforcasting: ecoforcastingLayer,
       }
 
+      function generateRendererForImgLyr (imageLayer, field, scheme_id) {
+        // const subLayer = imageLayer.findSublayerById(lyr_id)
+        // when the createFeatureLayer() promise resolves, load the FeatureLayer
+        // and pass it to the createRenderProps function
+        // subLayer
+        imageLayer
+          .createFeatureLayer()
+          .then(function (featLyr) {
+            return featLyr.load()
+          })
+          .then(function (featureLayer) {
+            // Generate the renderProps for the new featLyr
+            const bmProps = {
+              basemap: map.basemap,
+              geometryType: 'polygon',
+              // basemapTheme: "light"
+            }
+            // Generate some custom schemes and override the 'other'(noData) legend colour
+            const schemes = typeSchemes.getSchemes(bmProps)
+            schemes.secondarySchemes[scheme_id].noDataColor = {
+              r: 230,
+              g: 230,
+              b: 230,
+              a: 0.6,
+            }
+            console.log('Schemes generated', schemes)
+            console.log('temp featLyr created', featureLayer)
+            const renderProps = {
+              layer: featureLayer,
+              view: view,
+              field: field,
+              legendOptions: {
+                title: 'Unique Values: ' + field,
+              },
+              // Here we can override the colour scheme that is generated for the renderer.
+              typeScheme: schemes.secondarySchemes[scheme_id],
+              sortBy: 'count',
+            }
+            console.log('render props', renderProps)
+            // when the promise resolves, apply the renderer to the imageLayer
+            typeRendererCreator
+              .createRenderer(renderProps)
+              .then(function (response) {
+                console.log('renderer done...', response.renderer)
+                imageLayer.renderer = response.renderer
+                console.log('new renderer for imageLayer:', imageLayer)
+              })
+          })
+      }
+
+      $('.symbology-switch').change(function () {
+        const id = $(this).attr('data-id')
+        const keyLayer = $(this).attr('data-layer')
+        const keyLayerHTMLID = keyLayer.split(' ').join('-')
+        const field =  $(this).val()
+        console.log(field)
+        if (keyLayer in dryverLayersSource || keyLayer in source) {
+          const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
+          const layer = mappedLayers[keyLayer]
+          if (layer.loaded && field) {
+            // const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select`
+            if (layerSource.layers) {
+              const sublayer = layer.findSublayerById(+id)
+              console.log(field)
+              generateRendererForImgLyr(sublayer, field, 0)
+            } else {
+              console.log(field)
+              generateRendererForImgLyr(layer, field, 0)
+            }
+          }
+        } else {
+          console.log('No key match', keyLayer)
+        }
+      })
+
       // Tab 2 and 3 switches logic
       $('.layer-toggle').click(function () {
         const id = $(this).attr('data-id')
@@ -837,42 +917,6 @@ request.onload = function () {
             if (layerSource.layers) {
               const sublayer = layer.findSublayerById(+id)
               sublayer.visible = !document.querySelector(querySwitchCheckbox).checked
-
-              // WORK IN PROGRESS!!!
-              // https://codepen.io/john-orbica/pen/NWGXVRY John's Stowell
-              // layer = new MapImageLayer({
-              //   url: impactURL,
-              //   opacity: 0.85,
-              //   sublayers: [
-              //     {
-              //       id: 1,
-              //       renderer: {
-              //         type: "simple", // autocasts as new SimpleRenderer()
-              //         symbol: {
-              //           type: "simple-fill",
-              //           color: [ 255, 128, 0, 0.5 ],
-              //           outline: {  // autocasts as new SimpleLineSymbol()
-              //             width: 1,
-              //             color: "white"
-              //           }
-              //         }
-              //       }
-              //   }
-              // ]
-              // })
-              // The IMPORTANT PART IS THIS, IT IS POSSIBLE TO PROGRAM THE RENDER ON THE FLY
-              // console.log(layer.sublayers.items[0].renderer)
-              // layer.sublayers.items[0].renderer = {
-              //   type: "simple", // autocasts as new SimpleRenderer()
-              //   symbol: {
-              //     type: "simple-fill",
-              //     color: 'red',
-              //     outline: {  // autocasts as new SimpleLineSymbol()
-              //       width: 1,
-              //       color: "white"
-              //     }
-              //   }
-              // }
             } else {
               layer.visible = !document.querySelector(querySwitchCheckbox).checked
             }

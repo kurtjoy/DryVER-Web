@@ -90,6 +90,19 @@
               {{ layer.attribution|safe }}
             </small>
             {% endif %}
+            {% if layer.fields %}
+            <select
+              id="{{ key.split|join:'-' }}-{{ layer.id }}-select"
+              class="custom-select custom-select-sm mt-2 symbology-switch"
+              data-id="{{ layer.id }}"
+              data-layer="{{ key }}"
+            >
+              <option value="" selected>Open this select menu</option>
+              {% for field in layer.fields %}
+              <option value="{{ field.value }}">{{ field.text|default:field.value }}</option>
+              {% endfor %}
+            </select>
+            {% endif %}
           </li>
           {% endif %}
           {% endfor %}
