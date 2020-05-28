@@ -1,0 +1,36 @@
+.body {
+  position: absolute;
+  z-index: -2;
+  background-image: url("/static/img/DV.JPG");
+  /* Center and scale the image nicely */
+  background-position: center;
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+  filter: blur(10px);
+}
+
+.grad {
+  position: absolute;
+  z-index: -1;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome, Safari4+ */
+  opacity: 0.7;
+}
+
+.header, .footer {
+  background-color: #0873b8;
+}
+
+.logo-container {
+  background-color: var(--light);
+  border-radius: 0 0 50% 50%;
+}
+
+.logo {
+  height: 7rem;
+  width: auto;
+}
+
+.google-play-badge {
+  height: 4rem;
+  width: auto;
+}
