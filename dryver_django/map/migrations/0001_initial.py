@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PdfReportForm',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('programme', models.CharField(max_length=300)),
                 ('event_number', models.CharField(max_length=300)),
                 ('event_field_leader', models.CharField(max_length=300)),
