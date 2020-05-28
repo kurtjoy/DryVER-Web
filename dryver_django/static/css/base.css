@@ -1,0 +1,29 @@
+html, body {
+  max-height: 100vh;
+  max-width: 100vw;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  /* overflow: hidden; */
+}
+
+.inherit-body {
+  max-height: inherit;
+  max-width: inherit;
+  height: inherit;
+  width: inherit;
+}
+
+.inherit-height {
+  max-height: inherit;
+}
+
+/* A working FireFox responsive CSS fix */
+/* https://moduscreate.com/blog/how-to-fix-overflow-issues-in-css-flex-layouts/ */
+.minimum-height {
+  min-height: 0px;
+}
+
+.vertical-scroll {
+  overflow-y: auto
+}

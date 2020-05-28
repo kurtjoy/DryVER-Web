@@ -69,19 +69,19 @@
 				"id": 1,
 				"title": "Visitation",
 				"visible": false,
-				"attribution": "Contains data sourced from the <a href='https://datastore.landcareresearch.co.nz/'>Manaaki Whenua Landcare Research</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/3.0/nz/'>CC BY (3.0 NZ,</a> <a href='https://creativecommons.org/licenses/by/4.0/'>4.0 International)</a>"
-			},
-			{
-				"id": 2,
-				"title": "Distant to Camps",
-				"visible": false
-			},
-			{
-				"id": 3,
-				"title": "DT_ASPA",
-				"visible": false
-			}
-		]
+				"attribution": "Contains data sourced from the <a href='https://datastore.landcareresearch.co.nz/' target='_blank'>Manaaki Whenua Landcare Research</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/3.0/nz/' target='_blank'>CC BY (3.0 NZ,</a> <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>4.0 International)</a>"
+            },
+            {
+                "id": 2,
+                "title": "Distant to Camps",
+                "visible": false
+            },
+            {
+                "id": 3,
+                "title": "DT_ASPA",
+                "visible": false
+            }
+        ]
 	},
 	"abiotic": {
 		"url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/ABIOTIC/MapServer",
@@ -101,7 +101,7 @@
 				"id": 7,
 				"title": "GNS Geology",
 				"visible": false,
-				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>",
+				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/' target='_blank'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>",
 				"fields": [
 					{
 						"value": "MAIN_ROCK",
@@ -121,7 +121,7 @@
 				"id": 6,
 				"title": "GNS Ice",
 				"visible": false,
-				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>"
+				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/' target='_blank'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>"
 			},
 			{
 				"id": 14,
@@ -206,7 +206,7 @@
 					"id": 0,
 					"title": "LINZ Lakes and Ponds",
 					"visible": false,
-					"attribution": "Contains data sourced from the <a href='https://data.linz.govt.nz/'>LINZ Data Service</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a>",
+					"attribution": "Contains data sourced from the <a href='https://data.linz.govt.nz/' target='_blank'>LINZ Data Service</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>",
 					"fields": [
 						{
 							"value": "Combined_K",

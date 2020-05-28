@@ -28,11 +28,11 @@ request.onload = function () {
   } = dryverLayersSource
 
   function getPopupTemplate (array) {
-    return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="text-capitalize pl-0">${header}</th>` + keyValues.map(value => `<td class="text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
+    return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="pl-0">${header}</th>` + keyValues.map(value => `<td class="text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
   }
 
   function getPopupTemplateNoPaddings (array) {
-    return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="text-capitalize p-0">${header}</th>` + keyValues.map(value => `<td class="p-0 text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
+    return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="p-0">${header}</th>` + keyValues.map(value => `<td class="p-0 text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
   }
 
   let view
@@ -649,16 +649,18 @@ request.onload = function () {
 
       function printPopupReport () {
         console.log('printPopupReport function')
-        printVM.print(
-          new PrintTemplate({
-            format: 'pdf',
-            layout: 'a4-portrait',
-          }),
-        )
-          .then(response => {
-            window.open(response.url, '_blank')
-          })
-          .catch(error => console.warn(error))
+        window.open('/static/img/PDFmockup.png', '_blank')
+        // WORK IN PROGRESS
+        // printVM.print(
+        //   new PrintTemplate({
+        //     format: 'pdf',
+        //     layout: 'a4-portrait',
+        //   }),
+        // )
+        //   .then(response => {
+        //     window.open(response.url, '_blank')
+        //   })
+        //   .catch(error => console.warn(error))
       }
 
       // Event handler that fires each time an action is clicked.

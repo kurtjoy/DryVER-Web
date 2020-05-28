@@ -18,7 +18,7 @@
           {% if dataset.visible %}checked{% endif %}
         >
         <label
-          class="custom-control-label text-capitalize layer-toggle"
+          class="custom-control-label layer-toggle"
           for="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-checkbox"
           data-id="{{ dataset.id }}"
           data-layer="{{ dataset.layer }}"
