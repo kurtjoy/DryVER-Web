@@ -9,6 +9,11 @@ from .forms import PdfReportForm
 class Windy(TemplateView):
     template_name = 'windy.html'
 
+
+class Data(TemplateView):
+    template_name = 'data.html'
+
+
 @login_required
 def index(request):
     if request.method == 'POST':
