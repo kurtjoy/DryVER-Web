@@ -25,7 +25,7 @@
       type="image/png"
       href="{% static 'img/Logo.png' %}"
     >
-    <title>DryVER: McMurdo Dry Valleys Environmental Data Portal</title>
+    <title>{% block title %}DryVER: McMurdo Dry Valleys Environmental Data Portal{% endblock %}</title>
   </head>
   <body>
     {% block content %}{% endblock %}
