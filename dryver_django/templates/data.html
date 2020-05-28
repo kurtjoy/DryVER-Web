@@ -12,10 +12,12 @@
 <div class="container-fluid d-flex flex-column mh-100 h-100 text-light">
   <header class="header row align-items-center">
     <div class="col-lg-3 col-12 d-flex justify-content-center">
-      <img
-        class="logo-container logo mt-auto"
-        src="{% static 'img/Logo.png' %}"
-      >
+      <a href="{% url 'index' %}" target="_blank">
+        <img
+          class="logo-container logo mt-auto"
+          src="{% static 'img/Logo.png' %}"
+        >
+      </a>
     </div>
     <div class="col-lg-9 col-12 d-none d-lg-block">
       <h2>Dry Valley Ecosystem Resilience</h2>
