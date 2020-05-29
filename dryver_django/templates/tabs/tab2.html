@@ -42,7 +42,7 @@
         data-id="{{ dataset.id }}"
         data-layer="{{ dataset.layer }}"
       >
-        <option value="" selected>Open this select menu</option>
+        <option value="" selected>No attribute selected</option>
         {% for field in layer.fields %}
         <option value="{{ field.value }}">{{ field.text|default:field.value }}</option>
         {% endfor %}

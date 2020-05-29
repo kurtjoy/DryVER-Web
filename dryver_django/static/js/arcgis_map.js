@@ -330,6 +330,8 @@ request.onload = function () {
       map.add(climateLayer)
       map.add(placeNamesLayer)
       map.add(ecoforcastingLayer)
+      console.log(impactLayer)
+
       // widgets
       // zoom
       const zoom = new Zoom({
@@ -832,53 +834,57 @@ request.onload = function () {
       }
 
       function generateRendererForImgLyr (imageLayer, field, scheme_id) {
-        // const subLayer = imageLayer.findSublayerById(lyr_id)
-        // when the createFeatureLayer() promise resolves, load the FeatureLayer
-        // and pass it to the createRenderProps function
-        // subLayer
-        imageLayer
-          .createFeatureLayer()
-          .then(function (featLyr) {
-            return featLyr.load()
-          })
-          .then(function (featureLayer) {
-            // Generate the renderProps for the new featLyr
-            const bmProps = {
-              basemap: map.basemap,
-              geometryType: 'polygon',
-              // basemapTheme: "light"
-            }
-            // Generate some custom schemes and override the 'other'(noData) legend colour
-            const schemes = typeSchemes.getSchemes(bmProps)
-            schemes.secondarySchemes[scheme_id].noDataColor = {
-              r: 230,
-              g: 230,
-              b: 230,
-              a: 0.6,
-            }
-            console.log('Schemes generated', schemes)
-            console.log('temp featLyr created', featureLayer)
-            const renderProps = {
-              layer: featureLayer,
-              view: view,
-              field: field,
-              legendOptions: {
-                title: 'Unique Values: ' + field,
-              },
-              // Here we can override the colour scheme that is generated for the renderer.
-              typeScheme: schemes.secondarySchemes[scheme_id],
-              sortBy: 'count',
-            }
-            console.log('render props', renderProps)
-            // when the promise resolves, apply the renderer to the imageLayer
-            typeRendererCreator
-              .createRenderer(renderProps)
-              .then(function (response) {
-                console.log('renderer done...', response.renderer)
-                imageLayer.renderer = response.renderer
-                console.log('new renderer for imageLayer:', imageLayer)
-              })
-          })
+        if (field) {
+          // const subLayer = imageLayer.findSublayerById(lyr_id)
+          // when the createFeatureLayer() promise resolves, load the FeatureLayer
+          // and pass it to the createRenderProps function
+          // subLayer
+          imageLayer
+            .createFeatureLayer()
+            .then(function (featLyr) {
+              return featLyr.load()
+            })
+            .then(function (featureLayer) {
+              // Generate the renderProps for the new featLyr
+              const bmProps = {
+                basemap: map.basemap,
+                geometryType: 'polygon',
+                // basemapTheme: "light"
+              }
+              // Generate some custom schemes and override the 'other'(noData) legend colour
+              const schemes = typeSchemes.getSchemes(bmProps)
+              schemes.secondarySchemes[scheme_id].noDataColor = {
+                r: 230,
+                g: 230,
+                b: 230,
+                a: 0.6,
+              }
+              console.log('Schemes generated', schemes)
+              console.log('temp featLyr created', featureLayer)
+              const renderProps = {
+                layer: featureLayer,
+                view: view,
+                field: field,
+                legendOptions: {
+                  title: 'Unique Values: ' + field,
+                },
+                // Here we can override the colour scheme that is generated for the renderer.
+                typeScheme: schemes.secondarySchemes[scheme_id],
+                sortBy: 'count',
+              }
+              console.log('render props', renderProps)
+              // when the promise resolves, apply the renderer to the imageLayer
+              typeRendererCreator
+                .createRenderer(renderProps)
+                .then(function (response) {
+                  console.log('renderer done...', response.renderer)
+                  imageLayer.renderer = response.renderer
+                  console.log('new renderer for imageLayer:', imageLayer)
+                })
+            })
+        } else {
+          imageLayer.renderer = null
+        }
       }
 
       $('.symbology-switch').change(function () {
@@ -890,7 +896,7 @@ request.onload = function () {
         if (keyLayer in dryverLayersSource || keyLayer in source) {
           const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
           const layer = mappedLayers[keyLayer]
-          if (layer.loaded && field) {
+          if (layer.loaded) {
             // const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select`
             if (layerSource.layers) {
               const sublayer = layer.findSublayerById(+id)
