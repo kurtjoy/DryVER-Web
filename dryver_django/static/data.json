@@ -105,15 +105,15 @@
 				"fields": [
 					{
 						"value": "MAIN_ROCK",
-						"text": ""
+						"text": "MAIN_ROCK"
 					},
 					{
 						"value": "MAP_UNIT",
-						"text": ""
+						"text": "MAP_UNIT"
 					},
 					{
 						"value": "DRYVER_GROUP",
-						"text": ""
+						"text": "DRYVER_GROUP"
 					}
 				]
 			},
@@ -210,11 +210,11 @@
 					"fields": [
 						{
 							"value": "Combined_K",
-							"text": ""
+							"text": "Classification"
 						},
 						{
 							"value": "TOTAL_SENS",
-							"text": ""
+							"text": "TOTAL_SENS"
 						}
 					]
 				},
@@ -225,31 +225,31 @@
 					"fields": [
 						{
 							"value": "ECO",
-							"text": ""
+							"text": "Ecosystem Sensitivity"
 						},
 						{
 							"value": "BIO",
-							"text": ""
+							"text": "Biodiversity Value"
 						},
 						{
 							"value": "CLIMATE",
-							"text": ""
+							"text": "Climate Sensitivity"
 						},
 						{
 							"value": "NNS",
-							"text": ""
+							"text": "NNS Sensitivity"
 						},
 						{
 							"value": "CONT",
-							"text": ""
+							"text": "Containination Sensitivy"
 						},
 						{
 							"value": "PHYSICAL",
-							"text": ""
+							"text": "Physical Disturbance Sensitivity"
 						},
 						{
 							"value": "TOTAL_SENS",
-							"text": ""
+							"text": "Total Sensitivity"
 						}
 					]
 				},
@@ -317,27 +317,27 @@
 					"fields": [
 						{
 							"value": "DEPTH_20P",
-							"text": ""
+							"text": "Depth Change (Track)"
 						},
 						{
 							"value": "INFIL0_20",
-							"text": ""
+							"text": "Infiltration Change (Track)"
 						},
 						{
 							"value": "ROCKCOVER",
-							"text": ""
+							"text": "Rockcover Change"
 						},
 						{
 							"value": "VIS",
-							"text": ""
+							"text": "Visibility Change"
 						},
 						{
 							"value": "EXTRAP",
-							"text": ""
+							"text": "Visited?"
 						},
 						{
 							"value": "TOTAL_SENS",
-							"text": ""
+							"text": "Total Sensitivity"
 						}
 					]
 				}
