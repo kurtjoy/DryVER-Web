@@ -1,20 +1,3 @@
-body {
-	max-height: 100vh;
-	max-width: 100vw;
-	display: flex;
-	height: 100vh;
-	width: 100vw;
-	/* overflow: hidden; */
-}
-
-.inherit-height {
-	max-height: inherit;
-}
-
-.minimum-height {
-	min-height: 0px;
-}
-
 .body {
 	position: absolute;
 	z-index: -2;

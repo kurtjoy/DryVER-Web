@@ -71,6 +71,15 @@
     class="list-group list-group-flush"
   >
     <a
+      id="list-data-list"
+      aria-controls="data"
+      href="{% url 'Data' %}"
+      target="_blank"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
+    >
+      <i class="fas fa-file-archive"></i>
+    </a>
+    <a
       id="list-signout-list"
       aria-controls="signout"
       href="{% url 'logout' %}"

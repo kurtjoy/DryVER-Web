@@ -1,128 +1,97 @@
-﻿html, body {
-    max-height: 100vh;
-    max-width: 100vw;
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    /* overflow: hidden; */
-  }
+﻿#map-container {
+  background: #ebe6dc;
+  pointer-events: none;
+}
 
-  .inherit-body {
-    max-height: inherit;
-    max-width: inherit;
-    height: inherit;
-    width: inherit;
-  }
+#map_canvas {
+  pointer-events: auto;
+}
 
-  .inherit-height {
-    max-height: inherit;
-  }
+#windy-pane iframe {
+  pointer-events: auto;
+}
 
-  /* A working FireFox responsive CSS fix */
-  /* https://moduscreate.com/blog/how-to-fix-overflow-issues-in-css-flex-layouts/ */
-  .minimum-height {
-    min-height: 0px;
-  }
+#sidebar-container {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
 
-  .vertical-scroll {
-    overflow-y: auto
-  }
+#sidebar {
+  pointer-events: auto;
+}
 
-  #map-container {
-    background: #ebe6dc;
-    pointer-events: none;
-  }
+#sidebar-menu .list-group .list-group-item i {
+  font-size: x-large;
+}
 
-  #map_canvas {
-    pointer-events: auto;
-  }
+#sidebar-menu .list-group .list-group-item:not(.active) {
+  background-color: transparent;
+  color: #c7eaf9;
+}
 
-  #windy-pane iframe {
-    pointer-events: auto;
-  }
+#sidebar-menu .list-group .list-group-item:not(.active):hover {
+  background-color: #20272c;
+}
 
-  #sidebar-container {
-    position: absolute;
-    z-index: 1;
-    pointer-events: none;
-  }
+#sidebar-menu .list-group .list-group-item.active {
+  /* from bootstrap's bg-light */
+  background-color: #f8f9fa;
+  border-color: rgba(0,0,0,.125);
+  color: #5292B7;
+}
 
-  #sidebar {
-    pointer-events: auto;
-  }
-  
-  #sidebar-menu .list-group .list-group-item i {
-    font-size: x-large;
-  }
+#sidebar-menu .list-group #list-wind-list.list-group-item.active {
+  /* Ensures it overwrites !important in bootstrap's  d-flex class */
+  display: none !important;
+}
 
-  #sidebar-menu .list-group .list-group-item:not(.active) {
-    background-color: transparent;
-    color: #c7eaf9;
-  }
+#sidebar-menu .list-group #list-map-list.list-group-item.active {
+  /* Ensures it overwrites !important in bootstrap's d-flex class */
+  display: none !important;
+}
 
-  #sidebar-menu .list-group .list-group-item:not(.active):hover {
-    background-color: #20272c;
-  }
-  
-  #sidebar-menu .list-group .list-group-item.active {
-    /* from bootstrap's bg-light */
-    background-color: #f8f9fa;
-    border-color: rgba(0,0,0,.125);
-    color: #5292B7;
-  }
+#sidebar-menu .list-group #list-map-list.list-group-item {
+  /* This is to mimic a toggle effect when switching */
+  color: #5292B7;
+}
 
-  #sidebar-menu .list-group #list-wind-list.list-group-item.active {
-    /* Ensures it overwrites !important in bootstrap's  d-flex class */
-    display: none !important;
-  }
+#datasets-tab.list-group .list-group-item {
+  background-color: transparent;
+}
 
-  #sidebar-menu .list-group #list-map-list.list-group-item.active {
-    /* Ensures it overwrites !important in bootstrap's d-flex class */
-    display: none !important;
-  }
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
+}
 
-  #sidebar-menu .list-group #list-map-list.list-group-item {
-    /* This is to mimic a toggle effect when switching */
-    color: #5292B7;
-  }
+.header {
+  background: url("/static/img/headerbg.png") repeat-x;
+  background-position-y: bottom;
+}
 
-  #datasets-tab.list-group .list-group-item {
-    background-color: transparent;
-  }
+.header img {
+  max-width: 9rem;
+  height: auto;
+}
 
-  .collapsed > .when-opened,
-  :not(.collapsed) > .when-closed {
-    display: none;
-  }
-  
-  .header {
-    background: url("/static/img/headerbg.png") repeat-x;
-    background-position-y: bottom;
-  }
+#sidebar-tabContent .tab-pane h5 {
+  color: #5292B7;
+}
 
-  .header img {
-    max-width: 9rem;
-    height: auto;
-  }
-
-  #sidebar-tabContent .tab-pane h5 {
-    color: #5292B7;
-  }
-  
-  /* Mimics bootstrap's table th, td's padding */
-  .p-3q {
-    padding: 0.75rem!important;
-  }
-  .pb-3q, .py-3q {
-    padding-bottom: 0.75rem!important;
-  }
-  .pr-3q, .px-3q {
-    padding-right: 0.75rem!important;
-  }
-  .pl-3q, .px-3q {
-    padding-left: 0.75rem!important;
-  }
-  .pt-3q, .py-3q {
-    padding-top: 0.75rem!important;
-  }
-  
+/* Mimics bootstrap's table th, td's padding */
+.p-3q {
+  padding: 0.75rem!important;
+}
+.pb-3q, .py-3q {
+  padding-bottom: 0.75rem!important;
+}
+.pr-3q, .px-3q {
+  padding-right: 0.75rem!important;
+}
+.pl-3q, .px-3q {
+  padding-left: 0.75rem!important;
+}
+.pt-3q, .py-3q {
+  padding-top: 0.75rem!important;
+}

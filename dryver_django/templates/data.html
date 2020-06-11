@@ -1,0 +1,138 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block sheets %}
+<link
+  rel="stylesheet"
+  href="{% static 'css/data.css' %}"
+>
+{% endblock %}
+{% block content %}
+<div class="body w-100 h-100"></div>
+<div class="grad w-100 h-100"></div>
+<div class="container-fluid d-flex flex-column mh-100 h-100 text-light">
+  <header class="header row align-items-center">
+    <div class="col-lg-3 col-12 d-flex justify-content-center">
+      <a href="{% url 'index' %}" target="_blank">
+        <img
+          class="logo-container logo mt-auto"
+          src="{% static 'img/Logo.png' %}"
+        >
+      </a>
+    </div>
+    <div class="col-lg-9 col-12 d-none d-lg-block">
+      <h2>Dry Valley Ecosystem Resilience</h2>
+      <p>International Center for Terrestrial Antarctic Research</p>
+    </div>
+  </header>
+  <main class="row mh-100 h-100 justify-content-center align-items-center overflow-auto p-lg-5">
+    <!-- Add additional content here using bootstrap's column as containers, adjust the number of col's class for each addition as appropriate -->
+    <div class="col-lg-12 col-12">
+      <p>Welcome to the DryVER GPS Tool, created by the International Centre for Terrestrial Antarctic Research (University of Waikato, New Zealand) as part of the Dry Valley Ecosystem Resilience project (funded by the New Zealand Government). The main purpose of the DryVER GPS Tool is to provide visitors (both scientists and tourists) to the McMurdo Dry Valleys of Antarctica with information that helps them better understand the requirements and restrictions within the McMurdo Dry Valleys (MDV) Antarctic Specially Managed Area Manual.</p>
+      <p>Features of the DryVER GPS Tool include:</p>
+      <ul>
+        <li>1:50,000 topographic base map</li>
+        <li>Landsat satellite imagery</li>
+        <li>Locations and boundaries of Antarctic Specially Protected Areas (ASPAs), Scientific Zones, Restricted Zones, Facility Zones, and Visitor Zones</li>
+        <li>Geofenced warning with proximity to Restricted Zones and ASPAs</li>
+        <li>Specific ASPA maps</li>
+        <li>Geological maps</li>
+        <li>Surface sensitivity maps</li>
+        <li> ASPA Management Plans and the McMurdo Dry Valleys ASMA Manual</li>
+        <li>The ability to import and export ESRI shapefile, GPX, and KML files</li>
+      </ul>
+      <p>The software is based on <a href="https://www.oruxmaps.com/cs/en/" target="_blank"> Oruxmaps </a> and contains custom data and features for use in the McMurdo Dry Valleys. A complete user manual for the Oruxmaps is available in a number of languages from <a href="https://www.oruxmaps.com/cs/en/manual" target="_blank"> here</a>. Be aware that the Oruxmaps manual is specific to the latest version of Oruxmaps and may contain features not present or different from the DryVER GPS Tool.</p>
+    </div>
+    <div class="col-lg-6 col-12">
+      <h2>
+        Latest Basemaps for the DryVER GPS Tool (24/03/2018)
+      </h2>
+      <a
+        class="btn btn-outline-light btn-block"
+        href="orux-map://https://trugis.sci.waikato.ac.nz/oruxmap/LIMA_MDV_201803.zip"
+        target="_blank"
+      >
+        Landsat Satellite Basemap</a>
+      <a
+        class="btn btn-outline-light btn-block"
+        href="orux-map://https://trugis.sci.waikato.ac.nz/oruxmap/LINZ_MDV_201803.zip"
+        target="_blank"
+      >LINZ Topo50 Basemap</a>
+      <p class="btn-block">
+        Sourced from the Land Information New Zealand (LINZ) Data Service and licensed by
+        LINZ for re-use under the Creative Commons Attribution 3.0 New Zealand licence.
+      </p>
+    </div>
+    <div class="col-lg-6 col-12">
+      <h2>
+        User Manuals
+      </h2>
+      <a
+        class="btn btn-outline-light btn-block disabled"
+        href="manual.pdf"
+        target="_blank"
+        role="button"
+        aria-disabled="true"
+      >Addendum DryVER GPS Tool Manual</a>
+      <a
+        class="btn btn-outline-light btn-block"
+        href="https://www.oruxmaps.com/oruxmapsmanual_en.pdf"
+        target="_blank"
+      >Oruxmaps User Manual</a>
+      <p class="btn-block">
+        Sourced from the <a href="https://data.linz.govt.nz/" target="_blank">LINZ Data Service</a>
+        and licensed by LINZ for re-use under the Creative Commons Attribution 3.0 New Zealand licence.
+      </p>
+    </div>
+    <div class="col-lg-6 col-12">
+      <h2>Map Overlays</h2>
+      <a
+        class="btn btn-outline-light btn-block"
+        href="orux-layer://https://trugis.sci.waikato.ac.nz/oruxmap/MDV_ASPA_250m.kmz"
+        target="_blank"
+      >ASPA 250m Warning Buffer KML</a>
+      <a
+        class="btn btn-outline-light btn-block"
+        href="orux-layer://https://trugis.sci.waikato.ac.nz/oruxmap/MDV_ASPA.kmz"
+        target="_blank"
+      >ASPA KML</a>
+      <a
+        class="btn btn-outline-light btn-block"
+        href="orux-layer://https://trugis.sci.waikato.ac.nz/oruxmap/GNS_GEOLOGY.kmz"
+        target="_blank"
+      >GNS Geology KML</a>
+      <p class="btn-block">
+        Sourced from GNS Science and licensed by GNS for re-use under the Creative Commons Attribution 3.0 New Zealand licence.
+      </p>
+    </div>
+    <div class="col-lg-6 col-12">
+      <h2>The McMurdo Dry Valleys ASMA Manual and Maps</h2>
+      <a
+        class="btn btn-outline-light btn-block"
+        href="https://trugis.sci.waikato.ac.nz/oruxmap/PDFS.zip"
+        target="_blank"
+      >MDV ASMA Manual and Maps</a>
+      <p class="btn-block">
+        Download and extract this zip file (PDFS.zip) into the DRYVER folder in the internal
+        shared storage on your device. You may need to download a file manager, and the <a href="https://play.google.com/store/apps/details?id=com.asus.filemanager&hl=en" target="_blank">ASUS File Manager</a> is a good free option. The final path for the extracted folder
+        should be “Internal shared storage>DRYVER>PDFS”.
+      </p>
+      <p>
+        Once installed, the McMurdo Dry Valleys ASMA Manual and maps of various
+        Restricted/Scientific/Facilities Zones and ASPAs can be accessed under the
+        "Documents" dropdown menu.
+      </p>
+      <p>
+        Additionally, you can make your Preliminary Environmental Evaluation form (PEE)
+        accessible if it is placed within the PDFS folder with the name PEE.pdf
+      </p>
+    </div>
+  </main>
+  <footer class="footer row justify-content-center align-items-center p-3 p-lg-0">
+    <span>At this time, the DryVER GPS Tool is Android only with no planned iOS development.</span>
+    <img
+      class="google-play-badge d-none d-lg-block"
+      src="{% static 'img/google-play-badge.png' %}"
+    >
+  </footer>
+</div>
+{% endblock %}

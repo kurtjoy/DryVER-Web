@@ -13,8 +13,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReportLocation',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('Denton Hills', 'Denton Hills'), ('Wright Valley', 'Wright Valley'), ('Taylor Valley', 'Taylor Valley'), ('Victoria Valley', 'Victoria Valley'), ('McKelvey Valley', 'McKelvey Valley')], max_length=300)),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(choices=[('Denton Hills', 'Denton Hills'), ('Wright Valley', 'Wright Valley'), (
+                    'Taylor Valley', 'Taylor Valley'), ('Victoria Valley', 'Victoria Valley'), ('McKelvey Valley', 'McKelvey Valley')], max_length=300)),
             ],
         ),
         migrations.RemoveField(
@@ -24,6 +26,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='pdfreport',
             name='location',
-            field=models.ManyToManyField(to='map.ReportLocation', verbose_name='list of locations'),
+            field=models.ManyToManyField(
+                to='map.ReportLocation', verbose_name='list of locations'),
         ),
     ]
