@@ -316,7 +316,6 @@ request.onload = function () {
         sublayers: ecoforcastingSource.layers,
       })
       
-      console.log(impactLayer)
       map.add(abioticLayer)
       map.add(aquaticLayer)
       map.add(asmaLayer)
@@ -330,7 +329,6 @@ request.onload = function () {
       map.add(climateLayer)
       map.add(placeNamesLayer)
       map.add(ecoforcastingLayer)
-      console.log(impactLayer)
 
       // widgets
       // zoom
@@ -419,7 +417,6 @@ request.onload = function () {
         }],
       })
       searchWidget.on('select-result', function (response) {
-        console.log('searchWidget on search result!!!', response)
         view.goTo({
           center: [response.result.feature.geometry.longitude, response.result.feature.geometry.latitude],
           scale: 500000, // region level of zoom
@@ -698,8 +695,6 @@ request.onload = function () {
                 return results.map((result) => {
                   const feature = result.feature
                   const layerName = result.layerName
-                  console.log(layerName)
-                  console.log(feature)
                   feature.attributes.layerName = layerName
                   // layerName check logic is hardcoded for now as there is a chance that
                   // the layer name on the server does not match the one in the source/data.json
@@ -833,6 +828,33 @@ request.onload = function () {
         ecoforcasting: ecoforcastingLayer,
       }
 
+      const bmProps = {
+        basemap: map.basemap,
+        geometryType: 'polygon',
+        // basemapTheme: "light"
+      }
+
+      // Generate some custom schemes and override the 'other'(noData) legend colour
+      const schemes = typeSchemes.getSchemes(bmProps)
+      const schemesOptions = [schemes.primaryScheme, ...schemes.secondarySchemes]
+
+      $('.symbology-colors').each(function() {
+        generateSchemesForRenderer($(this)[0])
+      })
+      
+      function generateSchemesForRenderer (dropdown) {
+        while (dropdown.firstChild) {
+          dropdown.removeChild(dropdown.lastChild)
+        }
+        schemesOptions.forEach(({name}, index) => {
+          let dropdownItem = document.createElement('option')
+          dropdownItem.setAttribute('value', index)
+          const dropdownLabel = document.createTextNode(name)
+          dropdownItem.appendChild(dropdownLabel)
+          dropdown.appendChild(dropdownItem)
+        })
+      }
+
       function generateRendererForImgLyr (imageLayer, field, scheme_id) {
         if (field) {
           // const subLayer = imageLayer.findSublayerById(lyr_id)
@@ -846,21 +868,13 @@ request.onload = function () {
             })
             .then(function (featureLayer) {
               // Generate the renderProps for the new featLyr
-              const bmProps = {
-                basemap: map.basemap,
-                geometryType: 'polygon',
-                // basemapTheme: "light"
-              }
-              // Generate some custom schemes and override the 'other'(noData) legend colour
-              const schemes = typeSchemes.getSchemes(bmProps)
               schemes.secondarySchemes[scheme_id].noDataColor = {
                 r: 230,
                 g: 230,
                 b: 230,
                 a: 0.6,
               }
-              console.log('Schemes generated', schemes)
-              console.log('temp featLyr created', featureLayer)
+              
               const renderProps = {
                 layer: featureLayer,
                 view: view,
@@ -872,14 +886,11 @@ request.onload = function () {
                 typeScheme: schemes.secondarySchemes[scheme_id],
                 sortBy: 'count',
               }
-              console.log('render props', renderProps)
               // when the promise resolves, apply the renderer to the imageLayer
               typeRendererCreator
                 .createRenderer(renderProps)
                 .then(function (response) {
-                  console.log('renderer done...', response.renderer)
                   imageLayer.renderer = response.renderer
-                  console.log('new renderer for imageLayer:', imageLayer)
                 })
             })
         } else {
@@ -892,19 +903,43 @@ request.onload = function () {
         const keyLayer = $(this).attr('data-layer')
         const keyLayerHTMLID = keyLayer.split(' ').join('-')
         const field =  $(this).val()
-        console.log(field)
         if (keyLayer in dryverLayersSource || keyLayer in source) {
           const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
           const layer = mappedLayers[keyLayer]
           if (layer.loaded) {
-            // const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select`
+            const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select-scheme`
+            const dropdown = $(querySymbologySelect)
+            const fieldSelect = dropdown.val()
+            if (field) dropdown[0].parentElement.classList.remove('d-none')
+            else dropdown[0].parentElement.classList.add('d-none')
             if (layerSource.layers) {
               const sublayer = layer.findSublayerById(+id)
-              console.log(field)
-              generateRendererForImgLyr(sublayer, field, 0)
+              generateRendererForImgLyr(sublayer, field, +fieldSelect)
             } else {
-              console.log(field)
-              generateRendererForImgLyr(layer, field, 0)
+              generateRendererForImgLyr(layer, field, +fieldSelect)
+            }
+          }
+        } else {
+          console.log('No key match', keyLayer)
+        }
+      })
+
+      $('.symbology-colors').change(function () {
+        const id = $(this).attr('data-id')
+        const keyLayer = $(this).attr('data-layer')
+        const keyLayerHTMLID = keyLayer.split(' ').join('-')
+        const field =  $(this).val()
+        if (keyLayer in dryverLayersSource || keyLayer in source) {
+          const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
+          const layer = mappedLayers[keyLayer]
+          if (layer.loaded) {
+            const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select`
+            const fieldSelect = $(querySymbologySelect).val()
+            if (layerSource.layers) {
+              const sublayer = layer.findSublayerById(+id)
+              generateRendererForImgLyr(sublayer, fieldSelect, +field)
+            } else {
+              generateRendererForImgLyr(layer, fieldSelect, +field)
             }
           }
         } else {

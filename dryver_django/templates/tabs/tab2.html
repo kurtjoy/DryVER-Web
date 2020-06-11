@@ -36,17 +36,43 @@
       </small>
       {% endif %}
       {% if layer.fields %}
-      <select
-        id="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-select"
-        class="custom-select custom-select-sm mt-2 symbology-switch"
-        data-id="{{ dataset.id }}"
-        data-layer="{{ dataset.layer }}"
-      >
-        <option value="" selected>No attribute selected</option>
-        {% for field in layer.fields %}
-        <option value="{{ field.value }}">{{ field.text|default:field.value }}</option>
-        {% endfor %}
-      </select>
+      <form>
+        <div class="form-group">
+          <label
+            for="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-select"
+            class="m-0"
+          >
+            <small>Select layer attribute</small>
+          </label>
+          <select
+            id="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-select"
+            class="custom-select custom-select-sm mt-2 symbology-switch"
+            data-id="{{ dataset.id }}"
+            data-layer="{{ dataset.layer }}"
+          >
+            <option value="" selected>No attribute selected</option>
+            {% for field in layer.fields %}
+            <option value="{{ field.value }}">{{ field.text|default:field.value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group d-none">
+          <label
+            for="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-select-scheme"
+            class="m-0"
+          >
+            <small>Select layer theme</small>
+          </label>
+          <select
+            id="{{ dataset.layer.split|join:'-' }}-{{ dataset.id }}-select-scheme"
+            class="custom-select custom-select-sm symbology-colors"
+            data-id="{{ dataset.id }}"
+            data-layer="{{ dataset.layer }}"
+          >
+            <option value="" selected>Default scheme selected</option>
+          </select>
+        </div>
+      </form>
       {% endif %}
       {% endif %}
       {% endfor %}
