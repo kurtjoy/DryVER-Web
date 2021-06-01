@@ -90,6 +90,45 @@
               {{ layer.attribution|safe }}
             </small>
             {% endif %}
+            {% if layer.fields %}
+            <form>
+              <div class="form-group">
+                <label
+                  for="{{ key.split|join:'-' }}-{{ layer.id }}-select"
+                  class="m-0"
+                >
+                  <small>Select layer attribute</small>
+                </label>
+                <select
+                  id="{{ key.split|join:'-' }}-{{ layer.id }}-select"
+                  class="custom-select custom-select-sm symbology-switch"
+                  data-id="{{ layer.id }}"
+                  data-layer="{{ key }}"
+                >
+                  <option value="" selected>No attribute selected</option>
+                  {% for field in layer.fields %}
+                  <option value="{{ field.value }}">{{ field.text|default:field.value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group d-none">
+                <label
+                  for="{{ key.split|join:'-' }}-{{ layer.id }}-select-scheme"
+                  class="m-0"
+                >
+                  <small>Select layer theme</small>
+                </label>
+                <select
+                  id="{{ key.split|join:'-' }}-{{ layer.id }}-select-scheme"
+                  class="custom-select custom-select-sm symbology-colors"
+                  data-id="{{ layer.id }}"
+                  data-layer="{{ key }}"
+                >
+                  <option value="" selected>Default scheme selected</option>
+                </select>
+              </div>
+            </form>
+            {% endif %}
           </li>
           {% endif %}
           {% endfor %}
