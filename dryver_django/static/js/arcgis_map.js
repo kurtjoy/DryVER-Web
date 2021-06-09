@@ -27,17 +27,19 @@ request.onload = function () {
     ecoforcasting: ecoforcastingSource,
   } = dryverLayersSource
 
-  function getPopupTemplate (array) {
+  function getPopupTemplate(array) {
     return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="pl-0">${header}</th>` + keyValues.map(value => `<td class="text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
   }
 
-  function getPopupTemplateNoPaddings (array) {
+  function getPopupTemplateNoPaddings(array) {
     return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="p-0">${header}</th>` + keyValues.map(value => `<td class="p-0 text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
   }
 
   let view
   let aquaticLayer, climateLayer, impactLayer, nztabsLayer, abioticLayer, asmaLayer, antarcticManagedAreaLayer, mcMurdoAsmaLayer, placeNamesLayer, visitationLayer, terrestrialLayer, sensitivityLayer, ecoforcastingLayer
   let activeWidget = null
+  let searchAddressPointLayer
+  let decimalType = 'DD';
 
   // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
   $(document).ready(function () {
@@ -52,7 +54,14 @@ request.onload = function () {
       'esri/tasks/ImageServiceIdentifyTask',
       'esri/tasks/support/IdentifyParameters',
       'esri/tasks/support/ImageServiceIdentifyParameters',
+      'esri/tasks/PrintTask',
+      'esri/tasks/support/PrintParameters',
+      "esri/symbols/PictureMarkerSymbol",
       'esri/geometry/Point',
+      "esri/geometry/Extent",
+      "esri/geometry/SpatialReference",
+      "esri/Graphic",
+      "esri/layers/GraphicsLayer",
       'esri/widgets/Zoom',
       'esri/widgets/Legend',
       'esri/widgets/Expand',
@@ -78,7 +87,14 @@ request.onload = function () {
       ImageServiceIdentifyTask,
       IdentifyParameters,
       ImageServiceIdentifyParameters,
+      PrintTask,
+      PrintParameters,
+      PictureMarkerSymbol,
       Point,
+      Extent,
+      SpatialReference,
+      Graphic,
+      GraphicsLayer,
       Zoom,
       Legend,
       Expand,
@@ -97,12 +113,35 @@ request.onload = function () {
         basemap: 'satellite',
         // ground: "world-elevation"
       })
+
       view = new MapView({
         container: 'map_canvas', // Reference to the DOM node that will contain the view
         map: map, // References the map object created in step 3
         center: [162, -77.5],
         zoom: 7,
       })
+
+      document.querySelector('#currentLatLongInfo').style.display = 'block'
+      document.querySelector('#currentLatLongInfo').style.left = parseInt(document.getElementById('sidebar').offsetWidth) + 20 + 'px'
+
+      view.on("pointer-move", function (evt) {
+        showCoordinates(view.toMap({ x: evt.x, y: evt.y }));
+      });
+
+      function showCoordinates(evt) {
+        if (decimalType === 'DD') {
+          document.querySelector('#currentLatLongInfo').innerHTML = evt.latitude.toFixed(4) + ", " + evt.longitude.toFixed(4);
+        } else if (decimalType === 'DM') {
+          let lat_min = Math.abs(evt.latitude - parseInt(evt.latitude))
+          lat_min *= 60
+          lat_min = lat_min.toFixed(4)
+
+          let long_min = Math.abs(evt.longitude - parseInt(evt.longitude))
+          long_min *= 60
+          long_min = long_min.toFixed(4)
+          document.querySelector('#currentLatLongInfo').innerHTML = `${parseInt(evt.latitude)}°${lat_min}', ${parseInt(evt.longitude)}°${long_min}'`;
+        }
+      }
 
       const GnsGeologyPopup = {
         id: 7,
@@ -315,7 +354,7 @@ request.onload = function () {
         title: ecoforcastingSource.title,
         sublayers: ecoforcastingSource.layers,
       })
-      
+
       map.add(abioticLayer)
       map.add(aquaticLayer)
       map.add(asmaLayer)
@@ -413,13 +452,27 @@ request.onload = function () {
           exactMatch: false,
           name: 'SCAR Place Names',
           placeholder: 'Place Name',
-          zoomScale: 50000,
+          zoomScale: 60000,
         }],
       })
+
+      var marker = new PictureMarkerSymbol(
+        "/static/img/BluePin1LargeB.png",
+        32,
+        32
+      );
+
       searchWidget.on('select-result', function (response) {
+        map.remove(searchAddressPointLayer);
+        let markerPoint = new Point({ x: response.result.feature.geometry.longitude, y: response.result.feature.geometry.latitude });
+        let storepoint = new Graphic(markerPoint, marker);
+        searchAddressPointLayer = new GraphicsLayer();
+        searchAddressPointLayer.add(storepoint);
+        map.add(searchAddressPointLayer);
+
         view.goTo({
           center: [response.result.feature.geometry.longitude, response.result.feature.geometry.latitude],
-          scale: 500000, // region level of zoom
+          scale: 60000, // region level of zoom
         })
       })
 
@@ -490,7 +543,19 @@ request.onload = function () {
           }
         })
 
-      function setActiveWidget (type) {
+      document
+        .querySelector('#decimalDegreesBtn')
+        .addEventListener('click', function () {
+          decimalType = 'DD';
+        })
+
+      document
+        .querySelector('#decimalMinutesBtn')
+        .addEventListener('click', function () {
+          decimalType = 'DM';
+        })
+
+      function setActiveWidget(type) {
         switch (type) {
           case 'distance':
             activeWidget = new DistanceMeasurement2D({
@@ -528,7 +593,16 @@ request.onload = function () {
         }
       }
 
-      function setActiveButton (selectedButton) {
+      function addMarkerToMap(lat, long) {
+        map.remove(searchAddressPointLayer);
+        let markerPoint = new Point({ x: long, y: lat });
+        let storepoint = new Graphic(markerPoint, marker);
+        searchAddressPointLayer = new GraphicsLayer();
+        searchAddressPointLayer.add(storepoint);
+        map.add(searchAddressPointLayer);
+      }
+
+      function setActiveButton(selectedButton) {
         // focus the view to activate keyboard shortcuts for sketching
         view.focus()
         const elements = document.querySelectorAll('.custom-topbar-buttons')
@@ -559,17 +633,25 @@ request.onload = function () {
         let lat = +document.querySelector('#lat_deg_jump').value
         let lat_min = +document.querySelector('#lat_min_jump').value
         lat_min /= 60
-        lat += lat_min
+        if (lat > 0) {
+          lat += lat_min
+        } else {
+          lat -= lat_min
+        }
         let long = +document.querySelector('#long_deg_jump').value
         let long_min = +document.querySelector('#long_min_jump').value
         long_min /= 60
-        long += long_min
+        if (long > 0) {
+          long += long_min
+        } else {
+          long -= long_min
+        }
         evt.preventDefault()
-        const new_loc = new Point({
-          latitude: lat,
-          longitude: long,
+        addMarkerToMap(lat, long)
+        view.goTo({
+          center: [long, lat],
+          scale: 60000, // region level of zoom
         })
-        view.goTo(new_loc)
       })
 
       document.querySelector('#loc_jump_dd').addEventListener('submit', function (evt) {
@@ -580,7 +662,11 @@ request.onload = function () {
           latitude: lat,
           longitude: long,
         })
-        view.goTo(new_loc)
+        addMarkerToMap(lat, long);
+        view.goTo({
+          center: [long, lat],
+          // scale: 8000, // region level of zoom
+        })
       })
 
       let impactIdentifyTask, aquaticIdentifyTask, impactParams, aquaticParams
@@ -646,20 +732,95 @@ request.onload = function () {
         className: 'esri-icon-printer',
       }
 
-      function printPopupReport () {
+      async function getGeneratedImageUrl () {
+        let generatedImageUrl;
+        var printTask = new PrintTask({
+          url: 'https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task'
+        });
+
+        // var extScreenWidth = map.width * (geom.getExtent()).getWidth() / map.extent.getWidth(); 
+        // var extScreenHeight = map.height * (geom.getExtent()).getHeight() / map.extent.getHeight();
+
+        var template = new PrintTemplate({
+          format: "jpg",
+          exportOptions: {
+            dpi: 300
+          },
+          layoutOptions: {
+            scalebarUnit: "Miles",
+          },
+          layout: "a4-portrait",     // 'map-only', 'a3-landscape', 'a3-portrait', 'a4-landscape', 'a4-portrait', 'letter-ansi-a-landscape', 'letter-ansi-a-portrait', 'tabloid-ansi-b-landscape', 'tabloid-ansi-b-portrait'
+        });
+        var params = new PrintParameters({
+          view: view,
+          template: template
+        });
+        
+        await printTask.execute(params).then(printResult, printError);
+  
+        async function printResult(result) {
+          generatedImageUrl = result.url;
+          console.log(result.url);
+          // window.open(result.url);
+        }
+  
+        function printError(err) {
+          console.log("Something broke: ", err);
+          alert("Check the browser console");
+        }
+
+        return generatedImageUrl;
+      }
+
+      async function createForm() {
+        let generatedImageUrl = await getGeneratedImageUrl();
+
+        var PDFDocument = PDFLib.PDFDocument;
+        const pdfDoc = await PDFDocument.create()
+        const page = pdfDoc.addPage()
+
+        // logo
+        const logoUrl = 'static/img/dryver.jpg'
+        const logoImageBytes = await fetch(logoUrl).then((res) => res.arrayBuffer())
+        const logoImage = await pdfDoc.embedJpg(logoImageBytes)
+        const logoDims = logoImage.scale(0.5)
+        page.drawImage(logoImage, {
+          x: 0,
+          y: page.getHeight() - logoDims.height - 10,
+          width: logoDims.width,
+          height: logoDims.height,
+        })
+
+        // current date
+        let today = new Date();
+        let todayStr = `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`
+
+        // title
+        page.drawText(`Sensitivity Report Created on ${todayStr}`, {
+          x: logoDims.width + 40,
+          y: page.getHeight() - logoDims.height,
+          size: 20,
+        })
+ 
+        // map image
+        const generatedImageBytes = await fetch(generatedImageUrl).then((res) => res.arrayBuffer())
+        const generatedImage = await pdfDoc.embedJpg(generatedImageBytes)
+        const generatedImageDims = generatedImage.scale(0.24)
+        page.drawImage(generatedImage, {
+          x: 0,
+          y: page.getHeight() - logoDims.height - generatedImageDims.height - 3,
+          width: generatedImageDims.width,
+          height: generatedImageDims.height,
+        })
+
+        const pdfBytes = await pdfDoc.save()
+        download(pdfBytes, "pdf-lib_form_creation_example.pdf", "application/pdf");
+      }
+
+      async function printPopupReport() {
         console.log('printPopupReport function')
-        window.open('/static/img/PDFmockup.png', '_blank')
-        // WORK IN PROGRESS
-        // printVM.print(
-        //   new PrintTemplate({
-        //     format: 'pdf',
-        //     layout: 'a4-portrait',
-        //   }),
-        // )
-        //   .then(response => {
-        //     window.open(response.url, '_blank')
-        //   })
-        //   .catch(error => console.warn(error))
+        // window.open('/static/img/PDFmockup.png', '_blank')
+        await createForm()
       }
 
       // Event handler that fires each time an action is clicked.
@@ -670,8 +831,9 @@ request.onload = function () {
         }
       })
 
-      // Executes each time the view is clicked
-      function executeIdentifyTask (event) {
+      // Executes each time the view is hovered after 0.5 seconds
+      function executeHoverTask(event) {
+        let locationStr;
         if (!view.popup.autoOpenEnabled) {
           const lat = Math.round(event.mapPoint.latitude * 1000) / 1000
           const lon = Math.round(event.mapPoint.longitude * 1000) / 1000
@@ -685,6 +847,70 @@ request.onload = function () {
           ]
 
           document.querySelector('#map_canvas').style.cursor = 'wait'
+
+          if (decimalType === 'DD') {
+            locationStr = `${lat}, ${lon}`
+          } else if (decimalType === 'DM') {
+            let dmLatDegrees = parseInt(lat)
+            let dmLatMinutes = Math.abs((parseDouble(lat) - dmLatDegrees) * 60).toFixed(4)
+            let dmLonDegrees = parseInt(lon)
+            let dmLonMinutes = Math.abs((parseDouble(lon) - dmLonDegrees) * 60).toFixed(4)
+            locationStr = `${dmLatDegrees}° ${dmLatMinutes}', ${dmLonDegrees}° ${dmLonMinutes}'`
+          }
+
+          // This function returns a promise that resolves to an array of features
+          // A custom popupTemplate is set for each feature based on the layer it
+          // originates from
+          Promise.all(allIdentifyTasks.map(({ task, params }) => task.execute(params)))
+            .then(function (responses) {
+              return responses.map(({ results }) => {
+                return results.map((result) => {
+                  const feature = result.feature
+                  const layerName = result.layerName
+                  feature.attributes.layerName = layerName
+                  // layerName check logic is hardcoded for now as there is a chance that
+                  // the layer name on the server does not match the one in the source/data.json
+
+                  feature.popupTemplate = {
+                    title: layerName,
+                    content: getPopupTemplateNoPaddings([
+                      ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
+                      ['<span class="py-3q pr-3q d-flex flex-fill">Total Sensitivity</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">{Total Sensitivity}</span>`],
+                    ]),
+                    actions: [printReportThisAction],
+                  }
+                  return feature
+                })
+              }).flat()
+            })
+            .then(showPopup) // Send the array of features to showPopup()
+        }
+      }
+      // Executes each time the view is clicked
+      function executeIdentifyTask(event) {
+        let locationStr;
+        if (!view.popup.autoOpenEnabled) {
+          const lat = Math.round(event.mapPoint.latitude * 1000) / 1000
+          const lon = Math.round(event.mapPoint.longitude * 1000) / 1000
+          // Set the geometry to the location of the view click
+          impactParams.geometry = aquaticParams.geometry = event.mapPoint
+          impactParams.mapExtent = aquaticParams.mapExtent = view.extent
+
+          const allIdentifyTasks = [
+            { task: impactIdentifyTask, params: impactParams },
+            { task: aquaticIdentifyTask, params: aquaticParams },
+          ]
+          document.querySelector('#map_canvas').style.cursor = 'wait'
+
+          if (decimalType === 'DD') {
+            locationStr = `${lat}, ${lon}`
+          } else if (decimalType === 'DM') {
+            let dmLatDegrees = parseInt(lat)
+            let dmLatMinutes = Math.abs((event.mapPoint.latitude - dmLatDegrees) * 60).toFixed(4)
+            let dmLonDegrees = parseInt(lon)
+            let dmLonMinutes = Math.abs((event.mapPoint.longitude - dmLonDegrees) * 60).toFixed(4)
+            locationStr = `${dmLatDegrees}° ${dmLatMinutes}', ${dmLonDegrees}° ${dmLonMinutes}'`
+          }
 
           // This function returns a promise that resolves to an array of features
           // A custom popupTemplate is set for each feature based on the layer it
@@ -714,7 +940,7 @@ request.onload = function () {
                     feature.popupTemplate = {
                       title: layerName,
                       content: getPopupTemplateNoPaddings([
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${lat}, ${lon}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Total Sensitivity</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">{Total Sensitivity}</span>`],
                       ]),
                       actions: [printReportThisAction],
@@ -800,7 +1026,7 @@ request.onload = function () {
         }
 
         // Shows the results of the Identify in a popup once the promise is resolved
-        function showPopup (response) {
+        function showPopup(response) {
           if (response.length > 0) {
             view.popup.open({
               features: response,
@@ -838,15 +1064,15 @@ request.onload = function () {
       const schemes = typeSchemes.getSchemes(bmProps)
       const schemesOptions = [schemes.primaryScheme, ...schemes.secondarySchemes]
 
-      $('.symbology-colors').each(function() {
+      $('.symbology-colors').each(function () {
         generateSchemesForRenderer($(this)[0])
       })
-      
-      function generateSchemesForRenderer (dropdown) {
+
+      function generateSchemesForRenderer(dropdown) {
         while (dropdown.firstChild) {
           dropdown.removeChild(dropdown.lastChild)
         }
-        schemesOptions.forEach(({name}, index) => {
+        schemesOptions.forEach(({ name }, index) => {
           let dropdownItem = document.createElement('option')
           dropdownItem.setAttribute('value', index)
           const dropdownLabel = document.createTextNode(name)
@@ -855,7 +1081,7 @@ request.onload = function () {
         })
       }
 
-      function generateRendererForImgLyr (imageLayer, field, scheme_id) {
+      function generateRendererForImgLyr(imageLayer, field, scheme_id) {
         if (field) {
           // const subLayer = imageLayer.findSublayerById(lyr_id)
           // when the createFeatureLayer() promise resolves, load the FeatureLayer
@@ -874,7 +1100,7 @@ request.onload = function () {
                 b: 230,
                 a: 0.6,
               }
-              
+
               const renderProps = {
                 layer: featureLayer,
                 view: view,
@@ -902,7 +1128,7 @@ request.onload = function () {
         const id = $(this).attr('data-id')
         const keyLayer = $(this).attr('data-layer')
         const keyLayerHTMLID = keyLayer.split(' ').join('-')
-        const field =  $(this).val()
+        const field = $(this).val()
         if (keyLayer in dryverLayersSource || keyLayer in source) {
           const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
           const layer = mappedLayers[keyLayer]
@@ -928,7 +1154,7 @@ request.onload = function () {
         const id = $(this).attr('data-id')
         const keyLayer = $(this).attr('data-layer')
         const keyLayerHTMLID = keyLayer.split(' ').join('-')
-        const field =  $(this).val()
+        const field = $(this).val()
         if (keyLayer in dryverLayersSource || keyLayer in source) {
           const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
           const layer = mappedLayers[keyLayer]
