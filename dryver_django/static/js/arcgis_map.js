@@ -3,6 +3,16 @@ const request = new XMLHttpRequest()
 request.open('GET', requestURL)
 request.responseType = 'json'
 request.send()
+
+
+window.addEventListener("load", function() {
+  window.dispatchEvent(new Event('resize'));
+});
+
+window.onresize = function() {
+  document.querySelector('#currentLatLongInfo').style.left = parseInt(document.getElementById('sidebar').offsetWidth) + 20 + 'px'
+}
+
 request.onload = async function () {
   const source = request.response
   var anotherSource = null;
@@ -65,6 +75,7 @@ request.onload = async function () {
   let activeWidget = null
   let searchAddressPointLayer
   let decimalType = 'DD';
+  let oldPrintDOM;
 
   // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
   $(document).ready(function () {
@@ -228,12 +239,6 @@ request.onload = async function () {
         }, []),
       })
 
-      console.log('xxxxxxxxxxxxxxxxttttttttttttttttt66666 :', aquaticSource.layers.reduce((newArray, layer) => {
-        if (layer.id === LakesPopup.id) layer.popupTemplate = { ...LakesPopup, title: layer.title }
-        if (layer.id !== -1) newArray.push(layer)
-        return newArray
-      }, []))
-
       asmaLayer = new MapImageLayer({
         url: asmaSource.url,
         title: asmaSource.title,
@@ -241,7 +246,6 @@ request.onload = async function () {
       })
 
       const antarcticManagedAreaUrl = antarcticManagedAreaSource.url
-      console.log('ddddddddddddddddd777 :', antarcticManagedAreaUrl)
 
       const AntarcticManagedAreaPopup = {
         title: antarcticManagedAreaSource.title,
@@ -739,12 +743,10 @@ request.onload = async function () {
 
         // Create identify task for the specified map service
         impactIdentifyTask = new IdentifyTask(impactSource.url)
-        console.log('xxxxxxxxx666666666666000 :', impactSource.url)
         aquaticIdentifyTask = new IdentifyTask(aquaticSource.url)
         abioticIdentifyTask = new IdentifyTask(abioticSource.url)
         climateIdentifyTask = new IdentifyTask(climateSource.url)
         distanceIdentifyTask = new IdentifyTask(anotherDistanceSource.url)
-        console.log('xxxxxxxxx666666666666111 :', anotherDistanceSource.url)
 
         // Set the parameters for the Identify
         impactParams = new IdentifyParameters({
@@ -896,10 +898,18 @@ request.onload = async function () {
       }
 
       // Event handler that fires each time an action is clicked.
-      view.popup.on('trigger-action', function (event) {
+      view.popup.on('trigger-action', async function (event) {
         // Execute the printPopupReport() function if the measure-this action is clicked
         if (event.action.id === 'print-report') {
-          printPopupReport()
+          let oldNode = document.querySelector('[aria-label="Print Report"]')
+          oldPrintDOM = oldNode;
+          let newItem = document.createElement('div');
+          newItem.innerHTML = '<div class="spinner-border text-secondary" role="status" id="printSpinner" style="width: 22px; height: 22px; margin-left: 16px; margin-right: 10px;"><span class="sr-only">Loading...</span></div>';
+          oldNode.parentNode.replaceChild(newItem, oldNode);
+          
+          await printPopupReport()
+
+          document.querySelector('#printSpinner').parentNode.parentNode.replaceChild(oldPrintDOM, newItem);
         }
       })
 
@@ -950,16 +960,12 @@ request.onload = async function () {
             .then(function (responses) {
               return responses.map(({ results }) => {
                 return results.map((result) => {
-                  console.log('ccccccccccccyyyyyyyyyyyy222222aaa :', result.feature)
                   const feature = result.feature
                   const layerName = result.layerName
                   feature.attributes.layerName = layerName
                   // layerName check logic is hardcoded for now as there is a chance that
                   // the layer name on the server does not match the one in the source/data.json
-                  console.log('333355555888888 :', layerName)
                   if (layerName === 'DT_ASPA') {
-                    console.log('wwwwwwwwwwwyyyyyyyyyyyyyyy2222222')
-                    console.log('wwwwwwwwwwwyyyyyyyyyyyyyyy3333333 :', feature.attributes['Pixel Value'])
                     dt_aspa = feature.attributes['Pixel Value']
                   } else if (layerName === 'DT_CAMPS') {
                     dt_camps = feature.attributes['Pixel Value']
@@ -982,13 +988,11 @@ request.onload = async function () {
             .then(function (responses) {
               return responses.map(({ results }) => {
                 return results.map((result) => {
-                  console.log('ccccccccccccyyyyyyyyyyyy222222aaannnnnnnnn :', result.feature)
                   const feature = result.feature
                   const layerName = result.layerName
                   feature.attributes.layerName = layerName
                   // layerName check logic is hardcoded for now as there is a chance that
                   // the layer name on the server does not match the one in the source/data.json
-                  console.log('333355555888888nnnnnnnnnnn :', layerName)
                   if (layerName === 'Human Impact Sensitivity') {
                     total_sensitivity = feature.attributes['Total Sensitivity']
                     switch (feature.attributes['Total Sensitivity']) {
@@ -1002,7 +1006,7 @@ request.onload = async function () {
                         riskClass = ''
                     }
                     feature.popupTemplate = {
-                      title: 'New popup',
+                      title: layerName,
                       content: getPopupTemplateNoPaddings([
                         ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Distance to established water</span>', `<span class="p-3q d-flex flex-fill">${dt_water}</span>`],
@@ -1158,7 +1162,6 @@ request.onload = async function () {
           // when the createFeatureLayer() promise resolves, load the FeatureLayer
           // and pass it to the createRenderProps function
           // subLayer
-          console.log('ccccccccccccccyyyyyyyyyyyyyyyyyy8888899900000 :', imageLayer)
           imageLayer
             .createFeatureLayer()
             .then(function (featLyr) {
@@ -1166,24 +1169,12 @@ request.onload = async function () {
             })
             .then(function (featureLayer) {
               // Generate the renderProps for the new featLyr
-              console.log('wwwwwwwwwkkkkkkklllllll000 :', scheme_id)
-              console.log('wwwwwwwwwkkkkkkklllllll111 :', schemes.secondarySchemes)
-              console.log('wwwwwwwwwkkkkkkklllllll222 :', schemes.secondarySchemes[scheme_id])
-
               schemes.secondarySchemes[scheme_id].noDataColor = {
                 r: 230,
                 g: 230,
                 b: 230,
                 a: 0.6,
               }
-
-              console.log('oioioioioioioioioioi000 :', field)
-              console.log('oioioioioioioioioioi111 :', scheme_id)
-              console.log('oioioioioioioioioioi222 :', schemes.secondarySchemes[scheme_id])
-              console.log('oioioioioioioioioioi444 :', schemes)
-
-              console.log('wwwwwwwwwkkkkkkklllllll333 :', featureLayer)
-
               const renderProps = {
                 layer: featureLayer,
                 view: view,
@@ -1199,12 +1190,10 @@ request.onload = async function () {
               typeRendererCreator
                 .createRenderer(renderProps)
                 .then(function (response) {
-                  console.log('bbbbbbbbbbuuuuuuuuuuuuuuu :', response)
                   imageLayer.renderer = response.renderer
                 })
             })
         } else {
-          console.log('ccccccccyyyyyy333555888')
           imageLayer.renderer = null
         }
       }
@@ -1216,27 +1205,18 @@ request.onload = async function () {
         const field = $(this).val()
         if (keyLayer in dryverLayersSource || keyLayer in source) {
           const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
-          console.log('dddddddddddddddddddeeeeee :', layerSource)
-          console.log('dddddddddddddddddddeeeeee111 :', mappedLayers)
-          console.log('dddddddddddddddddddeeeeee222 :', keyLayer)
           const layer = mappedLayers[keyLayer]
           if (layer.loaded) {
             const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select-scheme`
             const dropdown = $(querySymbologySelect)
             const fieldSelect = dropdown.val()
-            console.log('xxxxxxxxxxyyyyyy89888888000 :', fieldSelect)
-            if (field) dropdown[0].parentElement.classList.remove('d-none')
-            else dropdown[0].parentElement.classList.add('d-none')
-            console.log('xxxxxxxxxxyyyyyy89888888111 :', layerSource.layers)
+            // Can uncomment after fix the issue
+            // if (field) dropdown[0].parentElement.classList.remove('d-none')
+            // else dropdown[0].parentElement.classList.add('d-none')
             if (layerSource.layers) {
-              console.log('xxxxssssssssssssskkkkkkkkkkkk :', layer)
               const sublayer = layer.findSublayerById(+id)
-              console.log('xxxxxxxxxxyyyyyy89888888222 :', sublayer)
-              console.log('xxxxxxxxxxyyyyyy89888888444 :', field)
-              console.log('xxxxxxxxxxyyyyyy89888888555 :', fieldSelect)
               generateRendererForImgLyr(sublayer, field, +fieldSelect)
             } else {
-              console.log('xxxxxxxxxxyyyyyy89888888333 :')
               generateRendererForImgLyr(layer, field, +fieldSelect)
             }
           }
@@ -1255,7 +1235,6 @@ request.onload = async function () {
           const layer = mappedLayers[keyLayer]
           if (layer.loaded) {
             const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select`
-            console.log('cccccccccccccccccchhhhhhhhhhhhhhhhhhhhhhhh')
             const fieldSelect = $(querySymbologySelect).val()
             if (layerSource.layers) {
               const sublayer = layer.findSublayerById(+id)
