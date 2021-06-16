@@ -46,7 +46,7 @@
 		"layers": [
 			{
 				"id": 0,
-				"title": "MDV_ASMA",
+				"title": "ASMA",
 				"visible": false
 			},
 			{
@@ -70,17 +70,7 @@
 				"title": "Visitation",
 				"visible": false,
 				"attribution": "Contains data sourced from the <a href='https://datastore.landcareresearch.co.nz/' target='_blank'>Manaaki Whenua Landcare Research</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/3.0/nz/' target='_blank'>CC BY (3.0 NZ,</a> <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>4.0 International)</a>"
-            },
-            {
-                "id": 2,
-                "title": "Distant to Camps",
-                "visible": false
-            },
-            {
-                "id": 3,
-                "title": "DT_ASPA",
-                "visible": false
-            }
+            }           
         ]
 	},
 	"abiotic": {
@@ -104,15 +94,15 @@
 				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/' target='_blank'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>",
 				"fields": [
 					{
-						"value": "MAIN_ROCK",
+						"value": "Main Rock Type",
 						"text": "MAIN_ROCK"
 					},
 					{
-						"value": "MAP_UNIT",
+						"value": "Geological Map Unit",
 						"text": "MAP_UNIT"
 					},
 					{
-						"value": "DRYVER_GROUP",
+						"value": "DryVER Units",
 						"text": "DRYVER_GROUP"
 					}
 				]
@@ -124,11 +114,6 @@
 				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/' target='_blank'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>"
 			},
 			{
-				"id": 14,
-				"title": "LIDAR Hillshades",
-				"visible": false
-			},
-			{
 				"id": 1,
 				"title": "Contours",
 				"visible": false
@@ -138,13 +123,13 @@
 	"datasets": [
 		{
 			"id": 0,
-			"title": "nzTABS",
+			"title": "nzTABS Sites",
 			"layer": "nztabs",
 			"visible": false
 		},
 		{
 			"id": 0,
-			"title": "NZ events",
+			"title": "NZ Events",
 			"layer": "visitation",
 			"visible": false
 		},
@@ -162,19 +147,13 @@
 		},
 		{
 			"id": 7,
-			"title": "GNS geology",
+			"title": "GNS Geology",
 			"layer": "abiotic",
 			"visible": false
 		},
 		{
 			"id": 6,
-			"title": "GNS ice & snow",
-			"layer": "abiotic",
-			"visible": false
-		},
-		{
-			"id": 14,
-			"title": "LIDAR hillshade",
+			"title": "GNS Ice & Snow",
 			"layer": "abiotic",
 			"visible": false
 		},
@@ -186,13 +165,13 @@
 		},
 		{
 			"id": 1,
-			"title": "NZ visitation hexbins",
+			"title": "NZ Visitation Hexbins",
 			"layer": "visitation",
 			"visible": false
 		},
 		{
 			"id": 1,
-			"title": "ASPA/management zones",
+			"title": "Management Zones",
 			"layer": "antarctic managed area",
 			"visible": true
 		}
@@ -209,12 +188,28 @@
 					"attribution": "Contains data sourced from the <a href='https://data.linz.govt.nz/' target='_blank'>LINZ Data Service</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>",
 					"fields": [
 						{
+							"value": "Elevation",
+							"text": "Lake Class"
+						},
+						{
+							"value": "ICE_COVER",
+							"text": "Ice Cover"
+						},
+						{
+							"value": "INFLOW",
+							"text": "Lake Source"
+						},
+						{
+							"value": "OUTFLOW",
+							"text": "Lake Outflow Type"
+						},
+						{
 							"value": "Combined_K",
-							"text": "Classification"
+							"text": "Lake Classification"
 						},
 						{
 							"value": "TOTAL_SENS",
-							"text": "TOTAL_SENS"
+							"text": "Total Sensitivity"
 						}
 					]
 				},
@@ -271,32 +266,32 @@
 			"layers": [
 				{
 					"id": 0,
-					"title": "High Summer winds (>10ms)",
+					"title": "High Summer Winds (>10ms)",
 					"visible": false
 				},
 				{
 					"id": 1,
-					"title": "High Annual winds (>10ms)",
+					"title": "High Annual Winds (>10ms)",
 					"visible": false
 				},
 				{
 					"id": 2,
-					"title": "5 Yr summer mean wind speed",
+					"title": "5 Yr Summer Mean Wind Speed",
 					"visible": false
 				},
 				{
 					"id": 3,
-					"title": "5 Yr annual mean wind speed",
+					"title": "5 Yr Annual Mean Wind Speed",
 					"visible": false
 				},
 				{
 					"id": 4,
-					"title": "5 Yr summer max wind speed",
+					"title": "5 Yr Summer Max Wind Speed",
 					"visible": false
 				},
 				{
 					"id": 5,
-					"title": "5 Yr annual max wind speed",
+					"title": "5 Yr Annual Max Wind Speed",
 					"visible": false
 				}
 			]
@@ -332,10 +327,6 @@
 							"text": "Visibility Change"
 						},
 						{
-							"value": "EXTRAP",
-							"text": "Visited?"
-						},
-						{
 							"value": "TOTAL_SENS",
 							"text": "Total Sensitivity"
 						}
@@ -359,82 +350,82 @@
 			"layers": [
 				{
 					"id": 1,
-					"title": "Mean precipitation (mm) 2020-2029",
+					"title": "Mean Precipitation (mm) 2020-2029",
 					"visible": false
 				},
 				{
 					"id": 2,
-					"title": "Mean precipitation (mm) 2030-2039",
+					"title": "Mean Precipitation (mm) 2030-2039",
 					"visible": false
 				},
 				{
 					"id": 3,
-					"title": "Mean precipitation (mm) 2040-2049",
+					"title": "Mean Precipitation (mm) 2040-2049",
 					"visible": false
 				},
 				{
 					"id": 4,
-					"title": "Mean precipitation (mm) 2050-2059",
+					"title": "Mean Precipitation (mm) 2050-2059",
 					"visible": false
 				},
 				{
 					"id": 5,
-					"title": "Mean precipitation (mm) 2060-2069",
+					"title": "Mean Precipitation (mm) 2060-2069",
 					"visible": false
 				},
 				{
 					"id": 6,
-					"title": "Mean precipitation (mm) 2070-2079",
+					"title": "Mean Precipitation (mm) 2070-2079",
 					"visible": false
 				},
 				{
 					"id": 7,
-					"title": "Mean precipitation (mm) 2080-2089",
+					"title": "Mean Precipitation (mm) 2080-2089",
 					"visible": false
 				},
 				{
 					"id": 8,
-					"title": "Mean precipitation (mm) 2090-2100",
+					"title": "Mean Precipitation (mm) 2090-2100",
 					"visible": false
 				},
 				{
 					"id": 10,
-					"title": "Mean surface temperature (deg C) 2020-2029",
+					"title": "Mean Surface Temperature (deg C) 2020-2029",
 					"visible": false
 				},
 				{
 					"id": 11,
-					"title": "Mean surface temperature (deg C) 2030-2039",
+					"title": "Mean Surface Temperature (deg C) 2030-2039",
 					"visible": false
 				},
 				{
 					"id": 12,
-					"title": "Mean surface temperature (deg C) 2040-2049",
+					"title": "Mean Surface Temperature (deg C) 2040-2049",
 					"visible": false
 				},
 				{
 					"id": 13,
-					"title": "Mean surface temperature (deg C) 2050-2059",
+					"title": "Mean Surface Temperature (deg C) 2050-2059",
 					"visible": false
 				},
 				{
 					"id": 14,
-					"title": "Mean surface temperature (deg C) 2060-2069",
+					"title": "Mean Surface Temperature (deg C) 2060-2069",
 					"visible": false
 				},
 				{
 					"id": 15,
-					"title": "Mean surface temperature (deg C) 2070-2079",
+					"title": "Mean Surface Temperature (deg C) 2070-2079",
 					"visible": false
 				},
 				{
 					"id": 16,
-					"title": "Mean surface temperature (deg C) 2080-2089",
+					"title": "Mean Surface Temperature (deg C) 2080-2089",
 					"visible": false
 				},
 				{
 					"id": 17,
-					"title": "Mean surface temperature (deg C) 2090-20100",
+					"title": "Mean Surface Temperature (deg C) 2090-2100",
 					"visible": false
 				}
 			]

@@ -1,0 +1,36 @@
+{
+    "climate": {
+        "url": "https://trugis.sci.waikato.ac.nz/arcgis/rest/services/DRYVER/CLIMATE/MapServer",
+        "title": "Climate",
+        "layers": [
+            {
+                "id": 6,
+                "title": "Summer Mean Wind Speed",
+                "visible": false
+            }
+        ]
+    },
+	"dryver_layers": {
+		"distance": {
+			"url": "https://trugis.sci.waikato.ac.nz:6443/arcgis/rest/services/DRYVER/DISTANCE/MapServer",
+			"title": "Distance",
+			"layers": [
+				{
+					"id": 1,
+					"title": "DT_ASPA",
+					"visible": false
+				},
+				{
+					"id": 2,
+					"title": "DT_CAMPS",
+					"visible": false
+				},
+				{
+					"id": 4,
+					"title": "DT_WATER",
+					"visible": false
+				}
+			]
+		}
+	}
+}

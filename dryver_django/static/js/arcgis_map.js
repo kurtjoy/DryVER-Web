@@ -3,8 +3,15 @@ const request = new XMLHttpRequest()
 request.open('GET', requestURL)
 request.responseType = 'json'
 request.send()
-request.onload = function () {
+request.onload = async function () {
   const source = request.response
+  var anotherSource = null;
+
+  await fetch("static/distance_data.json")
+    .then(response => response.json())
+    .then(json => {
+      anotherSource = json
+    });
 
   const {
     'antarctic managed area': antarcticManagedAreaSource,
@@ -20,11 +27,21 @@ request.onload = function () {
   } = source
 
   const {
+    dryver_layers: anotherDryverLayersSource,
+  } = anotherSource
+
+  const {
+    climate: anotherClimateSource,
+    distance: anotherDistanceSource,
+  } = anotherDryverLayersSource
+
+  const {
     aquatic: aquaticSource,
     climate: climateSource,
     impact: impactSource,
     terrestrial: terrestrialSource,
     ecoforcasting: ecoforcastingSource,
+    distance: distanceSource,
   } = dryverLayersSource
 
   function getPopupTemplate(array) {
@@ -35,8 +52,16 @@ request.onload = function () {
     return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="p-0">${header}</th>` + keyValues.map(value => `<td class="p-0 text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
   }
 
+  function getPopupTemplate(array) {
+    return `<table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="pl-0">${header}</th>` + keyValues.map(value => `<td class="text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
+  }
+
+  function getPopupTemplateNoPaddings(array) {
+    return `<input type="checkbox" data-toggle="switchbutton" checked data-size="xs"><table class="table table-hover"><tbody>${array.map(([header, ...keyValues]) => `<tr>${`<th scope="row" class="p-0">${header}</th>` + keyValues.map(value => `<td class="p-0 text-break">${value}</td>`).join('')}</tr>`).join('')}</tbody></table>`
+  }
+
   let view
-  let aquaticLayer, climateLayer, impactLayer, nztabsLayer, abioticLayer, asmaLayer, antarcticManagedAreaLayer, mcMurdoAsmaLayer, placeNamesLayer, visitationLayer, terrestrialLayer, sensitivityLayer, ecoforcastingLayer
+  let aquaticLayer, climateLayer, impactLayer, nztabsLayer, abioticLayer, asmaLayer, antarcticManagedAreaLayer, mcMurdoAsmaLayer, placeNamesLayer, visitationLayer, terrestrialLayer, sensitivityLayer, ecoforcastingLayer, distanceLayer
   let activeWidget = null
   let searchAddressPointLayer
   let decimalType = 'DD';
@@ -203,6 +228,12 @@ request.onload = function () {
         }, []),
       })
 
+      console.log('xxxxxxxxxxxxxxxxttttttttttttttttt66666 :', aquaticSource.layers.reduce((newArray, layer) => {
+        if (layer.id === LakesPopup.id) layer.popupTemplate = { ...LakesPopup, title: layer.title }
+        if (layer.id !== -1) newArray.push(layer)
+        return newArray
+      }, []))
+
       asmaLayer = new MapImageLayer({
         url: asmaSource.url,
         title: asmaSource.title,
@@ -210,6 +241,7 @@ request.onload = function () {
       })
 
       const antarcticManagedAreaUrl = antarcticManagedAreaSource.url
+      console.log('ddddddddddddddddd777 :', antarcticManagedAreaUrl)
 
       const AntarcticManagedAreaPopup = {
         title: antarcticManagedAreaSource.title,
@@ -355,6 +387,16 @@ request.onload = function () {
         sublayers: ecoforcastingSource.layers,
       })
 
+      distanceLayer = new MapImageLayer({
+        url: anotherDistanceSource.url,
+        title: anotherDistanceSource.title,
+        sublayers: anotherDistanceSource.layers.reduce((newArray, layer) => {
+          if (layer.id === eventsPopup.id) layer.popupTemplate = { ...eventsPopup, title: layer.title }
+          if (layer.id !== -1) newArray.push(layer)
+          return newArray
+        }, []),
+      })
+
       map.add(abioticLayer)
       map.add(aquaticLayer)
       map.add(asmaLayer)
@@ -368,6 +410,7 @@ request.onload = function () {
       map.add(climateLayer)
       map.add(placeNamesLayer)
       map.add(ecoforcastingLayer)
+      map.add(distanceLayer)
 
       // widgets
       // zoom
@@ -669,7 +712,7 @@ request.onload = function () {
         })
       })
 
-      let impactIdentifyTask, aquaticIdentifyTask, impactParams, aquaticParams
+      let impactIdentifyTask, aquaticIdentifyTask, abioticIdentifyTask, climateIdentifyTask, distanceIdentifyTask, impactParams, aquaticParams, abioticParams, climateParams, distanceParams
 
       view.when(function () {
         // https://community.esri.com/thread/216034-search-widgetin-onfocusout-in-47-causes-error-when-used-with-jquery
@@ -696,13 +739,26 @@ request.onload = function () {
 
         // Create identify task for the specified map service
         impactIdentifyTask = new IdentifyTask(impactSource.url)
+        console.log('xxxxxxxxx666666666666000 :', impactSource.url)
         aquaticIdentifyTask = new IdentifyTask(aquaticSource.url)
+        abioticIdentifyTask = new IdentifyTask(abioticSource.url)
+        climateIdentifyTask = new IdentifyTask(climateSource.url)
+        distanceIdentifyTask = new IdentifyTask(anotherDistanceSource.url)
+        console.log('xxxxxxxxx666666666666111 :', anotherDistanceSource.url)
 
         // Set the parameters for the Identify
         impactParams = new IdentifyParameters({
           tolerance: 3,
           layerIds: [1],
           layerOption: 'top',
+          width: view.width,
+          height: view.height,
+        })
+
+        abioticParams = new IdentifyParameters({
+          tolerance: 3,
+          layerIds: [12, 18],
+          layerOption: 'visible',
           width: view.width,
           height: view.height,
         })
@@ -714,6 +770,22 @@ request.onload = function () {
             return newArray
           }, []),
           layerOption: 'top',
+          width: view.width,
+          height: view.height,
+        })
+
+        climateParams = new IdentifyParameters({
+          tolerance: 3,
+          layerIds: [6],
+          layerOption: 'top',
+          width: view.width,
+          height: view.height,
+        })
+
+        distanceParams = new IdentifyParameters({
+          tolerance: 3,
+          layerIds: [1, 2, 4],
+          layerOption: 'visible',
           width: view.width,
           height: view.height,
         })
@@ -732,7 +804,7 @@ request.onload = function () {
         className: 'esri-icon-printer',
       }
 
-      async function getGeneratedImageUrl () {
+      async function getGeneratedImageUrl() {
         let generatedImageUrl;
         var printTask = new PrintTask({
           url: 'https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task'
@@ -755,15 +827,15 @@ request.onload = function () {
           view: view,
           template: template
         });
-        
+
         await printTask.execute(params).then(printResult, printError);
-  
+
         async function printResult(result) {
           generatedImageUrl = result.url;
           console.log(result.url);
           // window.open(result.url);
         }
-  
+        
         function printError(err) {
           console.log("Something broke: ", err);
           alert("Check the browser console");
@@ -831,75 +903,27 @@ request.onload = function () {
         }
       })
 
-      // Executes each time the view is hovered after 0.5 seconds
-      function executeHoverTask(event) {
-        let locationStr;
-        if (!view.popup.autoOpenEnabled) {
-          const lat = Math.round(event.mapPoint.latitude * 1000) / 1000
-          const lon = Math.round(event.mapPoint.longitude * 1000) / 1000
-          // Set the geometry to the location of the view click
-          impactParams.geometry = aquaticParams.geometry = event.mapPoint
-          impactParams.mapExtent = aquaticParams.mapExtent = view.extent
-
-          const allIdentifyTasks = [
-            { task: impactIdentifyTask, params: impactParams },
-            { task: aquaticIdentifyTask, params: aquaticParams },
-          ]
-
-          document.querySelector('#map_canvas').style.cursor = 'wait'
-
-          if (decimalType === 'DD') {
-            locationStr = `${lat}, ${lon}`
-          } else if (decimalType === 'DM') {
-            let dmLatDegrees = parseInt(lat)
-            let dmLatMinutes = Math.abs((parseDouble(lat) - dmLatDegrees) * 60).toFixed(4)
-            let dmLonDegrees = parseInt(lon)
-            let dmLonMinutes = Math.abs((parseDouble(lon) - dmLonDegrees) * 60).toFixed(4)
-            locationStr = `${dmLatDegrees}° ${dmLatMinutes}', ${dmLonDegrees}° ${dmLonMinutes}'`
-          }
-
-          // This function returns a promise that resolves to an array of features
-          // A custom popupTemplate is set for each feature based on the layer it
-          // originates from
-          Promise.all(allIdentifyTasks.map(({ task, params }) => task.execute(params)))
-            .then(function (responses) {
-              return responses.map(({ results }) => {
-                return results.map((result) => {
-                  const feature = result.feature
-                  const layerName = result.layerName
-                  feature.attributes.layerName = layerName
-                  // layerName check logic is hardcoded for now as there is a chance that
-                  // the layer name on the server does not match the one in the source/data.json
-
-                  feature.popupTemplate = {
-                    title: layerName,
-                    content: getPopupTemplateNoPaddings([
-                      ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
-                      ['<span class="py-3q pr-3q d-flex flex-fill">Total Sensitivity</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">{Total Sensitivity}</span>`],
-                    ]),
-                    actions: [printReportThisAction],
-                  }
-                  return feature
-                })
-              }).flat()
-            })
-            .then(showPopup) // Send the array of features to showPopup()
-        }
-      }
       // Executes each time the view is clicked
-      function executeIdentifyTask(event) {
+      async function executeIdentifyTask(event) {
         let locationStr;
         if (!view.popup.autoOpenEnabled) {
           const lat = Math.round(event.mapPoint.latitude * 1000) / 1000
           const lon = Math.round(event.mapPoint.longitude * 1000) / 1000
           // Set the geometry to the location of the view click
-          impactParams.geometry = aquaticParams.geometry = event.mapPoint
-          impactParams.mapExtent = aquaticParams.mapExtent = view.extent
+          distanceParams.geometry = climateParams.geometry = abioticParams.geometry = impactParams.geometry = aquaticParams.geometry = event.mapPoint
+          distanceParams.mapExtent = climateParams.mapExtent = abioticParams.mapExtent = impactParams.mapExtent = aquaticParams.mapExtent = view.extent
 
           const allIdentifyTasks = [
+            { task: climateIdentifyTask, params: climateParams },
+            { task: abioticIdentifyTask, params: abioticParams },
+            { task: distanceIdentifyTask, params: distanceParams },
+          ]
+
+          const allSensivityIdentifyTasks = [
             { task: impactIdentifyTask, params: impactParams },
             { task: aquaticIdentifyTask, params: aquaticParams },
           ]
+
           document.querySelector('#map_canvas').style.cursor = 'wait'
 
           if (decimalType === 'DD') {
@@ -915,18 +939,58 @@ request.onload = function () {
           // This function returns a promise that resolves to an array of features
           // A custom popupTemplate is set for each feature based on the layer it
           // originates from
-          Promise.all(allIdentifyTasks.map(({ task, params }) => task.execute(params)))
+
+          let dt_water = '';
+          let dt_aspa = '';
+          let dt_camps = '';
+          let summer_mean_wind_speed = '';
+          let slope = '';
+          let elevation = '';
+          await Promise.all(allIdentifyTasks.map(({ task, params }) => task.execute(params)))
             .then(function (responses) {
               return responses.map(({ results }) => {
                 return results.map((result) => {
+                  console.log('ccccccccccccyyyyyyyyyyyy222222aaa :', result.feature)
                   const feature = result.feature
                   const layerName = result.layerName
                   feature.attributes.layerName = layerName
                   // layerName check logic is hardcoded for now as there is a chance that
                   // the layer name on the server does not match the one in the source/data.json
+                  console.log('333355555888888 :', layerName)
+                  if (layerName === 'DT_ASPA') {
+                    console.log('wwwwwwwwwwwyyyyyyyyyyyyyyy2222222')
+                    console.log('wwwwwwwwwwwyyyyyyyyyyyyyyy3333333 :', feature.attributes['Pixel Value'])
+                    dt_aspa = feature.attributes['Pixel Value']
+                  } else if (layerName === 'DT_CAMPS') {
+                    dt_camps = feature.attributes['Pixel Value']
+                  } else if (layerName === 'DT_WATER') {
+                    dt_water = feature.attributes['Pixel Value']
+                  } else if (layerName === 'SUMMER_mean_ws') {
+                    summer_mean_wind_speed = feature.attributes['Pixel Value']
+                  } else if (layerName === 'Slope') {
+                    slope = feature.attributes['Pixel Value']
+                  } else if (layerName === 'GNS_dtm_asma') {
+                    elevation = feature.attributes['Pixel Value']
+                  }
+                })
+              }).flat()
+            })
+
+          let total_sensitivity = '';
+          let riskClass = '';
+          Promise.all(allSensivityIdentifyTasks.map(({ task, params }) => task.execute(params)))
+            .then(function (responses) {
+              return responses.map(({ results }) => {
+                return results.map((result) => {
+                  console.log('ccccccccccccyyyyyyyyyyyy222222aaannnnnnnnn :', result.feature)
+                  const feature = result.feature
+                  const layerName = result.layerName
+                  feature.attributes.layerName = layerName
+                  // layerName check logic is hardcoded for now as there is a chance that
+                  // the layer name on the server does not match the one in the source/data.json
+                  console.log('333355555888888nnnnnnnnnnn :', layerName)
                   if (layerName === 'Human Impact Sensitivity') {
-                    //  If it's Extreme, it's red, if it's High, it's yellow
-                    let riskClass = ''
+                    total_sensitivity = feature.attributes['Total Sensitivity']
                     switch (feature.attributes['Total Sensitivity']) {
                       case 'EXTREME':
                         riskClass = 'bg-danger'
@@ -938,10 +1002,16 @@ request.onload = function () {
                         riskClass = ''
                     }
                     feature.popupTemplate = {
-                      title: layerName,
+                      title: 'New popup',
                       content: getPopupTemplateNoPaddings([
                         ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Total Sensitivity</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">{Total Sensitivity}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to established water</span>', `<span class="p-3q d-flex flex-fill">${dt_water}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to ASPA</span>', `<span class="p-3q d-flex flex-fill">${dt_aspa}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to previous camp and ID</span>', `<span class="p-3q d-flex flex-fill">${dt_camps}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Summer mean wind speed</span>', `<span class="p-3q d-flex flex-fill">${summer_mean_wind_speed}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Slope</span>', `<span class="p-3q d-flex flex-fill">${slope}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Elevation</span>', `<span class="p-3q d-flex flex-fill">${elevation}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Sensitivity Index</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">${total_sensitivity}</span>`],
                       ]),
                       actions: [printReportThisAction],
                     }
@@ -1052,6 +1122,7 @@ request.onload = function () {
         impact: impactLayer,
         terrestrial: terrestrialLayer,
         ecoforcasting: ecoforcastingLayer,
+        distance: distanceLayer,
       }
 
       const bmProps = {
@@ -1087,6 +1158,7 @@ request.onload = function () {
           // when the createFeatureLayer() promise resolves, load the FeatureLayer
           // and pass it to the createRenderProps function
           // subLayer
+          console.log('ccccccccccccccyyyyyyyyyyyyyyyyyy8888899900000 :', imageLayer)
           imageLayer
             .createFeatureLayer()
             .then(function (featLyr) {
@@ -1094,12 +1166,23 @@ request.onload = function () {
             })
             .then(function (featureLayer) {
               // Generate the renderProps for the new featLyr
+              console.log('wwwwwwwwwkkkkkkklllllll000 :', scheme_id)
+              console.log('wwwwwwwwwkkkkkkklllllll111 :', schemes.secondarySchemes)
+              console.log('wwwwwwwwwkkkkkkklllllll222 :', schemes.secondarySchemes[scheme_id])
+
               schemes.secondarySchemes[scheme_id].noDataColor = {
                 r: 230,
                 g: 230,
                 b: 230,
                 a: 0.6,
               }
+
+              console.log('oioioioioioioioioioi000 :', field)
+              console.log('oioioioioioioioioioi111 :', scheme_id)
+              console.log('oioioioioioioioioioi222 :', schemes.secondarySchemes[scheme_id])
+              console.log('oioioioioioioioioioi444 :', schemes)
+
+              console.log('wwwwwwwwwkkkkkkklllllll333 :', featureLayer)
 
               const renderProps = {
                 layer: featureLayer,
@@ -1109,17 +1192,19 @@ request.onload = function () {
                   title: 'Unique Values: ' + field,
                 },
                 // Here we can override the colour scheme that is generated for the renderer.
-                typeScheme: schemes.secondarySchemes[scheme_id],
+                // typeScheme: schemes.secondarySchemes[scheme_id],
                 sortBy: 'count',
               }
               // when the promise resolves, apply the renderer to the imageLayer
               typeRendererCreator
                 .createRenderer(renderProps)
                 .then(function (response) {
+                  console.log('bbbbbbbbbbuuuuuuuuuuuuuuu :', response)
                   imageLayer.renderer = response.renderer
                 })
             })
         } else {
+          console.log('ccccccccyyyyyy333555888')
           imageLayer.renderer = null
         }
       }
@@ -1131,17 +1216,27 @@ request.onload = function () {
         const field = $(this).val()
         if (keyLayer in dryverLayersSource || keyLayer in source) {
           const layerSource = dryverLayersSource[keyLayer] || source[keyLayer]
+          console.log('dddddddddddddddddddeeeeee :', layerSource)
+          console.log('dddddddddddddddddddeeeeee111 :', mappedLayers)
+          console.log('dddddddddddddddddddeeeeee222 :', keyLayer)
           const layer = mappedLayers[keyLayer]
           if (layer.loaded) {
             const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select-scheme`
             const dropdown = $(querySymbologySelect)
             const fieldSelect = dropdown.val()
+            console.log('xxxxxxxxxxyyyyyy89888888000 :', fieldSelect)
             if (field) dropdown[0].parentElement.classList.remove('d-none')
             else dropdown[0].parentElement.classList.add('d-none')
+            console.log('xxxxxxxxxxyyyyyy89888888111 :', layerSource.layers)
             if (layerSource.layers) {
+              console.log('xxxxssssssssssssskkkkkkkkkkkk :', layer)
               const sublayer = layer.findSublayerById(+id)
+              console.log('xxxxxxxxxxyyyyyy89888888222 :', sublayer)
+              console.log('xxxxxxxxxxyyyyyy89888888444 :', field)
+              console.log('xxxxxxxxxxyyyyyy89888888555 :', fieldSelect)
               generateRendererForImgLyr(sublayer, field, +fieldSelect)
             } else {
+              console.log('xxxxxxxxxxyyyyyy89888888333 :')
               generateRendererForImgLyr(layer, field, +fieldSelect)
             }
           }
@@ -1160,6 +1255,7 @@ request.onload = function () {
           const layer = mappedLayers[keyLayer]
           if (layer.loaded) {
             const querySymbologySelect = `select#${keyLayerHTMLID}-${id}-select`
+            console.log('cccccccccccccccccchhhhhhhhhhhhhhhhhhhhhhhh')
             const fieldSelect = $(querySymbologySelect).val()
             if (layerSource.layers) {
               const sublayer = layer.findSublayerById(+id)
