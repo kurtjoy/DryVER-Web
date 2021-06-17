@@ -1,94 +1,257 @@
 <!-- dryver_django\templates\general_menu.html -->
 {% load static %}
-<div
-  id="sidebar-menu"
-  class="col-2 d-flex flex-column bg-dark mh-100"
->
-  <div
-    id="sidebar-nav"
-    class="list-group list-group-flush"
-    role="tablist"
-  >
-    <a
-      id="list-home-list"
-      data-toggle="list"
-      data-target="#list-home"
-      role="tab"
-      aria-controls="home"
-      class="list-group-item list-group-item-action active d-flex align-items-center justify-content-center"
-    >
+<div id="sidebar-menu" class="col-2 d-flex flex-column bg-dark mh-100">
+  <div id="sidebar-nav" class="list-group list-group-flush" role="tablist">
+    <a id="list-home-list" data-toggle="list" data-target="#list-home" role="tab" aria-controls="home"
+      class="list-group-item list-group-item-action active d-flex align-items-center justify-content-center">
       <i class="fas fa-search-location"></i>
     </a>
-    <a
-      id="list-datasets-list"
-      data-toggle="list"
-      data-target="#list-datasets"
-      role="tab"
-      aria-controls="datasets"
-      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
-    >
+    <a id="list-datasets-list" data-toggle="list" data-target="#list-datasets" role="tab" aria-controls="datasets"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center">
       <i class="fas fa-layer-group"></i>
     </a>
-    <a
-      id="list-dryver-list"
-      data-toggle="list"
-      data-target="#list-dryver"
-      role="tab"
-      aria-controls="dryver"
-      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
-    >
+    <a id="list-dryver-list" data-toggle="list" data-target="#list-dryver" role="tab" aria-controls="dryver"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center">
       <i class="fas fa-icicles"></i>
     </a>
     <a class="list-group-item p-0"></a>
   </div>
-  <div
-    id="main-pane-nav"
-    class="list-group list-group-flush"
-    role="tablist"
-  >
-    <a
-      id="list-map-list"
-      data-toggle="list"
-      data-target="#map-pane"
-      role="tab"
-      aria-controls="map"
-      class="list-group-item list-group-item-action active d-flex align-items-center justify-content-center"
-    >
+  <div id="main-pane-nav" class="list-group list-group-flush" role="tablist">
+    <a id="list-map-list" data-toggle="list" data-target="#map-pane" role="tab" aria-controls="map"
+      class="list-group-item list-group-item-action active d-flex align-items-center justify-content-center">
       <!-- <i class="fas fa-map-marked-alt"></i> -->
       <i class="fas fa-wind"></i>
     </a>
-    <a
-      id="list-wind-list"
-      data-toggle="list"
-      data-target="#windy-pane"
-      role="tab"
-      aria-controls="wind"
-      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
-    >
+    <a id="list-wind-list" data-toggle="list" data-target="#windy-pane" role="tab" aria-controls="wind"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center">
       <i class="fas fa-wind"></i>
     </a>
     <a class="list-group-item p-0"></a>
   </div>
-  <div
-    class="list-group list-group-flush"
-  >
-    <a
-      id="list-data-list"
-      aria-controls="data"
-      href="{% url 'Data' %}"
-      target="_blank"
-      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
-    >
+  <div class="list-group list-group-flush">
+    <a id="list-data-list" aria-controls="data" href="{% url 'Data' %}" target="_blank"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center">
       <i class="fas fa-file-archive"></i>
     </a>
-    <a
-      id="list-signout-list"
-      aria-controls="signout"
-      href="{% url 'logout' %}"
-      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center"
-    >
+    <a id="list-signout-list" aria-controls="signout" href="{% url 'logout' %}"
+      class="list-group-item list-group-item-action d-flex align-items-center justify-content-center">
       <i class="fas fa-sign-out-alt"></i>
     </a>
     <a class="list-group-item p-0"></a>
   </div>
+
+  <table id="ttt666888" style="display: none; border: 1px solid black; margin-top: 20px; width: 100vw;">
+    <tr>
+      <th rowspan="5" style="width: 25%">Terrestrial Biology</th>
+      <td style="width: 50%">Overall</td>
+      <td style="width: 25%">LOW</td>
+    </tr>
+    <tr>
+      <td>Cyanobacteria</td>
+      <td>LOW</td>
+    </tr>
+    <tr>
+      <td>Lichens</td>
+      <td>LOW</td>
+    </tr>
+    <tr>
+      <td>Mosses</td>
+      <td>HIGH</td>
+    </tr>
+    <tr>
+      <td>Fungi</td>
+      <td>LOW</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th rowspan="5" style="width: 25%">Human Impact</th>
+      <td style="width: 50%">Overall</td>
+      <td style="width: 25%">HIGH</td>
+    </tr>
+    <tr>
+      <td>Rock cover</td>
+      <td>HIGH</td>
+    </tr>
+    <tr>
+      <td>Visual Change</td>
+      <td>LOW</td>
+    </tr>
+    <tr>
+      <td>Infiltration</td>
+      <td>LOW</td>
+    </tr>
+    <tr>
+      <td>Track depth</td>
+      <td>MEDIUM</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th rowspan="3" style="width: 25%">Aquatic Ecosystem Sensitivity</th>
+      <td style="width: 50%">Overall</td>
+      <td style="width: 25%">HIGH</td>
+    </tr>
+    <tr>
+      <td>Ecosystem</td>
+      <td>HIGH</td>
+    </tr>
+    <tr>
+      <td>Sensitivity</td>
+      <td>LOW</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th rowspan="12" style="width: 25%">Geography</th>
+      <td style="width: 50%">Latitude (DD)</td>
+      <td style="width: 25%"></td>
+    </tr>
+    <tr>
+      <td>Longitude (DD)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Elevation (masl)</td>
+      <td>450</td>
+    </tr>
+    <tr>
+      <td>Slope (degrees)</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td>Aspect</td>
+      <td>NW</td>
+    </tr>
+    <tr>
+      <td>Geology</td>
+      <td>Young glacial</td>
+    </tr>
+    <tr>
+      <td>Distance to coast (km)</td>
+      <td>1.2</td>
+    </tr>
+    <tr>
+      <td>Distance to streams (km)</td>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <td>Distance to water bodies (km)</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Mean summer wind speed (ms)</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Max summer wind speed (ms)</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Located in summer wind hotspot</td>
+      <td>No</td>
+    </tr>
+  </table>
+
+  <!-- <table id="ttt666999" style="display: none; border: 1px solid black; width: 100vw;">
+    <tr>
+      <th rowspan="5" style="width: 25%">Human Impact</th>
+      <td style="width: 50%">Overall</td>
+      <td style="width: 25%">HIGH</td>
+    </tr>
+    <tr>
+      <td>Rock cover</td>
+      <td>HIGH</td>
+    </tr>
+    <tr>
+      <td>Visual Change</td>
+      <td>LOW</td>
+    </tr>
+    <tr>
+      <td>Infiltration</td>
+      <td>LOW</td>
+    </tr>
+    <tr>
+      <td>Track depth</td>
+      <td>MEDIUM</td>
+    </tr>
+  </table>
+
+  <table id="ttt666000" style="display: none; border: 1px solid black; width: 100vw;">
+    <tr>
+      <th rowspan="3" style="width: 25%">Aquatic Ecosystem Sensitivity</th>
+      <td style="width: 50%">Overall</td>
+      <td style="width: 25%">HIGH</td>
+    </tr>
+    <tr>
+      <td>Ecosystem</td>
+      <td>HIGH</td>
+    </tr>
+    <tr>
+      <td>Sensitivity</td>
+      <td>LOW</td>
+    </tr>
+  </table>
+
+  <table id="ttt666111" style="display: none; border: 1px solid black; width: 100vw;">
+    <tr>
+      <th rowspan="12" style="width: 25%">Geography</th>
+      <td style="width: 50%">Latitude (DD)</td>
+      <td style="width: 25%"></td>
+    </tr>
+    <tr>
+      <td>Longitude (DD)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Elevation (masl)</td>
+      <td>450</td>
+    </tr>
+    <tr>
+      <td>Slope (degrees)</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <td>Aspect</td>
+      <td>NW</td>
+    </tr>
+    <tr>
+      <td>Geology</td>
+      <td>Young glacial</td>
+    </tr>
+    <tr>
+      <td>Distance to coast (km)</td>
+      <td>1.2</td>
+    </tr>
+    <tr>
+      <td>Distance to streams (km)</td>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <td>Distance to water bodies (km)</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Mean summer wind speed (ms)</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Max summer wind speed (ms)</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Located in summer wind hotspot</td>
+      <td>No</td>
+    </tr>
+  </table> -->
+
 </div>

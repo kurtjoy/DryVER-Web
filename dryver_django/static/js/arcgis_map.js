@@ -5,11 +5,11 @@ request.responseType = 'json'
 request.send()
 
 
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
   window.dispatchEvent(new Event('resize'));
 });
 
-window.onresize = function() {
+window.onresize = function () {
   document.querySelector('#currentLatLongInfo').style.left = parseInt(document.getElementById('sidebar').offsetWidth) + 20 + 'px'
 }
 
@@ -837,7 +837,7 @@ request.onload = async function () {
           console.log(result.url);
           // window.open(result.url);
         }
-        
+
         function printError(err) {
           console.log("Something broke: ", err);
           alert("Check the browser console");
@@ -848,47 +848,35 @@ request.onload = async function () {
 
       async function createForm() {
         let generatedImageUrl = await getGeneratedImageUrl();
+        window.jsPDF = window.jspdf.jsPDF;
+        const doc = new jsPDF('p', 'pt', 'a4');
 
-        var PDFDocument = PDFLib.PDFDocument;
-        const pdfDoc = await PDFDocument.create()
-        const page = pdfDoc.addPage()
+        var img = new Image;
+        img.crossOrigin = "";
+        img.src = "static/img/dryver.jpg";
+        img.onload = async function () {
+          // left logo
+          doc.addImage(this, 20, 20, 130, 40);
 
-        // logo
-        const logoUrl = 'static/img/dryver.jpg'
-        const logoImageBytes = await fetch(logoUrl).then((res) => res.arrayBuffer())
-        const logoImage = await pdfDoc.embedJpg(logoImageBytes)
-        const logoDims = logoImage.scale(0.5)
-        page.drawImage(logoImage, {
-          x: 0,
-          y: page.getHeight() - logoDims.height - 10,
-          width: logoDims.width,
-          height: logoDims.height,
-        })
+          // title
+          let today = new Date();
+          let todayStr = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`
+          doc.text(`Sensitivity Report Created on ${todayStr}`, 200, 44)
 
-        // current date
-        let today = new Date();
-        let todayStr = `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`
+          // map
+          var mapImg = new Image;
+          mapImg.crossOrigin = "";
+          mapImg.src = generatedImageUrl;
+          await doc.addImage(mapImg, 20, 60, 560, 800)
 
-        // title
-        page.drawText(`Sensitivity Report Created on ${todayStr}`, {
-          x: logoDims.width + 40,
-          y: page.getHeight() - logoDims.height,
-          size: 20,
-        })
- 
-        // map image
-        const generatedImageBytes = await fetch(generatedImageUrl).then((res) => res.arrayBuffer())
-        const generatedImage = await pdfDoc.embedJpg(generatedImageBytes)
-        const generatedImageDims = generatedImage.scale(0.24)
-        page.drawImage(generatedImage, {
-          x: 0,
-          y: page.getHeight() - logoDims.height - generatedImageDims.height - 3,
-          width: generatedImageDims.width,
-          height: generatedImageDims.height,
-        })
+          // table
+          doc.autoTable({
+            html: '#ttt666888',
+            startY: 1200,
+          })
 
-        const pdfBytes = await pdfDoc.save()
-        download(pdfBytes, "pdf-lib_form_creation_example.pdf", "application/pdf");
+          doc.save("two-by-four.pdf");
+        };
       }
 
       async function printPopupReport() {
@@ -906,7 +894,7 @@ request.onload = async function () {
           let newItem = document.createElement('div');
           newItem.innerHTML = '<div class="spinner-border text-secondary" role="status" id="printSpinner" style="width: 22px; height: 22px; margin-left: 16px; margin-right: 10px;"><span class="sr-only">Loading...</span></div>';
           oldNode.parentNode.replaceChild(newItem, oldNode);
-          
+
           await printPopupReport()
 
           document.querySelector('#printSpinner').parentNode.parentNode.replaceChild(oldPrintDOM, newItem);
