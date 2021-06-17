@@ -892,7 +892,7 @@ request.onload = async function () {
           let oldNode = document.querySelector('[aria-label="Print Report"]')
           oldPrintDOM = oldNode;
           let newItem = document.createElement('div');
-          newItem.innerHTML = '<div class="spinner-border text-secondary" role="status" id="printSpinner" style="width: 22px; height: 22px; margin-left: 16px; margin-right: 10px;"><span class="sr-only">Loading...</span></div>';
+          newItem.innerHTML = '<div class="spinner-border text-secondary" role="status" id="printSpinner" style="width: 22px; height: 22px; margin-left: 16px; margin-right: 76px;"><span class="sr-only">Loading...</span></div>';
           oldNode.parentNode.replaceChild(newItem, oldNode);
 
           await printPopupReport()
