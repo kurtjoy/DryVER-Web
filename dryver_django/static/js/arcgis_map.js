@@ -77,6 +77,16 @@ request.onload = async function () {
   let decimalType = 'DD';
   let oldPrintDOM;
 
+  let dd_lat;
+  let dd_lon;
+  let dt_water = '';
+  let dt_aspa = '';
+  let dt_camps = '';
+  let summer_mean_wind_speed = '';
+  let slope = '';
+  let elevation = '';
+
+
   // https://www.esri.com/arcgis-blog/products/js-api-arcgis/mapping/whats-the-deal-with-mapimagelayer/
   $(document).ready(function () {
     require([
@@ -846,6 +856,129 @@ request.onload = async function () {
         return generatedImageUrl;
       }
 
+      function makePrintTable() {
+        $("#printTable").html(`
+        <tr>
+          <th rowspan="5" style="width: 25%; vertical-align: middle; text-align: center;">Terrestrial Biology</th>
+          <td style="width: 50%">Overall</td>
+          <td style="width: 25%">LOW</td>
+        </tr>
+        <tr>
+          <td>Cyanobacteria</td>
+          <td>LOW</td>
+        </tr>
+        <tr>
+          <td>Lichens</td>
+          <td>LOW</td>
+        </tr>
+        <tr>
+          <td>Mosses</td>
+          <td>HIGH</td>
+        </tr>
+        <tr>
+          <td>Fungi</td>
+          <td>LOW</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="5" style="width: 25%; vertical-align: middle; text-align: center;">Human Impact</th>
+          <td style="width: 50%">Overall</td>
+          <td style="width: 25%">HIGH</td>
+        </tr>
+        <tr>
+          <td>Rock cover</td>
+          <td>HIGH</td>
+        </tr>
+        <tr>
+          <td>Visual Change</td>
+          <td>LOW</td>
+        </tr>
+        <tr>
+          <td>Infiltration</td>
+          <td>LOW</td>
+        </tr>
+        <tr>
+          <td>Track depth</td>
+          <td>MEDIUM</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="3" style="width: 25%; vertical-align: middle; text-align: center; height: 16px;">Aquatic Ecosystem Sensitivity</th>
+          <td style="width: 50%">Overall</td>
+          <td style="width: 25%">HIGH</td>
+        </tr>
+        <tr>
+          <td>Ecosystem</td>
+          <td>HIGH</td>
+        </tr>
+        <tr>
+          <td>Sensitivity</td>
+          <td>LOW</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th rowspan="12" style="width: 25%; vertical-align: middle; text-align: center;">Geography</th>
+          <td style="width: 50%">Latitude (DD)</td>
+          <td style="width: 25%">${dd_lat}</td>
+        </tr>
+        <tr>
+          <td>Longitude (DD)</td>
+          <td>${dd_lon}</td>
+        </tr>
+        <tr>
+          <td>Elevation (masl)</td>
+          <td>${elevation}</td>
+        </tr>
+        <tr>
+          <td>Slope (degrees)</td>
+          <td>${slope}</td>
+        </tr>
+        <tr>
+          <td>Aspect</td>
+          <td>NW</td>
+        </tr>
+        <tr>
+          <td>Geology</td>
+          <td>Young glacial</td>
+        </tr>
+        <tr>
+          <td>Distance to coast (km)</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>Distance to streams (km)</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td>Distance to water bodies (km)</td>
+          <td style="background-color: green;">${dt_water}</td>
+        </tr>
+        <tr>
+          <td>Mean summer wind speed (ms)</td>
+          <td>${summer_mean_wind_speed}</td>
+        </tr>
+        <tr>
+          <td>Max summer wind speed (ms)</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>Located in summer wind hotspot</td>
+          <td>No</td>
+        </tr>`)
+      }
+
       async function createForm() {
         let generatedImageUrl = await getGeneratedImageUrl();
         window.jsPDF = window.jspdf.jsPDF;
@@ -871,17 +1004,23 @@ request.onload = async function () {
 
           // table
           doc.autoTable({
-            html: '#ttt666888',
-            startY: 1200,
+            html: '#printTable',
+            startY: 1500,
+            styles: {  
+              minCellHeight: 20,
+              valign: 'middle',
+              fontSize: 14
+            }  
           })
 
-          doc.save("two-by-four.pdf");
+          doc.save("sensitivity report.pdf");
         };
       }
 
       async function printPopupReport() {
         console.log('printPopupReport function')
         // window.open('/static/img/PDFmockup.png', '_blank')
+        await makePrintTable()
         await createForm()
       }
 
@@ -907,6 +1046,10 @@ request.onload = async function () {
         if (!view.popup.autoOpenEnabled) {
           const lat = Math.round(event.mapPoint.latitude * 1000) / 1000
           const lon = Math.round(event.mapPoint.longitude * 1000) / 1000
+
+          dd_lat = lat;
+          dd_lon = lon;
+
           // Set the geometry to the location of the view click
           distanceParams.geometry = climateParams.geometry = abioticParams.geometry = impactParams.geometry = aquaticParams.geometry = event.mapPoint
           distanceParams.mapExtent = climateParams.mapExtent = abioticParams.mapExtent = impactParams.mapExtent = aquaticParams.mapExtent = view.extent
@@ -938,12 +1081,6 @@ request.onload = async function () {
           // A custom popupTemplate is set for each feature based on the layer it
           // originates from
 
-          let dt_water = '';
-          let dt_aspa = '';
-          let dt_camps = '';
-          let summer_mean_wind_speed = '';
-          let slope = '';
-          let elevation = '';
           await Promise.all(allIdentifyTasks.map(({ task, params }) => task.execute(params)))
             .then(function (responses) {
               return responses.map(({ results }) => {
@@ -997,12 +1134,12 @@ request.onload = async function () {
                       title: layerName,
                       content: getPopupTemplateNoPaddings([
                         ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to established water</span>', `<span class="p-3q d-flex flex-fill">${dt_water}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to ASPA</span>', `<span class="p-3q d-flex flex-fill">${dt_aspa}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to previous camp and ID</span>', `<span class="p-3q d-flex flex-fill">${dt_camps}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Summer mean wind speed</span>', `<span class="p-3q d-flex flex-fill">${summer_mean_wind_speed}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Slope</span>', `<span class="p-3q d-flex flex-fill">${slope}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Elevation</span>', `<span class="p-3q d-flex flex-fill">${elevation}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to established water (km)</span>', `<span class="p-3q d-flex flex-fill">${dt_water}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to ASPA (km)</span>', `<span class="p-3q d-flex flex-fill">${dt_aspa}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to previous camp and ID (km)</span>', `<span class="p-3q d-flex flex-fill">${dt_camps}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Summer mean wind speed (ms)</span>', `<span class="p-3q d-flex flex-fill">${summer_mean_wind_speed}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Slope (degrees)</span>', `<span class="p-3q d-flex flex-fill">${slope}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Elevation (masl)</span>', `<span class="p-3q d-flex flex-fill">${elevation}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Sensitivity Index</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">${total_sensitivity}</span>`],
                       ]),
                       actions: [printReportThisAction],
