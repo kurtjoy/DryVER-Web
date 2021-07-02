@@ -887,7 +887,7 @@ request.onload = async function () {
         <tr>
           <th rowspan="5" style="width: 25%; vertical-align: middle; text-align: center;">Human Impact</th>
           <td style="width: 50%">Overall</td>
-          <td style="width: 25%">HIGH</td>
+          <td style="width: 25%">MEDIUM</td>
         </tr>
         <tr>
           <td>Rock cover</td>
@@ -1010,7 +1010,20 @@ request.onload = async function () {
               minCellHeight: 20,
               valign: 'middle',
               fontSize: 14
-            }  
+            },
+            willDrawCell: function (data) {
+              var rows = data.table.body;
+
+              if ((data.row.index === 0 || data.row.index === 6 || data.row.index === 12) && (data.column.index === 1 || data.column.index === 2)) {
+                if (data.row.cells[2].text[0] === 'LOW') {
+                  doc.setFillColor(255,255,0);
+                } else if (data.row.cells[2].text[0] === 'MEDIUM') {
+                  doc.setFillColor(255,165,0);
+                } else if (data.row.cells[2].text[0] === 'HIGH') {
+                  doc.setFillColor(255,0,0);
+                }
+              }
+            },
           })
 
           doc.save("sensitivity report.pdf");
@@ -1133,6 +1146,7 @@ request.onload = async function () {
                     feature.popupTemplate = {
                       title: layerName,
                       content: getPopupTemplateNoPaddings([
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Sensitivity Index</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">${total_sensitivity}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Distance to established water (km)</span>', `<span class="p-3q d-flex flex-fill">${dt_water}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Distance to ASPA (km)</span>', `<span class="p-3q d-flex flex-fill">${dt_aspa}</span>`],
@@ -1140,7 +1154,6 @@ request.onload = async function () {
                         ['<span class="py-3q pr-3q d-flex flex-fill">Summer mean wind speed (ms)</span>', `<span class="p-3q d-flex flex-fill">${summer_mean_wind_speed}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Slope (degrees)</span>', `<span class="p-3q d-flex flex-fill">${slope}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Elevation (masl)</span>', `<span class="p-3q d-flex flex-fill">${elevation}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Sensitivity Index</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">${total_sensitivity}</span>`],
                       ]),
                       actions: [printReportThisAction],
                     }
