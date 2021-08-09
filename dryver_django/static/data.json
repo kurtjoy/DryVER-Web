@@ -182,7 +182,7 @@
 			"title": "Aquatic",
 			"layers": [
 				{
-					"id": 0,
+					"id": 1,
 					"title": "LINZ Lakes and Ponds",
 					"visible": false,
 					"attribution": "Contains data sourced from the <a href='https://data.linz.govt.nz/' target='_blank'>LINZ Data Service</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>",
@@ -214,7 +214,7 @@
 					]
 				},
 				{
-					"id": 1,
+					"id": 0,
 					"title": "Streams",
 					"visible": false,
 					"fields": [
