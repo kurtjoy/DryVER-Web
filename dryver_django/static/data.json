@@ -94,16 +94,16 @@
 				"attribution": "Contains data sourced from the <a href='https://maps.gns.cri.nz/' target='_blank'>GNS Science</a> licensed for reuse under <a href='https://creativecommons.org/licenses/by/4.0/' target='_blank'>CC BY 4.0</a>",
 				"fields": [
 					{
-						"value": "Main Rock Type",
-						"text": "MAIN_ROCK"
+						"value": "MAIN_ROCK",
+						"text": "Main Rock Type"
 					},
 					{
-						"value": "Geological Map Unit",
-						"text": "MAP_UNIT"
+						"value": "MAP_UNIT",
+						"text": "Geological Map Unit"
 					},
 					{
-						"value": "DryVER Units",
-						"text": "DRYVER_GROUP"
+						"value": "DRYVER_GROUP",
+						"text": "DryVER Units"
 					}
 				]
 			},
