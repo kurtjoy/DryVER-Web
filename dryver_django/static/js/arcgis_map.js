@@ -1109,7 +1109,6 @@ request.onload = async function () {
               return responses.map(({ results }) => {
                 return results.map((result) => {
                   const feature = result.feature
-                  console.log('ssssiiiicccc :', feature)
                   const layerName = result.layerName
                   feature.attributes.layerName = layerName
                   // layerName check logic is hardcoded for now as there is a chance that
