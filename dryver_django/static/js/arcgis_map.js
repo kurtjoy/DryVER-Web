@@ -109,6 +109,7 @@ request.onload = async function () {
       "esri/Graphic",
       "esri/layers/GraphicsLayer",
       'esri/widgets/Zoom',
+      "esri/widgets/Home",
       'esri/widgets/Legend',
       'esri/widgets/Expand',
       'esri/widgets/LayerList',
@@ -122,6 +123,7 @@ request.onload = async function () {
       'esri/tasks/support/PrintTemplate',
       'esri/renderers/smartMapping/creators/type',
       'esri/renderers/smartMapping/symbology/type',
+      "dojo/dom",
     ], function (
       Map,
       SceneView,
@@ -142,6 +144,7 @@ request.onload = async function () {
       Graphic,
       GraphicsLayer,
       Zoom,
+      Home,
       Legend,
       Expand,
       LayerList,
@@ -154,7 +157,8 @@ request.onload = async function () {
       PrintViewModel,
       PrintTemplate,
       typeRendererCreator,
-      typeSchemes) {
+      typeSchemes,
+      dom) {
       const map = new Map({
         basemap: 'satellite',
         // ground: "world-elevation"
@@ -263,7 +267,7 @@ request.onload = async function () {
           ['Name', '{NAME}'],
           ['Type', '{Type}'],
           ['Helo', '{HELO}'],
-          ['PDF', '{PDF}'],
+          ['PDF', '<a target="_blank" href="{PDF}">{PDF}</a>'],
           ['Desc', '{DESC}'],
         ]),
       }
@@ -432,6 +436,10 @@ request.onload = async function () {
         view: view,
       })
 
+      var homeBtn = new Home({
+        view: view
+      });
+
       // compass
       const compass = new Compass({
         view: view,
@@ -511,7 +519,7 @@ request.onload = async function () {
           placeholder: 'Place Name',
           zoomScale: 60000,
         }],
-      })
+      }, dom.byId("searchLocationName"))
 
       var marker = new PictureMarkerSymbol(
         "/static/img/BluePin1LargeB.png",
@@ -534,13 +542,15 @@ request.onload = async function () {
       })
 
       // Add the search widget to the top right corner of the view
-      view.ui.add(searchWidget, {
-        position: 'top-right',
-      })
+      // view.ui.add(searchWidget, {
+      //   position: 'top-right',
+      // })
 
       view.ui.add(zoom, {
         position: 'top-right',
       })
+
+      view.ui.add(homeBtn, 'top-right');
 
       view.ui.add(compass, {
         position: 'top-right',
@@ -939,11 +949,11 @@ request.onload = async function () {
         </tr>
         <tr>
           <td>Elevation (masl)</td>
-          <td>${elevation}</td>
+          <td>${Number(elevation).toFixed(2)}</td>
         </tr>
         <tr>
           <td>Slope (degrees)</td>
-          <td>${slope}</td>
+          <td>${Number(slope).toFixed(2)}</td>
         </tr>
         <tr>
           <td>Aspect</td>
@@ -954,20 +964,20 @@ request.onload = async function () {
           <td>Young glacial</td>
         </tr>
         <tr>
-          <td>Distance to coast (km)</td>
+          <td>Distance to coast (m)</td>
           <td>10</td>
         </tr>
         <tr>
-          <td>Distance to streams (km)</td>
+          <td>Distance to streams (m)</td>
           <td>6</td>
         </tr>
         <tr>
-          <td>Distance to water bodies (km)</td>
-          <td style="background-color: green;">${dt_water}</td>
+          <td>Distance to water bodies (m)</td>
+          <td style="background-color: green;">${Number(dt_water).toFixed(2)}</td>
         </tr>
         <tr>
           <td>Mean summer wind speed (ms)</td>
-          <td>${summer_mean_wind_speed}</td>
+          <td>${Number(summer_mean_wind_speed).toFixed(2)}</td>
         </tr>
         <tr>
           <td>Max summer wind speed (ms)</td>
@@ -1099,22 +1109,23 @@ request.onload = async function () {
               return responses.map(({ results }) => {
                 return results.map((result) => {
                   const feature = result.feature
+                  console.log('ssssiiiicccc :', feature)
                   const layerName = result.layerName
                   feature.attributes.layerName = layerName
                   // layerName check logic is hardcoded for now as there is a chance that
                   // the layer name on the server does not match the one in the source/data.json
                   if (layerName === 'DT_ASPA') {
-                    dt_aspa = feature.attributes['Pixel Value']
+                    dt_aspa = Number(feature.attributes['Pixel Value']).toFixed(2)
                   } else if (layerName === 'DT_CAMPS') {
-                    dt_camps = feature.attributes['Pixel Value']
+                    dt_camps = Number(feature.attributes['Pixel Value']).toFixed(2)
                   } else if (layerName === 'DT_WATER') {
-                    dt_water = feature.attributes['Pixel Value']
+                    dt_water = Number(feature.attributes['Pixel Value']).toFixed(2)
                   } else if (layerName === 'SUMMER_mean_ws') {
-                    summer_mean_wind_speed = feature.attributes['Pixel Value']
+                    summer_mean_wind_speed = Number(feature.attributes['Pixel Value']).toFixed(2)
                   } else if (layerName === 'Slope') {
-                    slope = feature.attributes['Pixel Value']
+                    slope = Number(feature.attributes['Pixel Value']).toFixed(2)
                   } else if (layerName === 'GNS_dtm_asma') {
-                    elevation = feature.attributes['Pixel Value']
+                    elevation = Number(feature.attributes['Pixel Value']).toFixed(2)
                   }
                 })
               }).flat()
@@ -1148,9 +1159,9 @@ request.onload = async function () {
                       content: getPopupTemplateNoPaddings([
                         ['<span class="py-3q pr-3q d-flex flex-fill">Sensitivity Index</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">${total_sensitivity}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to established water (km)</span>', `<span class="p-3q d-flex flex-fill">${dt_water}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to ASPA (km)</span>', `<span class="p-3q d-flex flex-fill">${dt_aspa}</span>`],
-                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to previous camp and ID (km)</span>', `<span class="p-3q d-flex flex-fill">${dt_camps}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to established water (m)</span>', `<span class="p-3q d-flex flex-fill">${dt_water}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to ASPA (m)</span>', `<span class="p-3q d-flex flex-fill">${dt_aspa}</span>`],
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Distance to previous camp and ID (m)</span>', `<span class="p-3q d-flex flex-fill">${dt_camps}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Summer mean wind speed (ms)</span>', `<span class="p-3q d-flex flex-fill">${summer_mean_wind_speed}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Slope (degrees)</span>', `<span class="p-3q d-flex flex-fill">${slope}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Elevation (masl)</span>', `<span class="p-3q d-flex flex-fill">${elevation}</span>`],
