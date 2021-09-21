@@ -95,3 +95,7 @@
 .pt-3q, .py-3q {
   padding-top: 0.75rem!important;
 }
+
+.list-group-item.active {
+	z-index: 0 !important;
+}
