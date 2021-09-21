@@ -1066,7 +1066,22 @@ request.onload = async function () {
       // Executes each time the view is clicked
       async function executeIdentifyTask(event) {
         let locationStr;
+        let locationName;
         if (!view.popup.autoOpenEnabled) {
+
+          const featureQuery = {
+            where: '1=1',  // Set by select element
+            geometry: view.toMap(event),
+            outFields: ['Name'], // Attributes to return
+          };
+  
+          antarcticManagedAreaLayer.queryFeatures(featureQuery).then(function(results){
+            // prints an array of all the features in the service to the console
+            if (results.features.length > 0) {
+              locationName = results.features[0].attributes['NAME'];
+            }
+          });
+
           const lat = Math.round(event.mapPoint.latitude * 1000) / 1000
           const lon = Math.round(event.mapPoint.longitude * 1000) / 1000
 
@@ -1156,6 +1171,7 @@ request.onload = async function () {
                     feature.popupTemplate = {
                       title: layerName,
                       content: getPopupTemplateNoPaddings([
+                        ['<span class="py-3q pr-3q d-flex flex-fill">Name</span>', `<span class="p-3q d-flex flex-fill">${locationName}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Sensitivity Index</span>', `<span class="p-3q d-flex flex-fill ${riskClass}">${total_sensitivity}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Coordinate</span>', `<span class="p-3q d-flex flex-fill">${locationStr}</span>`],
                         ['<span class="py-3q pr-3q d-flex flex-fill">Distance to established water (m)</span>', `<span class="p-3q d-flex flex-fill">${dt_water}</span>`],
